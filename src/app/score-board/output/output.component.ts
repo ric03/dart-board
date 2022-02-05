@@ -12,12 +12,14 @@ export class OutputComponent implements OnInit {
   public points$: Subject<number>;
   public dartCount$: Subject<number>;
   public playerName$: Subject<string>;
+  public roundCount$: Subject<number>;
   arrayOfPlayersOutout =  Array(5);
 
   constructor(private dartCounterService: DartCounterService) { 
     this.points$ = this.dartCounterService.points$;
     this.dartCount$ = this.dartCounterService.dartCount$;
     this.playerName$ = this.dartCounterService.playerName$;
+    this.roundCount$ = this.dartCounterService.roundCount$;
   }
 
   ngOnInit(): void { }

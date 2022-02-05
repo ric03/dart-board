@@ -15,13 +15,16 @@ export class DartCounterService {
 
   private first: Player = {id:1, playerName: 'Player 1', points:501, dartCount:3};
   private second: Player = {id:2, playerName: 'Player 2', points:501, dartCount:3};
+  private roundCount = 0;
 
   public points$: Subject<number> = new Subject();
   public dartCount$: Subject<number> = new Subject();
   public playerName$: Subject<string> = new Subject();
+  public roundCount$: Subject<number> = new Subject();
 
   // `this.` is always required to access class members and functions
   private currentPlayer: Player = this.first;
+  private round: Number = this.roundCount;
 
   reduceCountBy(points: number) {
     if( (this.currentPlayer.points - points) >= 0 && this.currentPlayer.dartCount > 0){
@@ -32,9 +35,13 @@ export class DartCounterService {
       this.currentPlayer.points;  
     }  
     this.points$.next(this.currentPlayer.points);
-   
   }
-
+  reduceCountByBull(){
+    this.currentPlayer.points -= 25;
+  }
+  reduceCountByBullSEye(){
+    this.currentPlayer.points -= 50;
+  }
   reduceDartCount() {
     if( (this.currentPlayer.dartCount - 1) >= 0 ){
       this.currentPlayer.dartCount -= 1;
@@ -59,6 +66,7 @@ export class DartCounterService {
       this.currentPlayer = this.first;
       this.currentPlayer.playerName = this.first.playerName;
     }
+    this.roundCount$.next(this.roundCount+=1);
   }
   winCheck(){
     if(this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0){

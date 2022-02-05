@@ -26,4 +26,15 @@ export class InputButtonRowComponent implements OnInit {
     this.dartCounterService.reduceCountBy(points*3);
   }
 
+  public reduceBull(points: number) {
+    this.dartCounterService.reduceCountBy(points);
+  }
+  public reduceBullsEye(points: number) {
+    this.dartCounterService.reduceCountBy(points);
+  }
+
+  public reduceDartCounter() { 
+    this.dartCounterService.reduceDartCount();
+  }
+
 }

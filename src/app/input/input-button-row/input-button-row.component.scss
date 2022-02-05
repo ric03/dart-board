@@ -1,11 +1,44 @@
-button{
-width:30px;
-
+.extraButtonsDiv{
+    width:300px;
+    margin:0 auto;
+    button{
+        margin-left:5%;
+        margin-right:5%;
+        width:70px;
+        height: 40px;
+        }
 }
 button:hover{
     background-color: red;
 }
 .buttonDiv{
     width:300px;
-    margin: 2%;
+    margin: 4%;
+    margin-bottom:2%;
+    margin-top:2%;
+    button{
+        width:30px;
+        height: 40px;
+        }
+}
+.SingleButtonGroup{
+    margin:0 auto;
+    width:328px;
+    border-radius: 17%;
+    border: solid;
+    border-color: green;
+}
+.DoubleButtonGroup{
+    margin:0 auto;
+    width:328px;
+    border-radius: 17%;
+    border: solid;
+    border-color: rgb(23, 0, 128);
+}
+.TripleButtonGroup{
+    margin:0 auto;
+    width:328px;
+    border-radius: 17%;
+    border: solid;
+    border-color: rgb(128, 0, 43);
 }
