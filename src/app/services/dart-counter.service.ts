@@ -14,17 +14,26 @@ interface Player {
 export class DartCounterService {
 
   private first: Player = {id:1, playerName: 'Player 1', points:501, dartCount:3};
-  private second: Player = {id:2, playerName: 'Player 2', points:501, dartCount:3};
-  private roundCount = 0;
+  private roundCount = 1;
 
   public points$: Subject<number> = new Subject();
   public dartCount$: Subject<number> = new Subject();
   public playerName$: Subject<string> = new Subject();
   public roundCount$: Subject<number> = new Subject();
-
+  public playerArr: Array<Player> = new Array();
   // `this.` is always required to access class members and functions
-  private currentPlayer: Player = this.first;
-  private round: Number = this.roundCount;
+  private currentPlayer = this.first;
+  private initRound: number = 1;
+  private initPoints: number = 501;
+  private initPlayerName: string = 'Player 1';
+
+  initPlayers(player: number){
+    this.playerArr = new Array(player);
+    for (let i  = 1 ; i <= player ; i++){
+      this.playerArr[i-1]= {id:i, playerName: 'Player '+ i, points:501, dartCount:3};
+    }    
+    this.currentPlayer = this.playerArr[0];
+  }
 
   reduceCountBy(points: number) {
     if( (this.currentPlayer.points - points) >= 0 && this.currentPlayer.dartCount > 0){
@@ -50,22 +59,18 @@ export class DartCounterService {
     if( this.currentPlayer.dartCount == 0){
       this.changePlayer(this.currentPlayer.id);
       this.currentPlayer.dartCount = 3;
-     
-     
     }
     this.playerName$.next(this.currentPlayer.playerName);
     this.dartCount$.next(this.currentPlayer.dartCount);
   }
 
   changePlayer(id:number) {
-    if(id == 1){
-      this.currentPlayer = this.second;
-      this.currentPlayer.playerName = this.second.playerName;
-    }
-    if(id == 2){
-      this.currentPlayer = this.first;
-      this.currentPlayer.playerName = this.first.playerName;
-    }
+    this.playerArr.forEach(player => {
+      if(player.id == id+1){
+        this.currentPlayer = player;
+        this.currentPlayer.playerName = player.playerName;
+      }
+    });
     this.roundCount$.next(this.roundCount+=1);
   }
   winCheck(){
