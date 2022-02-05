@@ -8,14 +8,22 @@ import { DartCounterService } from 'src/app/services/dart-counter.service';
 })
 export class InputButtonRowComponent implements OnInit {
 
-  arrayOf20 =  Array(20)
+  arrayOf10 =  Array(10);
   constructor(private dartCounterService: DartCounterService) { }
 
   ngOnInit(): void {
   }
 
-  public clicky(points: number) {
+  public reduceSingle(points: number) {
     this.dartCounterService.reduceCountBy(points);
+  }
+
+  public reduceDouble(points: number) {
+    this.dartCounterService.reduceCountBy(points*2);
+  }
+
+  public reduceTriple(points: number) {
+    this.dartCounterService.reduceCountBy(points*3);
   }
 
 }
