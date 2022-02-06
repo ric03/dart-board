@@ -1,0 +1,7 @@
+<p>scoreboard-overview works!</p>
+<!-- alle Spieler mit Namen und Punkten anzeigen -->
+<div>
+    <p *ngFor='let player of playerArr$$ | async'>
+        {{player.playerName}} {{player.points}}</p>
+</div>
+<p>ENDE</p>

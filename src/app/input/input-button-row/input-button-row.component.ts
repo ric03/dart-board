@@ -8,7 +8,7 @@ import { DartCounterService } from 'src/app/services/dart-counter.service';
 })
 export class InputButtonRowComponent implements OnInit {
 
-  arrayOf10 =  Array(10);
+  arrayOf10 = Array(10);
   constructor(private dartCounterService: DartCounterService) { }
 
   ngOnInit(): void {
@@ -19,11 +19,11 @@ export class InputButtonRowComponent implements OnInit {
   }
 
   public reduceDouble(points: number) {
-    this.dartCounterService.reduceCountBy(points*2);
+    this.dartCounterService.reduceCountBy(points * 2);
   }
 
   public reduceTriple(points: number) {
-    this.dartCounterService.reduceCountBy(points*3);
+    this.dartCounterService.reduceCountBy(points * 3);
   }
 
   public reduceBull(points: number) {
@@ -33,7 +33,7 @@ export class InputButtonRowComponent implements OnInit {
     this.dartCounterService.reduceCountBy(points);
   }
 
-  public reduceDartCounter() { 
+  public reduceDartCounter() {
     this.dartCounterService.reduceDartCount();
   }
 
