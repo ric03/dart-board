@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { first, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 interface Player {
   id: number;
@@ -15,7 +15,6 @@ export class DartCounterService {
 
   private first: Player = {id:1, playerName: 'Player 1', points:501, dartCount:3};
   private roundCount = 1;
-
   public points$: Subject<number> = new Subject();
   public dartCount$: Subject<number> = new Subject();
   public playerName$: Subject<string> = new Subject();
@@ -66,12 +65,19 @@ export class DartCounterService {
 
   changePlayer(id:number) {
     this.playerArr.forEach(player => {
+      if(this.playerArr.length == id){
+        this.currentPlayer = this.playerArr[0];
+        this.currentPlayer.playerName = this.playerArr[0].playerName;
+      }
       if(player.id == id+1){
         this.currentPlayer = player;
         this.currentPlayer.playerName = player.playerName;
       }
     });
-    this.roundCount$.next(this.roundCount+=1);
+    if(this.currentPlayer.id == this.playerArr[0].id){
+      this.roundCount$.next(this.roundCount+=1);
+    }
+    
   }
   winCheck(){
     if(this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0){
