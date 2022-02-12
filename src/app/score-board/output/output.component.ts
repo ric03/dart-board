@@ -1,7 +1,11 @@
 import { Component, OnInit, Type } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressBarMode } from '@angular/material/progress-bar';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { DartCounterService } from 'src/app/services/dart-counter.service';
-
+import { NumberInput } from '@angular/cdk/coercion';
+import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-output',
@@ -9,14 +13,21 @@ import { DartCounterService } from 'src/app/services/dart-counter.service';
   styleUrls: ['./output.component.scss']
 })
 export class OutputComponent implements OnInit {
-
+ 
   public points$: Subject<number>;
-  public dartCount$: Subject<number>;
-  public playerName$: Subject<string>;
-  public roundCount$: Subject<number>;
+  public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
+  public playerName$:Subject<string>;
+  public roundCount$:BehaviorSubject<number> = new BehaviorSubject(1);
+
+  color: ThemePalette = 'primary';
+  mode: ProgressBarMode = 'determinate';
+  valueDartCount: number = 3;
+  valueRoundCount: number = 1;
 
 
-  constructor(private dartCounterService: DartCounterService) {
+
+
+  constructor(private dartCounterService: DartCounterService, private snackBar: MatSnackBar) {
     this.points$ = this.dartCounterService.points$;
     this.dartCount$ = this.dartCounterService.dartCount$;
     this.playerName$ = this.dartCounterService.playerName$;
@@ -24,20 +35,26 @@ export class OutputComponent implements OnInit {
 
   }
 
+  getovershot(){
+    if(this.dartCounterService.overshotCheck() == true ){
+      this.snackBar.open("Überschossen", 'OK')
+      //, {
+      //  duration: 2000;
+      //});
+    }
+
+  }
+  getRoundCount():NumberInput{
+    this.getovershot();
+    this.valueRoundCount= this.roundCount$.value*100/45;
+    return this.valueRoundCount;
+  }
+
+  getDartCount():NumberInput{
+    this.valueDartCount= this.dartCount$.value*100/3;
+    return this.valueDartCount;
+  }
 
   ngOnInit(): void {
-    // echt dirty, Tom mal fragen wie das besser geht, wahrscheinlich neue UI Componente ;-)
-    var players = window.prompt('Hi lets play darts! Enter number of players:');
-    this.initPlayers(players);
   }
-
-  public initPlayers(players: string | null) {
-
-    if (players == null || players === "") {
-      this.dartCounterService.initPlayers(1);
-    } else {
-      this.dartCounterService.initPlayers(+players);
-    }
-  }
-
 }

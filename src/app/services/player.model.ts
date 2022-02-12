@@ -1,6 +1,6 @@
 export interface Player {
     id: number;
     dartCount: number;
-    playerName: string,
-    points: number,
+    playerName: string;
+    points: number;
 }

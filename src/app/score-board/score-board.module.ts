@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OutputComponent } from './output/output.component';
 import { ScoreboardOverviewComponent } from './scoreboard-overview/scoreboard-overview.component';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
 
 @NgModule({
@@ -11,7 +11,9 @@ import { ScoreboardOverviewComponent } from './scoreboard-overview/scoreboard-ov
     ScoreboardOverviewComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatProgressBarModule,
+    
   ],
   exports: [
     OutputComponent,

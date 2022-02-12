@@ -1,44 +1,43 @@
+.mainDiv{
+    margin:2% auto;
+    width: max-width;
+} 
 .extraButtonsDiv{
-    width:300px;
-    margin:0 auto;
-    button{
-        margin-left:5%;
-        margin-right:5%;
-        width:70px;
-        height: 40px;
-        }
+margin:2% auto;
+button{
+    margin:2% auto;
+    margin-left:5%;
+    margin-right:5%;
+    }
 }
-button:hover{
-    background-color: red;
-}
+
 .buttonDiv{
-    width:300px;
-    margin: 4%;
-    margin-bottom:2%;
-    margin-top:2%;
+padding:auto;
+width: max-width;
+margin: 2% auto;
+margin-bottom:2%;
+margin-right:2%;
+margin-top:2%;
     button{
-        width:30px;
-        height: 40px;
-        }
+        margin:1%;
+    }
 }
-.SingleButtonGroup{
-    margin:0 auto;
-    width:328px;
-    border-radius: 17%;
-    border: solid;
-    border-color: green;
+.backgroundColorPrimaryComplement{
+background-color:#32b909;
 }
-.DoubleButtonGroup{
-    margin:0 auto;
-    width:328px;
-    border-radius: 17%;
-    border: solid;
-    border-color: rgb(23, 0, 128);
+.backgroundColorPrimary{
+background-color:#673ab7;
 }
-.TripleButtonGroup{
-    margin:0 auto;
-    width:328px;
-    border-radius: 17%;
-    border: solid;
-    border-color: rgb(128, 0, 43);
+.backgroundColorWarn{
+background-color:#f44336;
 }
+mat-button-toggle-group {
+margin: 2% auto;
+
+}
+.center{
+    margin: 0% auto;
+    display: flex;
+    justify-content: center;    
+  }
+

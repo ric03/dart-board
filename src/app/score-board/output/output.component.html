@@ -1,8 +1,24 @@
-<div class="playerDiv">
-    <p> Player: {{playerName$ | async}}</p>
-    <p> Current Points: {{points$ | async}} of 501</p>
-    <p> Darts: {{dartCount$ | async}} of 3</p>
-    <p> Round: {{roundCount$ | async}}</p>
+<div class="playerStats text">
+    <label class=" playerStats center">Score: {{playerName$ | async}}    {{points$ | async}}</label>
+
+    <label>Rounds</label>
+    <mat-progress-bar
+    aria-label="RoundCount"
+    [color]="color" 
+    [mode]="mode" 
+    [value]='getRoundCount()'></mat-progress-bar>
+          
+    <label>Darts</label>
+    <mat-progress-bar
+    aria-label="DartCount" 
+    [color]="color" 
+    [mode]="mode" 
+    [value]='getDartCount()'></mat-progress-bar>
+
+   
 </div>
 
-<app-scoreboard-overview></app-scoreboard-overview>
+<div class="playerOverview text">
+    <app-scoreboard-overview></app-scoreboard-overview>
+    </div>
+

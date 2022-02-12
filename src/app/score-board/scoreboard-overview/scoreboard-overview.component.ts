@@ -15,7 +15,6 @@ export class ScoreboardOverviewComponent implements OnInit {
 
   constructor(private dartCounterService: DartCounterService) {
    this.playerArr$$ = this.dartCounterService.playerArr$$
-
   }
 
   ngOnInit(): void {
