@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DartBoardComponent } from './dart-board/dart-board/dart-board.component';
-import { OutputComponent } from './score-board/output/output.component';
+import { InitialViewComponent } from './welcome-dartboard/initial-view/initial-view.component';
 
 const routes: Routes = [
-  { path: '', component: DartBoardComponent },
+  { path: '', component: InitialViewComponent },
+  { path: 'dartboard', component: DartBoardComponent },
 ];
 
 @NgModule({

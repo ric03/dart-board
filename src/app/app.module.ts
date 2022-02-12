@@ -7,14 +7,13 @@ import { ScoreBoardModule } from './score-board/score-board.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule} from '@angular/material/snack-bar'; 
 import { MatToolbarModule} from '@angular/material/toolbar'; 
-import { MatBadgeModule} from '@angular/material/badge'; 
+import { WelcomeDartboardModule } from './welcome-dartboard/welcome-dartboard.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     
-
   ],
   imports: [
     BrowserModule,
@@ -24,6 +23,9 @@ import { MatBadgeModule} from '@angular/material/badge';
     MatSnackBarModule,
     ScoreBoardModule,
     MatToolbarModule,
+    WelcomeDartboardModule,
+    
+   
    
   ],
   providers: [],

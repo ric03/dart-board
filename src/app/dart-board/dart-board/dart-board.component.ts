@@ -14,11 +14,12 @@ export class DartBoardComponent implements OnInit {
 
   ngOnInit(): void {
     // echt dirty, Tom mal fragen wie das besser geht, wahrscheinlich neue UI Componente ;-)
-    var players = window.prompt('Hi lets play darts! Enter number of players:');
-    this.initPlayers(players);
+   // var players = window.prompt('Hi lets play darts! Enter number of players:');
+    //this.initPlayers(players);
 
-     
-  
+  }
+  ngOnDestroy():void{
+  let answer =  window.prompt('Sicher das du neuladen willst, alle werte gehen verloren! Sicher?: ');
   }
   
   public initPlayers(players: string | null) {
