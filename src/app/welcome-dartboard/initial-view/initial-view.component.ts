@@ -1,9 +1,6 @@
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { DartCounterService } from 'src/app/services/dart-counter.service';
-
-
 
 interface Game {
   value: number;
@@ -57,7 +54,5 @@ export class InitialViewComponent implements OnInit {
     //console.log("submitted --> input Players" + this.userInputPlayer.value)
     //for routingOption later
     //console.log("submitted --> input Game" + this.userInputGame.value);
-    
-
   }
 }

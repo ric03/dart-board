@@ -5,6 +5,9 @@ import { InputModule } from '../input/input.module';
 import { ScoreBoardModule } from '../score-board/score-board.module';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { WelcomeDartboardModule } from '../welcome-dartboard/welcome-dartboard.module';
+import {MatMenuModule} from '@angular/material/menu';
+import { AppRoutingModule } from '../app-routing.module'; 
+
 
 
 @NgModule({
@@ -17,6 +20,8 @@ import { WelcomeDartboardModule } from '../welcome-dartboard/welcome-dartboard.m
     ScoreBoardModule,
     MatToolbarModule,
     WelcomeDartboardModule,
+    MatMenuModule,
+    AppRoutingModule,
   ]
 })
 export class DartBoardModule { }

@@ -8,11 +8,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule} from '@angular/material/snack-bar'; 
 import { MatToolbarModule} from '@angular/material/toolbar'; 
 import { WelcomeDartboardModule } from './welcome-dartboard/welcome-dartboard.module';
+import { MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { OvershotComponent } from './overshot/overshot.component';
+import { WonComponent } from './won/won.component';
+import { QuitQuestionComponent } from './quit-question/quit-question.component'; 
+import { MatDialogModule} from '@angular/material/dialog'; 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    OvershotComponent,
+    WonComponent,
+    QuitQuestionComponent,
     
   ],
   imports: [
@@ -24,6 +32,9 @@ import { WelcomeDartboardModule } from './welcome-dartboard/welcome-dartboard.mo
     ScoreBoardModule,
     MatToolbarModule,
     WelcomeDartboardModule,
+    MatBottomSheetModule,
+    MatDialogModule,
+    
     
    
    

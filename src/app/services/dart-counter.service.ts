@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Player } from './player.model';
+import {MatBottomSheet} from '@angular/material/bottom-sheet'; 
+import { OvershotComponent } from '../overshot/overshot.component';
+import { WonComponent } from '../won/won.component';
+import { MatDialog } from '@angular/material/dialog';
+import { QuitQuestionComponent } from '../quit-question/quit-question.component';
 
 
 @Injectable({
@@ -17,12 +21,12 @@ export class DartCounterService {
   public roundCount$: BehaviorSubject<number> = new BehaviorSubject(1);
   private playerArr: Player[] = [];
   public playerArr$$: BehaviorSubject<Player[]> = new BehaviorSubject([this.first]);
-  private tempPlayerPoints: number = 0;
+  private tempPlayerPoints: number [] = [];
   
   // `this.` is always required to access class members and functions
   private currentPlayer= this.first;
 
-  //TODO: ÜberschussLogik  , private snackBar: MatSnackBar
+  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) {}
 
   initPlayers(player: number) {
     this.playerArr = [];
@@ -40,9 +44,9 @@ export class DartCounterService {
   }
 
   reduceCountBy(points: number) {
-    this.resetPlayerName();
+   // this.resetPlayerName();
     if(this.currentPlayer.dartCount > 1){
-      this.tempPlayerPoints = this.currentPlayer.points;
+      this.tempPlayerPoints.push(this.currentPlayer.points);
     }
     if (this.currentPlayer.dartCount > 0) {
       this.currentPlayer.points -= points;
@@ -89,26 +93,30 @@ export class DartCounterService {
       this.roundCount$.next(this.roundCount += 1);
     }
     this.currentPlayer.dartCount = 3;
+    this.tempPlayerPoints = [];
   }
 
   winCheck() {
     if (this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0) {
-      this.currentPlayer.playerName = this.currentPlayer.playerName + ' hat Gewonnen ;-)';
-      this.playerName$.next(this.currentPlayer.playerName);
+      this.bottomSheet.open(WonComponent, {
+        ariaLabel: 'Won'
+      });
+      this.dialog.open(QuitQuestionComponent);
+     // this.playerName$.next(this.currentPlayer.playerName);
       
     }
   }
   public overshotCheck():boolean {
     // dartcounter begins at 3 
     if (this.currentPlayer.points < 0) {
-      this.currentPlayer.points = this.tempPlayerPoints;
+      this.currentPlayer.points = this.tempPlayerPoints[0];
       this.currentPlayer.dartCount = 0;
-
-        this.currentPlayer.playerName = this.currentPlayer.playerName + ' hat Überschossen :-(';
+     this.bottomSheet.open(OvershotComponent, {
+        ariaLabel: 'Overshot'
+      });
         this.playerName$.next(this.currentPlayer.playerName);
-    //boolen überschossen
     return true;
-    }   
+    }
     return false;
    
   }
@@ -120,3 +128,4 @@ export class DartCounterService {
     }
   
 }
+
