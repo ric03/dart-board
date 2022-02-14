@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Player } from './player.model';
-import {MatBottomSheet} from '@angular/material/bottom-sheet'; 
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { OvershotComponent } from '../overshot/overshot.component';
 import { WonComponent } from '../won/won.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,12 +21,12 @@ export class DartCounterService {
   public roundCount$: BehaviorSubject<number> = new BehaviorSubject(1);
   private playerArr: Player[] = [];
   public playerArr$$: BehaviorSubject<Player[]> = new BehaviorSubject([this.first]);
-  private tempPlayerPoints: number [] = [];
-  
-  // `this.` is always required to access class members and functions
-  private currentPlayer= this.first;
+  private tempPlayerPoints: number[] = [];
 
-  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) {}
+  // `this.` is always required to access class members and functions
+  private currentPlayer = this.first;
+
+  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) { }
 
   initPlayers(player: number) {
     this.playerArr = [];
@@ -44,8 +44,7 @@ export class DartCounterService {
   }
 
   reduceCountBy(points: number) {
-   // this.resetPlayerName();
-    if(this.currentPlayer.dartCount > 1){
+    if (this.currentPlayer.dartCount > 1) {
       this.tempPlayerPoints.push(this.currentPlayer.points);
     }
     if (this.currentPlayer.dartCount > 0) {
@@ -63,7 +62,7 @@ export class DartCounterService {
     this.currentPlayer.points -= 50;
   }
 
-  reduceDartCount() {    
+  reduceDartCount() {
     if ((this.currentPlayer.dartCount - 1) >= 0) {
       this.currentPlayer.dartCount -= 1;
       this.overshotCheck();
@@ -71,7 +70,7 @@ export class DartCounterService {
     }
     if (this.currentPlayer.dartCount == 0) {
       this.changePlayer(this.currentPlayer.id);
-      
+
     }
     this.playerName$.next(this.currentPlayer.playerName);
     this.dartCount$.next(this.currentPlayer.dartCount);
@@ -90,6 +89,7 @@ export class DartCounterService {
       }
     });
     if (this.currentPlayer.id == this.playerArr[0].id) {
+      this.roundCountCheck();
       this.roundCount$.next(this.roundCount += 1);
     }
     this.currentPlayer.dartCount = 3;
@@ -98,34 +98,32 @@ export class DartCounterService {
 
   winCheck() {
     if (this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0) {
-      this.bottomSheet.open(WonComponent, {
-        ariaLabel: 'Won'
+      const botSheet = this.bottomSheet.open(WonComponent);
+      botSheet.afterDismissed().subscribe(() => {
+        this.dialog.open(QuitQuestionComponent);
       });
-      this.dialog.open(QuitQuestionComponent);
-     // this.playerName$.next(this.currentPlayer.playerName);
-      
     }
   }
-  public overshotCheck():boolean {
-    // dartcounter begins at 3 
+
+  public overshotCheck(): void {
+    // dartcounter begins at 3
     if (this.currentPlayer.points < 0) {
       this.currentPlayer.points = this.tempPlayerPoints[0];
       this.currentPlayer.dartCount = 0;
-     this.bottomSheet.open(OvershotComponent, {
+      this.bottomSheet.open(OvershotComponent, {
         ariaLabel: 'Overshot'
       });
-        this.playerName$.next(this.currentPlayer.playerName);
-    return true;
+      this.playerName$.next(this.currentPlayer.playerName);
     }
-    return false;
-   
   }
 
-  resetPlayerName() {
-      this.playerArr[this.playerArr.indexOf(this.currentPlayer)].playerName = "Player " + (this.playerArr.indexOf(this.currentPlayer)+1);
-      this.playerName$.next(this.currentPlayer.playerName);
-      this.playerArr$$.next(this.playerArr);
+  public roundCountCheck(): void {
+    // dartcounter begins at 3
+    if (this.roundCount > 45) {
+      this.currentPlayer.dartCount = 0;
+      this.dialog.open(QuitQuestionComponent);
     }
-  
+  }
+
 }
 

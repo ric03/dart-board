@@ -11,41 +11,41 @@ import { DartCounterService } from 'src/app/services/dart-counter.service';
 export class InputButtonRowComponent implements OnInit {
   @ViewChild(MatRipple) ripple: MatRipple | undefined;
   arrayOf5 = Array(5);
-  inputDiasbled:boolean = true;
-  multiplicator:number = 1;
-  dynamicColor:string ='';
+  inputDiasbled: boolean = true;
+  multiplicator: number = 1;
+  dynamicColor: string = '';
 
   constructor(private dartCounterService: DartCounterService) { }
 
   ngOnInit(): void {
   }
 
-  onClick(value:number){   
+  onClick(value: number) {
     this.changeButtonColor(value);
     this.inputDiasbled = false;
   }
-  onChange(value:number) {
+  onChange(value: number) {
     this.multiplicator = value;
     this.changeButtonColor(value);
     this.inputDiasbled = false;
-}
-private changeButtonColor(value: number) {
-  if (value == 1) {
-    this.dynamicColor = '#32b909';
-    // this.dynamicColor='warn'; funktioniert wenn bei [ngStyle]="{'background-color' : 
-    // statt 'background-color' 'color genommen wird' das ist besimmt bei allen Componenten so 
   }
-  if (value == 2) {
-    this.dynamicColor = '#673ab7';
+  private changeButtonColor(value: number) {
+    if (value == 1) {
+      this.dynamicColor = '#32b909';
+      // this.dynamicColor='warn'; funktioniert wenn bei [ngStyle]="{'background-color' :
+      // statt 'background-color' 'color genommen wird' das ist besimmt bei allen Componenten so
+    }
+    if (value == 2) {
+      this.dynamicColor = '#673ab7';
+    }
+    if (value == 3) {
+      this.dynamicColor = '#f44336';
+    }
   }
-  if (value == 3) {
-    this.dynamicColor = '#f44336';
-  }
-}
 
   public reduceCountByPoints(points: number) {
-      this.dartCounterService.reduceCountBy(points * this.multiplicator);
-     
+    this.dartCounterService.reduceCountBy(points * this.multiplicator);
+
   }
   public reduceBull(points: number) {
     this.dartCounterService.reduceCountBy(points);
@@ -57,9 +57,9 @@ private changeButtonColor(value: number) {
   public reduceDartCounter() {
     this.dartCounterService.reduceDartCount();
     this.inputDiasbled = true;
-    this.dynamicColor='';
+    this.dynamicColor = '';
   }
 
- 
+
 
 }

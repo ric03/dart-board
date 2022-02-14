@@ -1,24 +1,18 @@
 <div class="playerStats text">
-    <label class=" playerStats center">Score: {{playerName$ | async}}    {{points$ | async}}</label>
+    <div class="margin">
+        <label class=" playerStats center">Score: {{playerName$ | async}} {{points$ | async}}</label>
+    </div>
 
     <label>Rounds</label>
-    <mat-progress-bar
-    aria-label="RoundCount"
-    [color]="color" 
-    [mode]="mode" 
-    [value]='getRoundCount()'></mat-progress-bar>
-          
-    <label>Darts</label>
-    <mat-progress-bar
-    aria-label="DartCount" 
-    [color]="color" 
-    [mode]="mode" 
-    [value]='getDartCount()'></mat-progress-bar>
+    <mat-progress-bar aria-label="RoundCount" [color]="color" [mode]="mode" [value]='getRoundCount()'>
+    </mat-progress-bar>
 
-   
+    <label>Darts</label>
+    <mat-progress-bar aria-label="DartCount" [color]="color2" [mode]="mode" [value]='getDartCount()'></mat-progress-bar>
+
+
 </div>
 
 <div class="playerOverview text">
     <app-scoreboard-overview></app-scoreboard-overview>
-    </div>
-
+</div>

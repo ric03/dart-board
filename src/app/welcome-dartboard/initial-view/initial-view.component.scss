@@ -1,39 +1,38 @@
-.main{
-    width:max-width;
-    justify-content: center;  
+.main {
+    width: max-width;
+    justify-content: center;
 }
 
-.center{
-    width:50%;
+.center {
+    width: 50%;
     margin: 50% auto;
     margin-top: 10%;
     margin-bottom: 10%;
     display: flex;
-    justify-content: center;  
-    text-align: center;  
+    justify-content: center;
+    text-align: center;
 }
 
-.text{
-    color:lightgray 
+.text {
+    color: lightgray;
 }
 
-.backgroundColorPrimary{
-    background-color:#673ab7;
+.backgroundColorPrimary {
+    background-color: #673ab7;
 }
 
 .gobutton-container {
     display: flex;
     justify-content: center;
     width: 50%;
-    button{
+    button {
         width: 56px;
         height: 56px;
-        background-color:#f44336;
+        background-color: #f44336;
         border-radius: 50%;
     }
-   
-  }
+}
 
-.backgroundColorWarn{
-background-color:#f44336;
+.backgroundColorWarn {
+    background-color: #f44336;
 }

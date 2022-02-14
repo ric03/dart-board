@@ -4,7 +4,6 @@ import { ProgressBarMode } from '@angular/material/progress-bar';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DartCounterService } from 'src/app/services/dart-counter.service';
 import { NumberInput } from '@angular/cdk/coercion';
-import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -13,19 +12,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./output.component.scss']
 })
 export class OutputComponent implements OnInit {
- 
+
   public points$: Subject<number>;
   public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
-  public playerName$:Subject<string>;
-  public roundCount$:BehaviorSubject<number> = new BehaviorSubject(1);
+  public playerName$: Subject<string>;
+  public roundCount$: BehaviorSubject<number> = new BehaviorSubject(1);
 
   color: ThemePalette = 'primary';
+  color2: ThemePalette = 'warn';
   mode: ProgressBarMode = 'determinate';
   valueDartCount: number = 3;
   valueRoundCount: number = 1;
-
-
-
 
   constructor(private dartCounterService: DartCounterService, private snackBar: MatSnackBar) {
     this.points$ = this.dartCounterService.points$;
@@ -35,23 +32,13 @@ export class OutputComponent implements OnInit {
 
   }
 
-  getovershot(){
-    if(this.dartCounterService.overshotCheck() == true ){
-      this.snackBar.open("Überschossen", 'OK')
-      //, {
-      //  duration: 2000;
-      //});
-    }
-
-  }
-  getRoundCount():NumberInput{
-    this.getovershot();
-    this.valueRoundCount= this.roundCount$.value*100/45;
+  getRoundCount(): NumberInput {
+    this.valueRoundCount = this.roundCount$.value * 100 / 45;
     return this.valueRoundCount;
   }
 
-  getDartCount():NumberInput{
-    this.valueDartCount= this.dartCount$.value*100/3;
+  getDartCount(): NumberInput {
+    this.valueDartCount = this.dartCount$.value * 100 / 3;
     return this.valueDartCount;
   }
 

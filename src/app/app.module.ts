@@ -5,14 +5,14 @@ import { AppComponent } from './app.component';
 import { DartBoardModule } from './dart-board/dart-board.module';
 import { ScoreBoardModule } from './score-board/score-board.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule} from '@angular/material/snack-bar'; 
-import { MatToolbarModule} from '@angular/material/toolbar'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { WelcomeDartboardModule } from './welcome-dartboard/welcome-dartboard.module';
-import { MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { OvershotComponent } from './overshot/overshot.component';
 import { WonComponent } from './won/won.component';
-import { QuitQuestionComponent } from './quit-question/quit-question.component'; 
-import { MatDialogModule} from '@angular/material/dialog'; 
+import { QuitQuestionComponent } from './quit-question/quit-question.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { MatDialogModule} from '@angular/material/dialog';
     OvershotComponent,
     WonComponent,
     QuitQuestionComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -34,10 +34,7 @@ import { MatDialogModule} from '@angular/material/dialog';
     WelcomeDartboardModule,
     MatBottomSheetModule,
     MatDialogModule,
-    
-    
-   
-   
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,39 +1,35 @@
 <div class="main">
-<mat-toolbar color="primary">DartBoard</mat-toolbar>
-<div class="center text backgroundColorPrimary">
-<form>
-<h4>Choose a Game!</h4>
-<mat-form-field appearance="fill">
-  <mat-label class="text">I'd like to play:</mat-label>
-  <mat-select [formControl]="userInputGame" name="game">
-    <mat-option *ngFor="let game of games" [value]="game.value">
-      {{game.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-</form>
-</div>
+  <mat-toolbar color="primary">DartBoard</mat-toolbar>
+  <div class="center text backgroundColorPrimary">
+    <form>
+      <h4>Choose a Game!</h4>
+      <mat-form-field appearance="fill">
+        <mat-label class="text">I'd like to play:</mat-label>
+        <mat-select [formControl]="userInputGame" name="game">
+          <mat-option *ngFor="let game of games" [value]="game.value">
+            {{game.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
 
-<div class="center text backgroundColorPrimary">
-  <form>
-  <h4>Choose Players</h4>
-  <mat-form-field appearance="fill">
-    <mat-label class="text">I'd like to play with:</mat-label>
-    <mat-select [formControl]="userInputPlayer" name="player">
-      <mat-option *ngFor="let player of players" [value]="player.value">
-        {{player.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  </form>
+  <div class="center text backgroundColorPrimary">
+    <form>
+      <h4>Choose Players</h4>
+      <mat-form-field appearance="fill">
+        <mat-label class="text">I'd like to play with:</mat-label>
+        <mat-select [formControl]="userInputPlayer" name="player">
+          <mat-option *ngFor="let player of players" [value]="player.value">
+            {{player.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
   </div>
 
   <div class="gobutton-container center">
-    <button
-    mat-fab  
-    routerLink="dartboard"  
-    routerLinkActive="active"
-    (click)="submitGameAndPlayersCount()">
+    <button mat-fab routerLink="dartboard" routerLinkActive="active" (click)="submitGameAndPlayersCount()">
       GO !</button>
   </div>
 

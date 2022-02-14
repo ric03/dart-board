@@ -11,10 +11,10 @@ import { Player } from 'src/app/services/player.model';
 })
 export class ScoreboardOverviewComponent implements OnInit {
   public playerArr$$: Subject<Player[]>;
- 
+
 
   constructor(private dartCounterService: DartCounterService) {
-   this.playerArr$$ = this.dartCounterService.playerArr$$
+    this.playerArr$$ = this.dartCounterService.playerArr$$
   }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
   selector: 'app-dart-board',
   templateUrl: './dart-board.component.html',
   styleUrls: ['./dart-board.component.scss',
-]
+  ]
 })
 export class DartBoardComponent implements OnInit {
 
@@ -14,10 +14,10 @@ export class DartBoardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
+
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
-      event.preventDefault();
+    event.preventDefault();
 
   }
 

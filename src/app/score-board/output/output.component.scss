@@ -1,27 +1,34 @@
-
-.playerStats{
+.playerStats {
     margin-top: 10%;
     width: 50%;
     margin: 2%;
-    background-color:  darkmagenta;
+    background-color: darkmagenta;
     margin: 0 auto;
-    text-align:center;
-
+    text-align: center;
+    font-size: 120%;
 }
-.playerOverview{
+.playerOverview {
     width: max-width;
     margin: 2%;
-    background-color:rgb(66, 65, 65);
+    background-color: rgb(66, 65, 65);
     margin: 0 auto;
 }
 
-.text{
-    color:lightgray
-    
+.text {
+    color: lightgray;
 }
 
-.center{ 
+.center {
     margin: 0% auto;
     display: flex;
-    justify-content: center;    
-  }
+    justify-content: center;
+}
+
+.margin {
+    width: max-width;
+    margin: 10% auto;
+    margin-left: 2%;
+    margin-right: 2%;
+    display: flex;
+    justify-content: center;
+}
