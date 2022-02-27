@@ -1,28 +1,25 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { InitialViewComponent } from './initial-view/initial-view.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from '../app-routing.module';
-import { MatToolbarModule } from '@angular/material/toolbar';
-
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {GameSelectionComponent} from './initial-view/game-selection.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
-    InitialViewComponent,
+    GameSelectionComponent,
   ],
   imports: [
     CommonModule,
-    AppRoutingModule,
-    MatSelectModule,
-    MatFormFieldModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatToolbarModule,
   ],
   exports: [
-    InitialViewComponent,
+    GameSelectionComponent,
   ]
 })
-export class WelcomeDartboardModule { }
+export class WelcomeDartboardModule {
+}
