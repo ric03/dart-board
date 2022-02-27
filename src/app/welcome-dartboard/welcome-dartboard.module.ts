@@ -4,7 +4,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {GameSelectionComponent} from './initial-view/game-selection.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatToolbarModule,
   ],
   exports: [
     GameSelectionComponent,
