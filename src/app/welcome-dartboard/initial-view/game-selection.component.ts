@@ -1,58 +1,48 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from "@angular/router";
 import {DartCounterService} from 'src/app/services/dart-counter.service';
 
-interface Game {
-  value: number;
-  viewValue: string;
+enum GameType {
+  Simple501 = '501 simple',
+  DoubleOut501 = '501 double out',
+  Cricket = 'Cricket',
 }
 
-interface Players {
-  value: number;
-  viewValue: string;
-}
+const MAX_PLAYER_COUNT = 6;
 
 @Component({
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
   styleUrls: ['./game-selection.component.scss']
 })
-export class GameSelectionComponent implements OnInit {
-  formGame: FormGroup;
-  formPlayer: FormGroup;
+export class GameSelectionComponent {
 
-  games: Game[] = [
-    {value: 1, viewValue: '501'},
-    {value: 2, viewValue: '501-Double-Out'},
-    {value: 3, viewValue: 'Cricket'},
-  ];
+  private defaultFormState = {
+    gameType: GameType.Simple501,
+    playerCount: 2
+  }
+  formGroup: FormGroup = this.fb.group(this.defaultFormState);
 
-  players: Players[] = [
-    {value: 1, viewValue: '1 Player'},
-    {value: 2, viewValue: '2 Players'},
-    {value: 3, viewValue: '3 Players'},
-    {value: 4, viewValue: '4 Players'},
-    {value: 5, viewValue: '5 Players'},
-    {value: 6, viewValue: '6 Players'},
-  ];
+  // Create a reference, to make the enum accessible in the html-template
+  gameType = GameType;
+  maxPlayerCount = new Array(MAX_PLAYER_COUNT);
 
-  userInputGame = new FormControl(this.games[1].value);
-  userInputPlayer = new FormControl(this.players[1].value);
-
-
-  constructor(private dartCounterService: DartCounterService) {
-    this.formGame = new FormGroup({game: this.userInputGame,});
-    this.formPlayer = new FormGroup({player: this.userInputPlayer,});
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private dartCounterService: DartCounterService,
+  ) {
   }
 
-  ngOnInit(): void {
+  onSubmit() {
+    // TODO move this invocation into the init function of the target (pass playerCount by query string)
+    this.dartCounterService.initPlayers(this.formGroup.value.playerCount);
+
+    // noinspection JSIgnoredPromiseFromCall
+    this.router.navigate(['dartboard'], {queryParams: {playerCount: 2}});
   }
 
-  submitGameAndPlayersCount() {
-    this.dartCounterService.initPlayers(this.userInputPlayer.value)
-    //Test
-    //console.log("submitted --> input Players" + this.userInputPlayer.value)
-    //for routingOption later
-    //console.log("submitted --> input Game" + this.userInputGame.value);
+  onReset() {
+    this.formGroup.reset(this.defaultFormState)
   }
 }

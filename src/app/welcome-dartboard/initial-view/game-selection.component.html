@@ -1,35 +1,30 @@
-<div class="main">
-  <div class="center text backgroundColorPrimary">
-    <form>
-      <h4>Choose a Game!</h4>
-      <mat-form-field appearance="fill">
-        <mat-label class="text">I'd like to play:</mat-label>
-        <mat-select [formControl]="userInputGame" name="game">
-          <mat-option *ngFor="let game of games" [value]="game.value">
-            {{game.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </div>
+<div class="container-sm mt-3">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" (reset)="onReset()">
 
-  <div class="center text backgroundColorPrimary">
-    <form>
-      <h4>Choose Players</h4>
-      <mat-form-field appearance="fill">
-        <mat-label class="text">I'd like to play with:</mat-label>
-        <mat-select [formControl]="userInputPlayer" name="player">
-          <mat-option *ngFor="let player of players" [value]="player.value">
-            {{player.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </div>
+    <h4>What type of game?</h4>
+    <mat-form-field appearance="fill">
+      <mat-label class="text">Game Type</mat-label>
+      <mat-select formControlName="gameType">
+        <mat-option [value]="gameType.Simple501">501</mat-option>
+        <mat-option [value]="gameType.DoubleOut501">501 (Double Out)</mat-option>
+        <mat-option [value]="gameType.Cricket">Cricket</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <div class="gobutton-container center">
-    <button mat-fab routerLink="dartboard" routerLinkActive="active" (click)="submitGameAndPlayersCount()">
-      GO !</button>
-  </div>
+    <h4>How many players?</h4>
+    <mat-form-field appearance="fill">
+      <mat-label class="text">Player Count</mat-label>
+      <mat-select formControlName="playerCount">
+        <mat-option *ngFor="let _ of maxPlayerCount; let i = index" [value]="i + 1">
+          {{i + 1}} Player{{ (i + 1) > 1 ? 's' : ''}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <div class="d-flex justify-content-end">
+        <button mat-raised-button color="primary" type="submit">Start Game</button>
+        <button mat-raised-button class="ms-2" type="reset">Reset</button>
+    </div>
+
+  </form>
 </div>
