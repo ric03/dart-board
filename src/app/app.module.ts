@@ -13,14 +13,14 @@ import {OvershotComponent} from './overshot/overshot.component';
 import {PageNotFoundModule} from "./page-not-found/page-not-found.module";
 import {QuitQuestionComponent} from './quit-question/quit-question.component';
 import {ScoreBoardModule} from './score-board/score-board.module';
-import {WonComponent} from './won/won.component';
+import {VictoryModalComponent} from './victory-modal/victory-modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     OvershotComponent,
-    WonComponent,
+    VictoryModalComponent,
     QuitQuestionComponent,
 
   ],

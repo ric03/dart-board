@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Player } from './player.model';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { OvershotComponent } from '../overshot/overshot.component';
-import { WonComponent } from '../won/won.component';
-import { MatDialog } from '@angular/material/dialog';
-import { QuitQuestionComponent } from '../quit-question/quit-question.component';
+import {Injectable} from '@angular/core';
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import {MatDialog} from '@angular/material/dialog';
+import {BehaviorSubject} from 'rxjs';
+import {OvershotComponent} from '../overshot/overshot.component';
+import {QuitQuestionComponent} from '../quit-question/quit-question.component';
+import {VictoryModalComponent} from '../victory-modal/victory-modal.component';
+import {Player} from './player.model';
 
 
 @Injectable({
@@ -13,7 +13,7 @@ import { QuitQuestionComponent } from '../quit-question/quit-question.component'
 })
 export class DartCounterService {
 
-  private first: Player = { id: 1, playerName: 'Player 1', points: 501, dartCount: 3 };
+  private first: Player = {id: 1, playerName: 'Player 1', points: 501, dartCount: 3};
   private roundCount = 1;
   public points$: BehaviorSubject<number> = new BehaviorSubject(501);
   public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
@@ -26,7 +26,8 @@ export class DartCounterService {
   // `this.` is always required to access class members and functions
   private currentPlayer = this.first;
 
-  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) { }
+  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) {
+  }
 
   initPlayers(player: number) {
     this.playerArr = [];
@@ -98,7 +99,7 @@ export class DartCounterService {
 
   winCheck() {
     if (this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0) {
-      const botSheet = this.bottomSheet.open(WonComponent);
+      const botSheet = this.bottomSheet.open(VictoryModalComponent);
       botSheet.afterDismissed().subscribe(() => {
         this.dialog.open(QuitQuestionComponent);
       });
