@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
+import {environment} from "../../../../environments/environment";
 
 
 @Component({
@@ -7,18 +8,15 @@ import { Component, HostListener, OnInit } from '@angular/core';
   styleUrls: ['./dart-board.component.scss',
   ]
 })
-export class DartBoardComponent implements OnInit {
+export class DartBoardComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  private env = environment;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
-    event.preventDefault();
-
+    if (this.env.production) {
+      event.preventDefault();
+    }
   }
 
 }
