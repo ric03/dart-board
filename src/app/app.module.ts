@@ -9,17 +9,17 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {DartBoardModule} from './dart-board/dart-board.module';
 import {GameSelectionModule} from './game-selection/game-selection.module';
-import {OvershotComponent} from './overshot/overshot.component';
+import {OvershotModalComponent} from './modals/overshot-modal/overshot-modal.component';
+import {QuitConfirmationModalComponent} from './modals/quit-confirmation-modal/quit-confirmation-modal.component';
+import {VictoryModalComponent} from './modals/victory-modal/victory-modal.component';
 import {PageNotFoundModule} from "./page-not-found/page-not-found.module";
-import {QuitConfirmationModalComponent} from './quit-confirmation-modal/quit-confirmation-modal.component';
 import {ScoreBoardModule} from './score-board/score-board.module';
-import {VictoryModalComponent} from './victory-modal/victory-modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    OvershotComponent,
+    OvershotModalComponent,
     VictoryModalComponent,
     QuitConfirmationModalComponent,
 

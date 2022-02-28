@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MatDialog} from '@angular/material/dialog';
 import {BehaviorSubject} from 'rxjs';
-import {OvershotComponent} from '../overshot/overshot.component';
-import {QuitConfirmationModalComponent} from '../quit-confirmation-modal/quit-confirmation-modal.component';
-import {VictoryModalComponent} from '../victory-modal/victory-modal.component';
+import {OvershotModalComponent} from '../modals/overshot-modal/overshot-modal.component';
+import {QuitConfirmationModalComponent} from '../modals/quit-confirmation-modal/quit-confirmation-modal.component';
+import {VictoryModalComponent} from '../modals/victory-modal/victory-modal.component';
 import {Player} from './player.model';
 
 
@@ -111,7 +111,7 @@ export class DartCounterService {
     if (this.currentPlayer.points < 0) {
       this.currentPlayer.points = this.tempPlayerPoints[0];
       this.currentPlayer.dartCount = 0;
-      this.bottomSheet.open(OvershotComponent, {
+      this.bottomSheet.open(OvershotModalComponent, {
         ariaLabel: 'Overshot'
       });
       this.playerName$.next(this.currentPlayer.playerName);
