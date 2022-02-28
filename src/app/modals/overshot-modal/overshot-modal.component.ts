@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'app-overshot',
   template: `
     <div>
-      <p>ÜBERSCHOSSEN :-( Der nächtester Spieler ist an der Reihe.</p>
+      <p>ÜBERSCHOSSEN ☹ Der nächster Spieler ist an der Reihe.</p>
     </div>
   `,
   styles: []
