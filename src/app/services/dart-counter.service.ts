@@ -3,7 +3,7 @@ import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MatDialog} from '@angular/material/dialog';
 import {BehaviorSubject} from 'rxjs';
 import {OvershotComponent} from '../overshot/overshot.component';
-import {QuitQuestionComponent} from '../quit-question/quit-question.component';
+import {QuitConfirmationModalComponent} from '../quit-confirmation-modal/quit-confirmation-modal.component';
 import {VictoryModalComponent} from '../victory-modal/victory-modal.component';
 import {Player} from './player.model';
 
@@ -101,7 +101,7 @@ export class DartCounterService {
     if (this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0) {
       const botSheet = this.bottomSheet.open(VictoryModalComponent);
       botSheet.afterDismissed().subscribe(() => {
-        this.dialog.open(QuitQuestionComponent);
+        this.dialog.open(QuitConfirmationModalComponent);
       });
     }
   }
@@ -122,7 +122,7 @@ export class DartCounterService {
     // dartcounter begins at 3
     if (this.roundCount > 45) {
       this.currentPlayer.dartCount = 0;
-      this.dialog.open(QuitQuestionComponent);
+      this.dialog.open(QuitConfirmationModalComponent);
     }
   }
 

@@ -11,7 +11,7 @@ import {DartBoardModule} from './dart-board/dart-board.module';
 import {GameSelectionModule} from './game-selection/game-selection.module';
 import {OvershotComponent} from './overshot/overshot.component';
 import {PageNotFoundModule} from "./page-not-found/page-not-found.module";
-import {QuitQuestionComponent} from './quit-question/quit-question.component';
+import {QuitConfirmationModalComponent} from './quit-confirmation-modal/quit-confirmation-modal.component';
 import {ScoreBoardModule} from './score-board/score-board.module';
 import {VictoryModalComponent} from './victory-modal/victory-modal.component';
 
@@ -21,7 +21,7 @@ import {VictoryModalComponent} from './victory-modal/victory-modal.component';
     AppComponent,
     OvershotComponent,
     VictoryModalComponent,
-    QuitQuestionComponent,
+    QuitConfirmationModalComponent,
 
   ],
   imports: [
