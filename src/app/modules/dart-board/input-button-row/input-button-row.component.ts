@@ -9,10 +9,11 @@ import {DartCounterService} from 'src/app/services/dart-counter.service';
   styleUrls: ['./input-button-row.component.scss'],
 })
 export class InputButtonRowComponent {
+
   @ViewChild(MatRipple) ripple: MatRipple | undefined;
   arrayOf5 = Array(5);
-  inputDiasbled: boolean = true;
-  multiplicator: number = 1;
+  inputDisabled: boolean = true;
+  multiplier: number = 1;
   dynamicColor: string = '';
 
   constructor(private dartCounterService: DartCounterService) {
@@ -20,13 +21,13 @@ export class InputButtonRowComponent {
 
   onClick(value: number) {
     this.changeButtonColor(value);
-    this.inputDiasbled = false;
+    this.inputDisabled = false;
   }
 
   onChange(value: number) {
-    this.multiplicator = value;
+    this.multiplier = value;
     this.changeButtonColor(value);
-    this.inputDiasbled = false;
+    this.inputDisabled = false;
   }
 
   private changeButtonColor(value: number) {
@@ -44,8 +45,7 @@ export class InputButtonRowComponent {
   }
 
   public reduceCountByPoints(points: number) {
-    this.dartCounterService.reduceCountBy(points * this.multiplicator);
-
+    this.dartCounterService.reduceCountBy(points * this.multiplier);
   }
 
   public reduceBull(points: number) {
@@ -58,7 +58,7 @@ export class InputButtonRowComponent {
 
   public reduceDartCounter() {
     this.dartCounterService.reduceDartCount();
-    this.inputDiasbled = true;
+    this.inputDisabled = true;
     this.dynamicColor = '';
   }
 

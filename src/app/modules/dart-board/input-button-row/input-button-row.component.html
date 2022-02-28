@@ -1,49 +1,50 @@
 <div class="mainDiv">
 
-    <div class="extraButtonsDiv center">
-        <button class="backgroundColorPrimaryComplement" mat-flat-button (click)="reduceBull(25)">Bull</button>
-        <button class="backgroundColorPrimary" mat-flat-button (click)="reduceBullsEye(50)">BullsEye</button>
-    </div>
-    <div class="buttonDiv  center">
-        <mat-button-toggle-group (change)="onChange($event.value)" name="favoriteColor" aria-label="Favorite Color">
-            <mat-button-toggle matTooltip="Toogle Me" class="backgroundColorPrimaryComplement" (click)="onClick(1)"
-                value=1>Singel</mat-button-toggle>
-            <mat-button-toggle class="backgroundColorPrimary" (click)="onClick(2)" value=2>Double</mat-button-toggle>
-            <mat-button-toggle class="backgroundColorWarn" (click)="onClick(3)" value=3>Triple</mat-button-toggle>
-        </mat-button-toggle-group>
-    </div>
+  <div class="extraButtonsDiv center">
+    <button class="backgroundColorPrimaryComplement" mat-flat-button (click)="reduceBull(25)">Bull</button>
+    <button class="backgroundColorPrimary" mat-flat-button (click)="reduceBullsEye(50)">BullsEye</button>
+  </div>
+  <div class="buttonDiv  center">
+    <mat-button-toggle-group (change)="onChange($event.value)" name="favoriteColor" aria-label="Favorite Color">
+      <mat-button-toggle matTooltip="Toogle Me" class="backgroundColorPrimaryComplement" (click)="onClick(1)"
+                         value=1>Singel
+      </mat-button-toggle>
+      <mat-button-toggle class="backgroundColorPrimary" (click)="onClick(2)" value=2>Double</mat-button-toggle>
+      <mat-button-toggle class="backgroundColorWarn" (click)="onClick(3)" value=3>Triple</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
-    <div class="buttonDiv center">
-        <button [disabled]="inputDiasbled" [ngStyle]="{
+  <div class="buttonDiv center">
+    <button [disabled]="inputDisabled" [ngStyle]="{
         'background-color' : dynamicColor
       }" mat-fab *ngFor="let num of arrayOf5; let i = index" (click)="reduceCountByPoints(i + 1)">
-            {{i + 1}}
-        </button>
-    </div>
-    <div class="buttonDiv  center">
-        <button [disabled]="inputDiasbled" [ngStyle]="{
+      {{i + 1}}
+    </button>
+  </div>
+  <div class="buttonDiv  center">
+    <button [disabled]="inputDisabled" [ngStyle]="{
         'background-color' : dynamicColor
       }" mat-fab *ngFor="let num of arrayOf5; let i = index" (click)="reduceCountByPoints(i + 6)">
-            {{i + 6}}
-        </button>
-    </div>
-    <div class="buttonDiv  center">
-        <button [disabled]="inputDiasbled" [ngStyle]="{
+      {{i + 6}}
+    </button>
+  </div>
+  <div class="buttonDiv  center">
+    <button [disabled]="inputDisabled" [ngStyle]="{
         'background-color' : dynamicColor
       }" mat-fab *ngFor="let num of arrayOf5; let i = index" (click)="reduceCountByPoints(i + 11)">
-            {{i + 11}}
-        </button>
-    </div>
-    <div class="buttonDiv  center">
-        <button [disabled]="inputDiasbled" [ngStyle]="{
+      {{i + 11}}
+    </button>
+  </div>
+  <div class="buttonDiv  center">
+    <button [disabled]="inputDisabled" [ngStyle]="{
         'background-color' : dynamicColor
       }" mat-fab *ngFor="let num of arrayOf5; let i = index" (click)="reduceCountByPoints(i + 16)">
-            {{i + 16}}
-        </button>
-    </div>
+      {{i + 16}}
+    </button>
+  </div>
 
-    <div class="extraButtonsDiv  center">
-        <button color="warn" mat-flat-button (click)="reduceDartCounter()">Miss</button>
-    </div>
+  <div class="extraButtonsDiv  center">
+    <button color="warn" mat-flat-button (click)="reduceDartCounter()">Miss</button>
+  </div>
 
 </div>
