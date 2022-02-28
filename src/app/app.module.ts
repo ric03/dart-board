@@ -7,13 +7,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {DartBoardModule} from './dart-board/dart-board.module';
-import {GameSelectionModule} from './game-selection/game-selection.module';
 import {OvershotModalComponent} from './modals/overshot-modal/overshot-modal.component';
 import {QuitConfirmationModalComponent} from './modals/quit-confirmation-modal/quit-confirmation-modal.component';
 import {VictoryModalComponent} from './modals/victory-modal/victory-modal.component';
-import {PageNotFoundModule} from "./page-not-found/page-not-found.module";
-import {ScoreBoardModule} from './score-board/score-board.module';
+import {DartBoardModule} from './modules/dart-board/dart-board.module';
+import {GameSelectionModule} from './modules/game-selection/game-selection.module';
+import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
+import {ScoreBoardModule} from './modules/score-board/score-board.module';
 
 
 @NgModule({
