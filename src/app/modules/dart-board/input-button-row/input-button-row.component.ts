@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatRipple } from '@angular/material/core';
-import { DartCounterService } from 'src/app/services/dart-counter.service';
+import {Component, ViewChild} from '@angular/core';
+import {MatRipple} from '@angular/material/core';
+import {DartCounterService} from 'src/app/services/dart-counter.service';
 
 
 @Component({
@@ -8,27 +8,27 @@ import { DartCounterService } from 'src/app/services/dart-counter.service';
   templateUrl: './input-button-row.component.html',
   styleUrls: ['./input-button-row.component.scss'],
 })
-export class InputButtonRowComponent implements OnInit {
+export class InputButtonRowComponent {
   @ViewChild(MatRipple) ripple: MatRipple | undefined;
   arrayOf5 = Array(5);
   inputDiasbled: boolean = true;
   multiplicator: number = 1;
   dynamicColor: string = '';
 
-  constructor(private dartCounterService: DartCounterService) { }
-
-  ngOnInit(): void {
+  constructor(private dartCounterService: DartCounterService) {
   }
 
   onClick(value: number) {
     this.changeButtonColor(value);
     this.inputDiasbled = false;
   }
+
   onChange(value: number) {
     this.multiplicator = value;
     this.changeButtonColor(value);
     this.inputDiasbled = false;
   }
+
   private changeButtonColor(value: number) {
     if (value == 1) {
       this.dynamicColor = '#32b909';
@@ -47,9 +47,11 @@ export class InputButtonRowComponent implements OnInit {
     this.dartCounterService.reduceCountBy(points * this.multiplicator);
 
   }
+
   public reduceBull(points: number) {
     this.dartCounterService.reduceCountBy(points);
   }
+
   public reduceBullsEye(points: number) {
     this.dartCounterService.reduceCountBy(points);
   }
@@ -59,7 +61,5 @@ export class InputButtonRowComponent implements OnInit {
     this.inputDiasbled = true;
     this.dynamicColor = '';
   }
-
-
 
 }
