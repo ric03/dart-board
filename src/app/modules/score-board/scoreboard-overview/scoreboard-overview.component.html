@@ -1,5 +1,8 @@
-<div class="center">
-    <label *ngFor='let player of playerArr$$ | async'>
-        <div class="margin"> {{player.playerName}} <br> Points: {{player.points}}</div>
-    </label>
+<div class="d-flex">
+
+  <mat-card *ngFor="let player of playerArr$ | async" class="m-1">
+    <mat-card-title>{{player.points}}</mat-card-title>
+    {{player.playerName}}
+  </mat-card>
+
 </div>
