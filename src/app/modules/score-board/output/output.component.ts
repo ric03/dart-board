@@ -1,26 +1,20 @@
-import { Component, OnInit, Type } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressBarMode } from '@angular/material/progress-bar';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { DartCounterService } from 'src/app/services/dart-counter.service';
-import { NumberInput } from '@angular/cdk/coercion';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {DartCounterService} from 'src/app/services/dart-counter.service';
 
 @Component({
   selector: 'app-output',
   templateUrl: './output.component.html',
   styleUrls: ['./output.component.scss']
 })
-export class OutputComponent implements OnInit {
+export class OutputComponent {
 
   public points$: Subject<number>;
   public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
   public playerName$: Subject<string>;
   public roundCount$: BehaviorSubject<number> = new BehaviorSubject(1);
 
-  color: ThemePalette = 'primary';
-  color2: ThemePalette = 'warn';
-  mode: ProgressBarMode = 'determinate';
   valueDartCount: number = 3;
   valueRoundCount: number = 1;
 
@@ -32,16 +26,13 @@ export class OutputComponent implements OnInit {
 
   }
 
-  getRoundCount(): NumberInput {
+  getRoundCount(): number {
     this.valueRoundCount = this.roundCount$.value * 100 / 45;
     return this.valueRoundCount;
   }
 
-  getDartCount(): NumberInput {
+  getDartCount(): number {
     this.valueDartCount = this.dartCount$.value * 100 / 3;
     return this.valueDartCount;
-  }
-
-  ngOnInit(): void {
   }
 }
