@@ -13,7 +13,7 @@ import {Player} from './player.model';
 })
 export class DartCounterService {
 
-  private first: Player = {id: 1, playerName: 'Player 1', points: 501, dartCount: 3};
+  private first: Player = {id: 1, name: 'Player 1', remainingPoints: 501, dartCount: 3};
   private roundCount = 1;
   public points$: BehaviorSubject<number> = new BehaviorSubject(501);
   public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
@@ -34,8 +34,8 @@ export class DartCounterService {
     for (let i = 1; i <= player; i++) {
       const player: Player = {
         id: i,
-        playerName: 'Player ' + i,
-        points: 501,
+        name: 'Player ' + i,
+        remainingPoints: 501,
         dartCount: 3
       }
       this.playerArr.push(player);
@@ -46,21 +46,21 @@ export class DartCounterService {
 
   reduceCountBy(points: number) {
     if (this.currentPlayer.dartCount > 1) {
-      this.tempPlayerPoints.push(this.currentPlayer.points);
+      this.tempPlayerPoints.push(this.currentPlayer.remainingPoints);
     }
     if (this.currentPlayer.dartCount > 0) {
-      this.currentPlayer.points -= points;
+      this.currentPlayer.remainingPoints -= points;
     }
     this.reduceDartCount();
-    this.points$.next(this.currentPlayer.points);
+    this.points$.next(this.currentPlayer.remainingPoints);
   }
 
   reduceCountByBull() {
-    this.currentPlayer.points -= 25;
+    this.currentPlayer.remainingPoints -= 25;
   }
 
   reduceCountByBullsEye() {
-    this.currentPlayer.points -= 50;
+    this.currentPlayer.remainingPoints -= 50;
   }
 
   reduceDartCount() {
@@ -73,7 +73,7 @@ export class DartCounterService {
       this.changePlayer(this.currentPlayer.id);
 
     }
-    this.playerName$.next(this.currentPlayer.playerName);
+    this.playerName$.next(this.currentPlayer.name);
     this.dartCount$.next(this.currentPlayer.dartCount);
     return this.currentPlayer.dartCount;
   }
@@ -82,11 +82,11 @@ export class DartCounterService {
     this.playerArr.forEach(player => {
       if (this.playerArr.length == id) {
         this.currentPlayer = this.playerArr[0];
-        this.currentPlayer.playerName = this.playerArr[0].playerName;
+        this.currentPlayer.name = this.playerArr[0].name;
       }
       if (player.id == id + 1) {
         this.currentPlayer = player;
-        this.currentPlayer.playerName = player.playerName;
+        this.currentPlayer.name = player.name;
       }
     });
     if (this.currentPlayer.id == this.playerArr[0].id) {
@@ -98,7 +98,7 @@ export class DartCounterService {
   }
 
   winCheck() {
-    if (this.currentPlayer.points == 0 && this.currentPlayer.dartCount >= 0) {
+    if (this.currentPlayer.remainingPoints == 0 && this.currentPlayer.dartCount >= 0) {
       const botSheet = this.bottomSheet.open(VictoryModalComponent);
       botSheet.afterDismissed().subscribe(() => {
         this.dialog.open(QuitConfirmationModalComponent);
@@ -108,13 +108,13 @@ export class DartCounterService {
 
   public overshotCheck(): void {
     // dartcounter begins at 3
-    if (this.currentPlayer.points < 0) {
-      this.currentPlayer.points = this.tempPlayerPoints[0];
+    if (this.currentPlayer.remainingPoints < 0) {
+      this.currentPlayer.remainingPoints = this.tempPlayerPoints[0];
       this.currentPlayer.dartCount = 0;
       this.bottomSheet.open(OvershotModalComponent, {
         ariaLabel: 'Overshot'
       });
-      this.playerName$.next(this.currentPlayer.playerName);
+      this.playerName$.next(this.currentPlayer.name);
     }
   }
 
