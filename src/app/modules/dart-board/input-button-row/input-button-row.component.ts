@@ -11,8 +11,8 @@ import {DartCounterService} from 'src/app/services/dart-counter.service';
 export class InputButtonRowComponent {
 
   @ViewChild(MatRipple) ripple: MatRipple | undefined;
-  arrayOf5 = Array(5);
-  inputDisabled: boolean = true;
+  twentyButtons = new Array(20);
+  isButtonDisabled = true;
   multiplier: number = 1;
   dynamicColor: string = '';
 
@@ -21,13 +21,13 @@ export class InputButtonRowComponent {
 
   onClick(value: number) {
     this.changeButtonColor(value);
-    this.inputDisabled = false;
+    this.isButtonDisabled = false;
   }
 
   onChange(value: number) {
     this.multiplier = value;
     this.changeButtonColor(value);
-    this.inputDisabled = false;
+    this.isButtonDisabled = false;
   }
 
   private changeButtonColor(value: number) {
@@ -44,21 +44,21 @@ export class InputButtonRowComponent {
     }
   }
 
-  public reduceCountByPoints(points: number) {
+  reduceCountByPoints(points: number) {
     this.dartCounterService.reduceCountBy(points * this.multiplier);
   }
 
-  public reduceBull(points: number) {
+  reduceBull(points: number) {
     this.dartCounterService.reduceCountBy(points);
   }
 
-  public reduceBullsEye(points: number) {
+  reduceBullsEye(points: number) {
     this.dartCounterService.reduceCountBy(points);
   }
 
-  public reduceDartCounter() {
+  reduceDartCounter() {
     this.dartCounterService.reduceDartCount();
-    this.inputDisabled = true;
+    this.isButtonDisabled = true;
     this.dynamicColor = '';
   }
 

@@ -1,49 +1,32 @@
-.mainDiv {
-  margin: 2% auto;
-  width: max-width;
+.w-20 {
+  width: 20%;
 }
 
-.extraButtonsDiv {
-  margin: 2% auto;
-
-  button {
-    margin: 2% auto;
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-}
-
-.buttonDiv {
-  padding: auto;
-  width: max-width;
-  margin: 2% auto;
-  margin-bottom: 2%;
-  margin-right: 2%;
-  margin-top: 2%;
-
-  button {
-    margin: 1%;
-  }
-}
-
-.backgroundColorPrimaryComplement {
-  background-color: #32b909;
-}
-
-.backgroundColorPrimary {
+.bgColorPrimary {
   background-color: #673ab7;
 }
 
-.backgroundColorWarn {
+.bgColorPrimaryComplement {
+  background-color: #32b909;
+}
+
+.bgColorWarn {
   background-color: #f44336;
 }
 
-mat-button-toggle-group {
-  margin: 2% auto;
-}
+/*
+ * Customize the color of the mat-buttons
+ */
+.mat-button-toggle-checked {
+  &#mat-button-toggle-1 {
+    background-color: #32b909aa;
+  }
 
-.center {
-  margin: 0% auto;
-  display: flex;
-  justify-content: center;
+  &#mat-button-toggle-2 {
+    background-color: #673ab7aa;
+  }
+
+  &#mat-button-toggle-3 {
+    background-color: #f44336aa;
+  }
 }
