@@ -7,39 +7,34 @@ import {QuitConfirmationModalComponent} from '../modals/quit-confirmation-modal/
 import {VictoryModalComponent} from '../modals/victory-modal/victory-modal.component';
 import {Player} from './player.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class DartCounterService {
 
-  private first: Player = {id: 1, name: 'Player 1', remainingPoints: 501, dartCount: 3};
+  private readonly FIRST: Player = {id: 1, name: 'Player 1', remainingPoints: 501, dartCount: 3};
+
   private roundCount = 1;
   public points$: BehaviorSubject<number> = new BehaviorSubject(501);
   public dartCount$: BehaviorSubject<number> = new BehaviorSubject(3);
   public playerName$: BehaviorSubject<string> = new BehaviorSubject('Player 1');
   public roundCount$: BehaviorSubject<number> = new BehaviorSubject(1);
   private playerArr: Player[] = [];
-  public playerArr$$: BehaviorSubject<Player[]> = new BehaviorSubject([this.first]);
+  public playerArr$$: BehaviorSubject<Player[]> = new BehaviorSubject([this.FIRST, this.FIRST]);
   private tempPlayerPoints: number[] = [];
 
-  // `this.` is always required to access class members and functions
-  private currentPlayer = this.first;
+  private currentPlayer = this.FIRST;
 
-  constructor(public bottomSheet: MatBottomSheet, public dialog: MatDialog) {
+  constructor(private bottomSheet: MatBottomSheet,
+              private dialog: MatDialog,
+  ) {
   }
 
-  initPlayers(player: number) {
-    this.playerArr = [];
-    for (let i = 1; i <= player; i++) {
-      const player: Player = {
-        id: i,
-        name: 'Player ' + i,
-        remainingPoints: 501,
-        dartCount: 3
-      }
-      this.playerArr.push(player);
-    }
+  initPlayers(playerCount: number) {
+    this.playerArr = [...Array(playerCount)]
+      .map((_, index) => this.createPlayer501(index));
+    console.log(this.playerArr)
+
     this.currentPlayer = this.playerArr[0];
     this.playerArr$$.next(this.playerArr);
   }
@@ -53,14 +48,6 @@ export class DartCounterService {
     }
     this.reduceDartCount();
     this.points$.next(this.currentPlayer.remainingPoints);
-  }
-
-  reduceCountByBull() {
-    this.currentPlayer.remainingPoints -= 25;
-  }
-
-  reduceCountByBullsEye() {
-    this.currentPlayer.remainingPoints -= 50;
   }
 
   reduceDartCount() {
@@ -91,7 +78,8 @@ export class DartCounterService {
     });
     if (this.currentPlayer.id == this.playerArr[0].id) {
       this.roundCountCheck();
-      this.roundCount$.next(this.roundCount += 1);
+      this.roundCount += 1
+      this.roundCount$.next(this.roundCount);
     }
     this.currentPlayer.dartCount = 3;
     this.tempPlayerPoints = [];
@@ -126,5 +114,13 @@ export class DartCounterService {
     }
   }
 
+  private createPlayer501(id: number): Player {
+    return {
+      id,
+      name: `Player ${id}`,
+      remainingPoints: 501,
+      dartCount: 3,
+    };
+  }
 }
 
