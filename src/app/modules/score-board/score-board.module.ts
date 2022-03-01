@@ -3,14 +3,14 @@ import {NgModule} from '@angular/core';
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {OutputComponent} from './output/output.component';
-import {ScoreboardOverviewComponent} from './scoreboard-overview/scoreboard-overview.component';
+import {PlayerOverviewComponent} from './player-overview/player-overview.component';
 import {ScoreboardComponent} from './scoreboard/scoreboard.component';
 
 
 @NgModule({
   declarations: [
     OutputComponent,
-    ScoreboardOverviewComponent,
+    PlayerOverviewComponent,
     ScoreboardComponent,
   ],
   imports: [

@@ -5,10 +5,10 @@ import {Player} from 'src/app/services/player.model';
 
 @Component({
   selector: 'app-scoreboard-overview',
-  templateUrl: './scoreboard-overview.component.html',
-  styleUrls: ['./scoreboard-overview.component.scss']
+  templateUrl: './player-overview.component.html',
+  styleUrls: ['./player-overview.component.scss']
 })
-export class ScoreboardOverviewComponent {
+export class PlayerOverviewComponent {
   playerArr$: Observable<Player[]>;
 
   constructor(private dartCounterService: DartCounterService) {
