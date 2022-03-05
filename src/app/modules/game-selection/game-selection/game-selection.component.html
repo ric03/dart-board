@@ -15,15 +15,15 @@
     <mat-form-field appearance="fill">
       <mat-label class="text">Player Count</mat-label>
       <mat-select formControlName="playerCount">
-        <mat-option *ngFor="let _ of maxPlayerCount; let i = index" [value]="i + 1">
-          {{i + 1}} Player{{ (i + 1) > 1 ? 's' : ''}}
+        <mat-option *ngFor="let playerCount of maxPlayerCount" [value]="playerCount">
+          {{playerCount}} Player{{ playerCount > 1 ? 's' : ''}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
     <div class="d-flex justify-content-end">
-        <button mat-raised-button color="primary" type="submit">Start Game</button>
-        <button mat-raised-button class="ms-2" type="reset">Reset</button>
+      <button mat-raised-button color="primary" type="submit">Start Game</button>
+      <button mat-raised-button class="ms-2" type="reset">Reset</button>
     </div>
 
   </form>

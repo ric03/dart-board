@@ -1,6 +1,6 @@
 <div class="d-flex">
 
-  <mat-card *ngFor="let player of playerArr$ | async" class="m-1">
+  <mat-card *ngFor="let player of playerService._players" class="m-1">
     <mat-card-title>{{player.remainingPoints}}</mat-card-title>
     {{player.name}}
   </mat-card>

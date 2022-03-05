@@ -7,22 +7,18 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {OvershotModalComponent} from './modals/overshot-modal/overshot-modal.component';
-import {QuitConfirmationModalComponent} from './modals/quit-confirmation-modal/quit-confirmation-modal.component';
-import {VictoryModalComponent} from './modals/victory-modal/victory-modal.component';
+import {QuitConfirmationDialog} from './modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import {VictoryDialog} from './modals/victory-dialog/victory-dialog.component';
 import {DartBoardModule} from './modules/dart-board/dart-board.module';
 import {GameSelectionModule} from './modules/game-selection/game-selection.module';
 import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
 import {ScoreBoardModule} from './modules/score-board/score-board.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
-    OvershotModalComponent,
-    VictoryModalComponent,
-    QuitConfirmationModalComponent,
-
+    VictoryDialog,
+    QuitConfirmationDialog,
   ],
   imports: [
     BrowserModule,

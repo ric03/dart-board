@@ -12,6 +12,7 @@ export class DartBoardComponent {
 
   private env = environment;
 
+  // TODO extract into service and enable conditionally?
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
     if (this.env.production) {
