@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -31,6 +32,7 @@ import {ScoreBoardModule} from './modules/score-board/score-board.module';
     GameSelectionModule,
     PageNotFoundModule,
 
+    MatButtonModule,
     MatSnackBarModule,
     MatToolbarModule,
     MatBottomSheetModule,
