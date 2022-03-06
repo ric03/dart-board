@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
 
 enum GameType {
@@ -8,8 +8,6 @@ enum GameType {
   Cricket = 'Cricket',
 }
 
-const MAX_PLAYER_COUNT = 6;
-
 @Component({
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
@@ -17,28 +15,51 @@ const MAX_PLAYER_COUNT = 6;
 })
 export class GameSelectionComponent {
 
-  private readonly defaultFormState = {
-    gameType: GameType.Simple501,
-    playerCount: 2
-  }
-  formGroup: FormGroup = this.fb.group(this.defaultFormState);
-
   // Create a reference, to make the enum accessible in the html-template
   gameType = GameType;
-  maxPlayerCount = [...Array(MAX_PLAYER_COUNT)].map((_, index) => index + 1);
+
+  formGroup: FormGroup = this.fb.group({
+    gameType: GameType.Simple501,
+    playerNames: this.fb.array([
+      this.fb.control('first'),
+      this.fb.control('second'),
+    ]),
+  });
+
+  private readonly defaultFormState = {
+    gameType: GameType.Simple501,
+    playerNames: ['first', 'second']
+  }
 
   constructor(private fb: FormBuilder,
               private router: Router,
   ) {
   }
 
+  get playerNames(): FormArray {
+    return this.formGroup.get('playerNames') as FormArray;
+  }
+
+  addPlayerName() {
+    this.playerNames.push(this.fb.control(''));
+  }
+
+  removePlayerName(index: number) {
+    this.playerNames.removeAt(index);
+  }
+
   onSubmit() {
-    const playerNames = [...Array(this.formGroup.value.playerCount)].map((_, index) => `Player ${index}`)
+    const playerNames = this.formGroup.value.playerNames
     // noinspection JSIgnoredPromiseFromCall
     this.router.navigate(['dartboard'], {queryParams: {playerNames}});
   }
 
-  onReset() {
+  onReset(event: Event) {
+    // The reset event fires when a <form> is reset.
+    // Required to prevent the default reset mechanism.
+    // Otherwise, the form would be completely empty.
+    event.preventDefault();
+
     this.formGroup.reset(this.defaultFormState)
   }
 }
