@@ -1,0 +1,32 @@
+<div class="container-sm mt-3">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" (reset)="onReset($event)">
+
+    <h4>What type of game?</h4>
+    <mat-form-field appearance="fill">
+      <mat-label class="text">Game Type</mat-label>
+      <mat-select formControlName="gameType">
+        <mat-option [value]="gameType.Simple501">501</mat-option>
+        <mat-option [value]="gameType.DoubleOut501">501 (Double Out)</mat-option>
+        <mat-option [value]="gameType.Cricket">Cricket</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h4>Who is playing?</h4>
+    <div formArrayName="playerNames">
+      <div *ngFor="let playerName of playerNames.controls; let i=index">
+        <mat-form-field appearance="fill">
+          <mat-label>Player {{ i + 1 }}</mat-label>
+          <input matInput id="playerName-{{ i }}" type="text" [formControlName]="i">
+        </mat-form-field>
+        <button mat-flat-button type="button" (click)="removePlayerName(i)">Remove</button>
+      </div>
+      <button mat-raised-button color="accent" type="button" (click)="addPlayerName()"> + Add Player</button>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="primary" type="submit">Start Game</button>
+      <button mat-raised-button class="ms-2" type="reset">Reset</button>
+    </div>
+
+  </form>
+</div>

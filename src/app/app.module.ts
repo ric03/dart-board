@@ -1,42 +1,45 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { DartBoardModule } from './dart-board/dart-board.module';
-import { ScoreBoardModule } from './score-board/score-board.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { WelcomeDartboardModule } from './welcome-dartboard/welcome-dartboard.module';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { OvershotComponent } from './overshot/overshot.component';
-import { WonComponent } from './won/won.component';
-import { QuitQuestionComponent } from './quit-question/quit-question.component';
-import { MatDialogModule } from '@angular/material/dialog';
-
+import {NgModule} from '@angular/core';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {QuitConfirmationDialog} from './modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import {VictoryDialog} from './modals/victory-dialog/victory-dialog.component';
+import {DartBoardModule} from './modules/dart-board/dart-board.module';
+import {GameSelectionModule} from './modules/game-selection/game-selection.module';
+import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
+import {ScoreBoardModule} from './modules/score-board/score-board.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OvershotComponent,
-    WonComponent,
-    QuitQuestionComponent,
-
+    VictoryDialog,
+    QuitConfirmationDialog,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    DartBoardModule,
     BrowserAnimationsModule,
-    MatSnackBarModule,
+
+    AppRoutingModule,
+
+    DartBoardModule,
     ScoreBoardModule,
+    GameSelectionModule,
+    PageNotFoundModule,
+
+    MatButtonModule,
+    MatSnackBarModule,
     MatToolbarModule,
-    WelcomeDartboardModule,
     MatBottomSheetModule,
     MatDialogModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
