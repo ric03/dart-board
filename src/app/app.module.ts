@@ -14,6 +14,7 @@ import {DartBoardModule} from './modules/dart-board/dart-board.module';
 import {GameSelectionModule} from './modules/game-selection/game-selection.module';
 import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
 import {ScoreBoardModule} from './modules/score-board/score-board.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {ScoreBoardModule} from './modules/score-board/score-board.module';
     MatToolbarModule,
     MatBottomSheetModule,
     MatDialogModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
