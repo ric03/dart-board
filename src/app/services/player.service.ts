@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Player} from "./player.model";
+import { Injectable } from '@angular/core';
+import { Player } from "./player.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class PlayerService {
 
   // FIXME separation of concern: this service should not handle the player-/game-type
   private createPlayer501(name: string, id: number): Player {
-    return {id, name, remainingPoints: 501};
+    return { id, name, remainingPoints: 501, lastScore: 0, history: [0] };
   }
 
   getFirstPlayer(): Player {
@@ -25,7 +25,7 @@ export class PlayerService {
   }
 
   getNextPlayer(currentPlayer: Player): Player {
-    const indexOfCurrentPlayer = this._players.findIndex(({id}) => id == currentPlayer.id)
+    const indexOfCurrentPlayer = this._players.findIndex(({ id }) => id == currentPlayer.id)
     const indexOfNextPlayer = this.getIndexOfNextPlayer(indexOfCurrentPlayer);
     return this._players[indexOfNextPlayer]
   }

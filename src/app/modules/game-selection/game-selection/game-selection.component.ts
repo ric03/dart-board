@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {Router} from "@angular/router";
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from "@angular/router";
 
 enum GameType {
   Simple501 = '501 simple',
@@ -32,7 +32,7 @@ export class GameSelectionComponent {
   }
 
   constructor(private fb: FormBuilder,
-              private router: Router,
+    private router: Router,
   ) {
   }
 
@@ -41,7 +41,10 @@ export class GameSelectionComponent {
   }
 
   addPlayerName() {
-    this.playerNames.push(this.fb.control(''));
+    if (this.playerNames.length < 8) {
+      this.playerNames.push(this.fb.control(''));
+    }
+
   }
 
   removePlayerName(index: number) {
@@ -51,7 +54,7 @@ export class GameSelectionComponent {
   onSubmit() {
     const playerNames = this.formGroup.value.playerNames
     // noinspection JSIgnoredPromiseFromCall
-    this.router.navigate(['dartboard'], {queryParams: {playerNames}});
+    this.router.navigate(['dartboard'], { queryParams: { playerNames } });
   }
 
   onReset(event: Event) {

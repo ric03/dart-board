@@ -1,7 +1,17 @@
 <div class="m-1 p-3 border border-light">
-  <p>Current Player: {{currentPlayerService._currentPlayer.name}}</p>
-  <p>Accumulated Points: {{currentPlayerService._accumulatedPoints}}</p>
-
-  Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }}
+  <div class="d-flex">
+    <mat-card class="m-1">
+      <mat-card-subtitle>
+        Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }} <br>
+        Current Average: {{currentPlayerService._averagePoints}}
+      </mat-card-subtitle>
+      <mat-card-title>
+        Current Points:
+        {{currentPlayerService._remainingPoints}}</mat-card-title>
+      <br>
+      Current Player:
+      {{currentPlayerService._currentPlayer.name}}
+    </mat-card>
+  </div>
   <mat-progress-bar color="warn" mode="determinate" [value]='getDartCount()'></mat-progress-bar>
 </div>

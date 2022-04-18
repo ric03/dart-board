@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../../services/current-player.service";
+import { Component } from '@angular/core';
+import { CurrentPlayerService, MAX_REMAINING_THROWS } from "../../../../services/current-player.service";
 
 @Component({
   selector: 'app-current-player-progress',
@@ -15,5 +15,9 @@ export class CurrentPlayerProgressComponent {
 
   getDartCount(): number {
     return this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100;
+  }
+
+  getCurrentPoints(): number {
+    return this.currentPlayerService._remainingPoints - this.currentPlayerService._accumulatedPoints;
   }
 }

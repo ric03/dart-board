@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DEFAULT_PLAYER, Player} from "./player.model";
+import { Injectable } from '@angular/core';
+import { DEFAULT_PLAYER, Player } from "./player.model";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -12,16 +12,25 @@ export class CurrentPlayerService {
 
   public _remainingThrows = MAX_REMAINING_THROWS;
   public _accumulatedPoints = 0;
+  public _remainingPoints = 0;
+  public _averagePoints = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
 
   init(player: Player) {
     this.switchPlayer(player);
+    this._remainingPoints = player.remainingPoints;
   }
 
   switchPlayer(player: Player) {
+    this.savePointForStatistics();
     this._currentPlayer = player;
+    this._remainingPoints = this._currentPlayer.remainingPoints;
     this.resetAccumulatedPoints();
     this.resetThrows();
+  }
+
+  private savePointForStatistics() {
+    this._currentPlayer.history.push(this._accumulatedPoints);
   }
 
   private resetAccumulatedPoints() {
@@ -34,8 +43,10 @@ export class CurrentPlayerService {
 
   score(points: number) {
     if (this.hasThrowsRemaining()) {
+      this._remainingPoints -= points;
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
+      this.calcAverage();
     } else {
       throw new Error('Unable to reduce below 0');
     }
@@ -68,6 +79,14 @@ export class CurrentPlayerService {
   }
 
   applyPoints() {
+    this._currentPlayer.lastScore = this._accumulatedPoints;
     this._currentPlayer.remainingPoints -= this._accumulatedPoints;
+  }
+
+  calcAverage() {
+    // TODO: das stimmt so noch nicht LOL
+    let leng = this._currentPlayer.history.length +1 ;
+    let sum = this._currentPlayer.history.reduce((a, b) => a + b, 0);
+    this._averagePoints = sum / leng;
   }
 }

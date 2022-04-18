@@ -15,12 +15,14 @@ import {GameSelectionModule} from './modules/game-selection/game-selection.modul
 import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
 import {ScoreBoardModule} from './modules/score-board/score-board.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HiddenPlayersDialog } from './modals/hidden-players-dialog/hidden-players-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VictoryDialog,
     QuitConfirmationDialog,
+    HiddenPlayersDialog,
   ],
   imports: [
     BrowserModule,

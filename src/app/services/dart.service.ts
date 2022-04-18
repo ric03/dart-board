@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {VictoryDialog} from "../modals/victory-dialog/victory-dialog.component";
-import {CurrentPlayerService} from "./current-player.service";
-import {PlayerService} from "./player.service";
+import { Injectable } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { VictoryDialog } from "../modals/victory-dialog/victory-dialog.component";
+import { CurrentPlayerService } from "./current-player.service";
+import { PlayerService } from "./player.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,9 @@ import {PlayerService} from "./player.service";
 export class DartService {
 
   constructor(private playerService: PlayerService,
-              private currentPlayerService: CurrentPlayerService,
-              private dialog: MatDialog,
-              private snackbar: MatSnackBar,
+    private currentPlayerService: CurrentPlayerService,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,
   ) {
   }
 
@@ -42,7 +42,7 @@ export class DartService {
 
   private displayOvershotNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', {duration: 1500})
+    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 1500 })
   }
 
   private handleVictory() {
