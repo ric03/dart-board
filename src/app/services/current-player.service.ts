@@ -84,16 +84,12 @@ export class CurrentPlayerService {
   }
 
   calcAverage() {
-    // TODO: das stimmt so noch nicht LOL
-    // Der Drei - Dart - Durchschnitt in Darts ist die durchschnittliche Punktzahl,
-    // die mit drei geworfenen Darts erzielt wird.
-    let leng = this._currentPlayer.history.length +1 ;
-    let sum = this._currentPlayer.history.reduce((a, b) => a + b, 0);
-    this._averagePoints = sum / leng;
+    let leng = this._currentPlayer.history.length;
+    let sum = this._currentPlayer.history.reduce((a, b) => a + b);
+    this._averagePoints = Math.round(sum / leng);
   }
 
   isDoubleOut(points: number): boolean {
-    const expectedRemainingPoints = this._currentPlayer.remainingPoints - this._accumulatedPoints - points;
-    return expectedRemainingPoints < 0
+    return this._currentPlayer.remainingPoints / 2 == points;
   }
 }

@@ -42,7 +42,7 @@ export class DartService {
 
   private displayOvershotNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 1500 })
+    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 3000 })
   }
 
   private handleVictory() {

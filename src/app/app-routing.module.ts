@@ -6,7 +6,8 @@ import {GameSelectionComponent} from './modules/game-selection/game-selection/ga
 import {PageNotFoundComponent} from "./modules/page-not-found/page-not-found.component";
 
 const routes: Routes = [
-  {path: '', component: GameSelectionComponent},
+  { path: '', component: GameSelectionComponent },
+  // hier Cricket CricketComponent
   {path: 'dartboard', component: DartBoardComponent, resolve: {gameInitialization: GameInitializationResolver}},
   {path: '**', component: PageNotFoundComponent},
 ];
