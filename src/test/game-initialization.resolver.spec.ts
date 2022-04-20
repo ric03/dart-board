@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {GameInitializationResolver} from './game-initialization-resolver.service';
+import {GameInitializationResolver} from '../app/modules/dart-board/resolver/game-initialization-resolver.service';
 
 describe('GameInitializationResolver', () => {
   let resolver: GameInitializationResolver;
