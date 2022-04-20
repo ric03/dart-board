@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { QuitConfirmationDialog } from '../modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
 import { VictoryDialog } from "../modals/victory-dialog/victory-dialog.component";
 import { CurrentPlayerService } from "./current-player.service";
 import { PlayerService } from "./player.service";
@@ -45,7 +46,14 @@ export class DartService {
     this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 3000 })
   }
 
-  private handleVictory() {
-    this.dialog.open(VictoryDialog)
+  private async handleVictory() {
+    this.dialog.open(VictoryDialog);
+    // TO DO: Open PointsOverview as Option
+    setTimeout(() => {
+      this.dialog.closeAll();
+      this.dialog.open(QuitConfirmationDialog);
+    }, 4000);
+
+
   }
 }

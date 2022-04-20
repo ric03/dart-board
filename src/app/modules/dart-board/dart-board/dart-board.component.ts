@@ -1,5 +1,5 @@
-import {Component, HostListener} from '@angular/core';
-import {environment} from "../../../../environments/environment";
+import { Component, HostListener } from '@angular/core';
+import { environment } from "../../../../environments/environment";
 
 
 @Component({
