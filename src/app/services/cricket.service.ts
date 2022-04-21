@@ -4,7 +4,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { QuitConfirmationDialog } from '../modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
 import { VictoryDialog } from "../modals/victory-dialog/victory-dialog.component";
 import { CurrentPlayerService } from "./current-player.service";
-import { Player } from './player.model';
+import { Player } from '../modals/player/player.model';
 import { PlayerService } from "./player.service";
 
 @Injectable({
@@ -21,8 +21,10 @@ export class CricketService {
    * derjenige der alles 3mal getroffen hat && die meisten Punkte hat
    *
   */
+  multiplier: number = 1;
+
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 0, lastScore: 0, history: [0] };
+    return { id, name, remainingPoints: 0, lastScore: 0, history: [0], cricketMap: new Map() };
   }
 
   constructor(private playerService: PlayerService,
@@ -38,11 +40,12 @@ export class CricketService {
   }
   // anpassen
   score(points: number) {
-    this.currentPlayerService.score(points);
+    this.currentPlayerService.scoreCricket(points, this.multiplier);
     if (this.currentPlayerService.hasNoThrowsRemaining()) {
-      this.currentPlayerService.applyPoints();
+      this.currentPlayerService.applyCricketPoints();
       this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
     }
+    this.currentPlayerService.sortMap();
   }
 
   //entfällt
@@ -61,5 +64,13 @@ export class CricketService {
     }, 4000);
 
 
+  }
+
+  getMultiplier() {
+    return this.multiplier;
+  }
+
+  setMultiplier(multiplier: number) {
+    this.multiplier = multiplier;
   }
 }

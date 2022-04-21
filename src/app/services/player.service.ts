@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CricketService } from './cricket.service';
 import { DartService } from './dart.service';
-import { Player } from "./player.model";
+import { Player } from "../modals/player/player.model";
 
 @Injectable({
   providedIn: 'root'

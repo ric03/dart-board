@@ -35,6 +35,10 @@ export class InputButtonRowComponent {
     if (this.multiplier.value == 1 && points == 50) {
       this.dartService.setMultiplier(2);
     }
+    // bull
+    if (this.multiplier.value == 1 && points == 25) {
+      this.dartService.setMultiplier(1);
+    }
     this.dartService.score(points);
   }
 

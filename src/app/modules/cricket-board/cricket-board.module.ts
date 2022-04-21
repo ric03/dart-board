@@ -12,13 +12,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GameSelectionModule } from '../game-selection/game-selection.module';
 import { ScoreBoardModule } from '../score-board/score-board.module';
-
-
+import { CricketOverviewTableComponent } from './components/cricket-overview-table/cricket-overview-table.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CurrentPlayerProgressComponent } from './components/progress/current-player-progress.component';
 
 @NgModule({
   declarations: [
     CricketBoardComponent,
     InputButtonRowCricketComponent,
+    CricketOverviewTableComponent,
+    CurrentPlayerProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -31,9 +36,13 @@ import { ScoreBoardModule } from '../score-board/score-board.module';
     MatToolbarModule,
     MatTooltipModule,
     MatBadgeModule,
+    MatListModule,
+    MatCardModule,
+    MatProgressBarModule,
+
 
     GameSelectionModule,
-    ScoreBoardModule,
+
   ]
 })
 export class CricketBoardModule { }

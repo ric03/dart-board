@@ -11,7 +11,7 @@ import { GameSelectionModule } from '../game-selection/game-selection.module';
 import { ScoreBoardModule } from '../score-board/score-board.module';
 import { InputButtonRowComponent } from "./components/input-button-row/input-button-row.component";
 import { DartBoardComponent } from './dart-board/dart-board.component';
-import { MatBadgeModule } from '@angular/material/badge';
+
 
 
 @NgModule({
@@ -29,7 +29,6 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatRippleModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatBadgeModule,
 
     GameSelectionModule,
     ScoreBoardModule,

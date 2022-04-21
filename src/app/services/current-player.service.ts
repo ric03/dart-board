@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GameType } from '../util/GameType';
-import { DEFAULT_PLAYER, Player } from "./player.model";
+import { DEFAULT_PLAYER, Player } from "../modals/player/player.model";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -16,6 +15,7 @@ export class CurrentPlayerService {
   public _remainingPoints = 0;
   public _averagePoints = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
+  public _cricketMap = new Map<number, number>();
 
   init(player: Player) {
     this.switchPlayer(player);
@@ -26,6 +26,7 @@ export class CurrentPlayerService {
     this.savePointsForStatistics();
     this._currentPlayer = player;
     this._remainingPoints = this._currentPlayer.remainingPoints;
+    this._cricketMap = this._currentPlayer.cricketMap;
     this.resetAccumulatedPoints();
     this.resetThrows();
   }
@@ -42,11 +43,21 @@ export class CurrentPlayerService {
     this._remainingThrows = MAX_REMAINING_THROWS;
   }
 
-  score(points: number) {//param-> , gameType: string
-    //this.currentPlayerService.isDoubleOut(points)
-    // if (this._gameType == '501-DoubleOut') {}
+  scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
       this._remainingPoints -= points;
+      this.accumulatePoints(points);
+      this.decrementRemainingThrows();
+      this.calcAverage();
+    } else {
+      throw new Error('Unable to reduce below 0');
+    }
+  }
+
+  scoreCricket(points: number, multiplier: number) {
+    if (this.hasThrowsRemaining()) {
+      this.storeCricketPointsAndMultiplier(points, multiplier);
+      this._remainingPoints += points;
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
       this.calcAverage();
@@ -81,9 +92,15 @@ export class CurrentPlayerService {
     return expectedRemainingPoints < 0;
   }
 
-  applyPoints() {
+  applyDartPoints() {
     this._currentPlayer.lastScore = this._accumulatedPoints;
     this._currentPlayer.remainingPoints -= this._accumulatedPoints;
+  }
+
+  applyCricketPoints() {
+    this._currentPlayer.lastScore = this._accumulatedPoints;
+    this._currentPlayer.remainingPoints += this._accumulatedPoints;
+    this._currentPlayer.cricketMap = this._cricketMap;
   }
 
   calcAverage() {
@@ -94,5 +111,33 @@ export class CurrentPlayerService {
 
   isDoubleOut(multiplier: number): boolean {
     return multiplier / 2 == 1;
+  }
+
+  storeCricketPointsAndMultiplier(point: number, multiplier: number) {
+    let map = this._cricketMap;
+    if (map.has((point / multiplier))) {
+      map.forEach((value: number, key: number) => {
+        if (key == (point / multiplier)) {
+          var sumOfNumbers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
+          if (sumOfNumbers <= 3) {
+            map.set(key, sumOfNumbers);
+          }
+          if (sumOfNumbers >= 3) {
+            map.set(key, 3);
+          }
+          if (value <= multiplier) {
+            if (25 == (point / multiplier) && value == 2) {
+              map.set(25, 3);
+            }
+          }
+        }
+      });
+    } else {
+      map.set(point / multiplier, multiplier);
+    }
+  }
+
+  sortMap() {
+    this._cricketMap = new Map([...this._cricketMap].sort());
   }
 }
