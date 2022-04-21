@@ -1,6 +1,6 @@
 <div class="d-flex" *ngIf="(playerService._players.length < 4)">
   <mat-card *ngFor="let player of playerService._players" class="m-1">
-    <mat-card-subtitle>{{player.lastScore}}</mat-card-subtitle>
+    <mat-card-subtitle>last: {{player.lastScore}}</mat-card-subtitle>
     <mat-card-title>{{player.remainingPoints}}</mat-card-title>
     {{player.name}}
   </mat-card>
@@ -10,7 +10,7 @@
   <div *ngFor="let player of playerService._players ;let i=index">
     <div *ngIf="i<4">
       <mat-card class="m-1">
-        <mat-card-subtitle>{{player.lastScore}}</mat-card-subtitle>
+        <mat-card-subtitle>last: {{player.lastScore}}</mat-card-subtitle>
         <mat-card-title>{{player.remainingPoints}}</mat-card-title>
         {{player.name}}
       </mat-card>

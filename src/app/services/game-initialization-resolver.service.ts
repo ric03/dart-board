@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { DartService } from "../../../services/dart.service";
+import { DartService } from "./dart.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { EMPTY_OBSERVER } from 'rxjs/internal/Subscriber';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +14,10 @@ export class GameInitializationResolver implements Resolve<boolean> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    let gameType: string = route.queryParamMap.get('gameType')!;
     const playerNames = route.queryParamMap.getAll('playerNames');
     if (playerNames.length > 0) {
+      this.dartService.setGameType(gameType);
       this.dartService.initPlayers(playerNames);
       return of(true);
     }

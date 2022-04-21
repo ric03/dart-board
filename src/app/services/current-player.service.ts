@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GameType } from '../util/GameType';
 import { DEFAULT_PLAYER, Player } from "./player.model";
 
 
@@ -22,14 +23,14 @@ export class CurrentPlayerService {
   }
 
   switchPlayer(player: Player) {
-    this.savePointForStatistics();
+    this.savePointsForStatistics();
     this._currentPlayer = player;
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this.resetAccumulatedPoints();
     this.resetThrows();
   }
 
-  private savePointForStatistics() {
+  private savePointsForStatistics() {
     this._currentPlayer.history.push(this._accumulatedPoints);
   }
 
@@ -41,7 +42,9 @@ export class CurrentPlayerService {
     this._remainingThrows = MAX_REMAINING_THROWS;
   }
 
-  score(points: number) {
+  score(points: number) {//param-> , gameType: string
+    //this.currentPlayerService.isDoubleOut(points)
+    // if (this._gameType == '501-DoubleOut') {}
     if (this.hasThrowsRemaining()) {
       this._remainingPoints -= points;
       this.accumulatePoints(points);
@@ -75,7 +78,7 @@ export class CurrentPlayerService {
 
   isOvershot(points: number): boolean {
     const expectedRemainingPoints = this._currentPlayer.remainingPoints - this._accumulatedPoints - points;
-    return expectedRemainingPoints < 0
+    return expectedRemainingPoints < 0;
   }
 
   applyPoints() {
@@ -89,7 +92,7 @@ export class CurrentPlayerService {
     this._averagePoints = Math.round(sum / leng);
   }
 
-  isDoubleOut(points: number): boolean {
-    return this._currentPlayer.remainingPoints / 2 == points;
+  isDoubleOut(multiplier: number): boolean {
+    return multiplier / 2 == 1;
   }
 }

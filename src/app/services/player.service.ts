@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { CricketService } from './cricket.service';
+import { DartService } from './dart.service';
 import { Player } from "./player.model";
 
 @Injectable({
@@ -8,16 +10,17 @@ export class PlayerService {
 
   public _players: Player[] = [];
 
-  setupPlayers(playerNames: string[]) {
+  setupDartPlayers(playerNames: string[]) {
     if (playerNames.length == 0) {
       throw new Error('Provided array must not be empty');
     }
-    this._players = playerNames.map(this.createPlayer501);
+    this._players = playerNames.map(DartService.createPlayer);
   }
-
-  // FIXME separation of concern: this service should not handle the player-/game-type
-  private createPlayer501(name: string, id: number): Player {
-    return { id, name, remainingPoints: 501, lastScore: 0, history: [0] };
+  setupCricketPlayers(playerNames: string[]) {
+    if (playerNames.length == 0) {
+      throw new Error('Provided array must not be empty');
+    }
+    this._players = playerNames.map(CricketService.createPlayer);
   }
 
   getFirstPlayer(): Player {

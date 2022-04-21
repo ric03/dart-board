@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from "@angular/router";
-
-enum GameType {
-  Simple501 = '501 simple',
-  DoubleOut501 = '501 double out',
-  Cricket = 'Cricket',
-}
+import { GameType } from '../../../util/GameType';
 
 @Component({
   selector: 'app-game-selection',
@@ -52,9 +47,15 @@ export class GameSelectionComponent {
   }
 
   onSubmit() {
-    const playerNames = this.formGroup.value.playerNames
+    const playerNames = this.formGroup.value.playerNames;
+    const gameType = this.formGroup.value.gameType;
     // noinspection JSIgnoredPromiseFromCall
-    this.router.navigate(['dartboard'], { queryParams: { playerNames } });
+    if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501) {
+      this.router.navigate(['dartboard'], { queryParams: { gameType, playerNames } });
+    } else {
+      this.router.navigate(['cricketboard'], { queryParams: { gameType, playerNames } });
+    }
+
   }
 
   onReset(event: Event) {

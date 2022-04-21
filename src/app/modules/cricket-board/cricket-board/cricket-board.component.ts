@@ -1,15 +1,12 @@
-import { Component, HostListener } from '@angular/core';
-import { environment } from "../../../../environments/environment";
-
+import { Component, HostListener, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-dart-board',
-  templateUrl: './dart-board.component.html',
-  styleUrls: ['./dart-board.component.scss',
-  ]
+  selector: 'app-cricket-component',
+  templateUrl: './cricket-board.component.html',
+  styleUrls: ['./cricket-board.component.scss']
 })
-export class DartBoardComponent {
-
+export class CricketBoardComponent{
   private env = environment;
 
   // TODO extract into service and enable conditionally?
@@ -25,4 +22,5 @@ export class DartBoardComponent {
       event.preventDefault();
     }
   }
+
 }
