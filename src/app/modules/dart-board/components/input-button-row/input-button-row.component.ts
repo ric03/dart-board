@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {MatButtonToggleChange} from "@angular/material/button-toggle";
-import {ThemePalette} from "@angular/material/core";
-import {DartService} from "../../../../services/dart.service";
+import { Component } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { MatButtonToggleChange } from "@angular/material/button-toggle";
+import { ThemePalette } from "@angular/material/core";
+import { DartService } from "../../../../services/dart.service";
 
 @Component({
   selector: 'app-input-button-row',
@@ -19,7 +19,7 @@ export class InputButtonRowComponent {
   ) {
   }
 
-  changeButtonColor({value}: MatButtonToggleChange) {
+  changeButtonColor({ value }: MatButtonToggleChange) {
     switch (value) {
       // @formatter:off
       case '1': this.buttonColor = 'primary'; break;
@@ -31,10 +31,15 @@ export class InputButtonRowComponent {
   }
 
   score(points: number) {
+    // bullsEye
+    if (this.multiplier.value == 1 && points == 50) {
+      this.dartService.setMultiplier(2);
+    }
     this.dartService.score(points);
   }
 
   scoreWithMultiplier(primaryNumber: number) {
+    this.dartService.setMultiplier(this.multiplier.value);
     this.dartService.score(primaryNumber * +this.multiplier.value);
   }
 }
