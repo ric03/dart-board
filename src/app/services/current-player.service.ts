@@ -61,11 +61,13 @@ export class CurrentPlayerService {
 
   scoreCricket(points: number, multiplier: number) {
     if (this.hasThrowsRemaining()) {
-      if (this._currentPlayer.cricketMap.has(points / multiplier) && this._currentPlayer.cricketMap.get(points) == 3) {
+      if (this._cricketMap.has(points / multiplier) && this._cricketMap.get(points / multiplier) == 3) {
         this._remainingPoints += points;
         this.accumulatePoints(points);
+      } else {
+        this.storeMultiplier(points, multiplier);
       }
-      this.storeMultiplier(points, multiplier);
+
       this.decrementRemainingThrows();
     } else {
       throw new Error('Unable to reduce below 0');
@@ -108,7 +110,6 @@ export class CurrentPlayerService {
   applyCricketPoints() {
     this._currentPlayer.lastScore = this._accumulatedPoints;
     this._currentPlayer.remainingPoints += this._accumulatedPoints;
-    this._currentPlayer.cricketMap = this._cricketMap;
     this.savePointsForStatistics();
     this.calcAverage();
   }
@@ -126,12 +127,8 @@ export class CurrentPlayerService {
   }
 
   storeMultiplier(point: number, multiplier: number) {
-    console.log(point + " ...." + multiplier)
     let map = this._currentPlayer.cricketMap;
-
     if (point > 0) {
-
-
       if (map.has((point / multiplier))) {
         map.forEach((value: number, key: number) => {
 
@@ -145,11 +142,10 @@ export class CurrentPlayerService {
             }
             if (sumOfMultipliers > 3) {
               map.set(key, 3);
-              var newMultiplier = +multiplier - +value;
+              var newMultiplier = multiplier - value;
               if (newMultiplier > 0) {
                 this.setRestOfMultiplier(key, newMultiplier);
               }
-
             }
             /*if (value <= multiplier) {
               if (25 == (point / multiplier) && value == 2) {
@@ -174,6 +170,7 @@ export class CurrentPlayerService {
   setRestOfMultiplier(point: number, multiplierRest: number) {
     console.log(multiplierRest)
     this._remainingPoints += point * multiplierRest;
+    console.log(this._remainingPoints)
     this.accumulatePoints(this._remainingPoints);
   }
 

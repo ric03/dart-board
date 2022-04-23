@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { MatBadge } from '@angular/material/badge';
+import { MatButton } from '@angular/material/button';
 import { MatButtonToggleChange } from "@angular/material/button-toggle";
 import { ThemePalette } from "@angular/material/core";
 import { CricketService } from 'src/app/services/cricket.service';
+import { CurrentPlayerService } from 'src/app/services/current-player.service';
+
 
 @Component({
   selector: 'app-input-button-row-cricket',
@@ -15,9 +18,10 @@ export class InputButtonRowCricketComponent {
   readonly sixButtons = [...Array(6)].map((_, index) => index + 15);
   multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
-  matbadge: MatBadge["_content"] = 0;
+  matBadgeHidden: MatBadge["_hidden"] = true;
+  toggleOne: boolean = false;
 
-  constructor(private cricketservice: CricketService,
+  constructor(private cricketservice: CricketService, public currentPlayerService: CurrentPlayerService
   ) {
   }
 
@@ -36,27 +40,23 @@ export class InputButtonRowCricketComponent {
     // bullsEye
     if (points == 50) {
       this.cricketservice.setMultiplier(2);
-      this.setMatBageMultiplier(50);
     }
     // bull
     if (points == 25) {
       this.cricketservice.setMultiplier(1);
-      this.setMatBageMultiplier(25);
     }
+    this.matBadgeHidden = false;
     this.cricketservice.score(points);
   }
 
   scoreWithMultiplier(primaryNumber: number) {
     this.cricketservice.setMultiplier(this.multiplier.value);
-    this.setMatBageMultiplier(primaryNumber);
+    this.matBadgeHidden = false;
     this.cricketservice.score(primaryNumber * +this.multiplier.value);
 
   }
 
-  setMatBageMultiplier(primaryNumber: number) {
-    if (this.matbadge._id == primaryNumber) {
-      this.matbadge = this.cricketservice.getMultiplier();
-    }
-
+  setMatBage(primaryNumber: number) {
+    return this.currentPlayerService._currentPlayer.cricketMap.get(primaryNumber);
   }
 }

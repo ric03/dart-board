@@ -11,7 +11,7 @@ import { PlayerService } from 'src/app/services/player.service';
 })
 export class CricketOverviewTableComponent {
 
-  constructor(public playerService: PlayerService, private dialog: MatDialog, public cricketService: CricketService
+  constructor(public playerService: PlayerService, private dialog: MatDialog
   ) {
   }
 
