@@ -11,19 +11,18 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GameSelectionModule } from '../game-selection/game-selection.module';
-import { ScoreBoardModule } from '../score-board/score-board.module';
 import { CricketOverviewTableComponent } from './components/cricket-overview-table/cricket-overview-table.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CurrentPlayerProgressComponent } from './components/progress/current-player-progress.component';
+import { CurrentPlayerProgressModule } from '../current-player-progress/current-player-progress.module';
+
 
 @NgModule({
   declarations: [
     CricketBoardComponent,
     InputButtonRowCricketComponent,
     CricketOverviewTableComponent,
-    CurrentPlayerProgressComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +41,8 @@ import { CurrentPlayerProgressComponent } from './components/progress/current-pl
 
 
     GameSelectionModule,
+    CurrentPlayerProgressModule,
+
 
   ]
 })

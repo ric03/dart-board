@@ -3,14 +3,13 @@ import { NgModule } from '@angular/core';
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlayerOverviewComponent } from './components/player-overview/player-overview.component';
-import { CurrentPlayerProgressComponent } from './components/progress/current-player-progress.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { MatListModule } from '@angular/material/list';
+import { CurrentPlayerProgressModule } from '../current-player-progress/current-player-progress.module';
 
 
 @NgModule({
   declarations: [
-    CurrentPlayerProgressComponent,
     PlayerOverviewComponent,
     ScoreboardComponent,
   ],
@@ -19,6 +18,8 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
     MatCardModule,
     MatProgressBarModule,
+
+    CurrentPlayerProgressModule,
 
   ],
   exports: [

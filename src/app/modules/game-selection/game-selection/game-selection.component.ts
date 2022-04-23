@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from "@angular/router";
-import { GameType } from '../../../util/GameType';
+import { GameType } from '../../../modals/enum/GameType';
 
 @Component({
   selector: 'app-game-selection',

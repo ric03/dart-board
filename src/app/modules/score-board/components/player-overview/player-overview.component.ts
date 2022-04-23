@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PlayerService } from "../../../../services/player.service";
-import { HiddenPlayersDialog } from 'src/app/modals/hidden-players-dialog/hidden-players-dialog.component';
+import { HiddenPlayersDialog } from 'src/app/dialogTemplates/hidden-players-dialog/hidden-players-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
 

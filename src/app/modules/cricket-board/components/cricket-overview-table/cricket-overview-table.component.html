@@ -1,14 +1,16 @@
-<div class="d-flex flex-column bd-highlight mb-3">
-    <mat-card *ngFor="let player of playerService._players" class="m-1">
-        <mat-card-subtitle>last: {{player.lastScore}}</mat-card-subtitle>
-        <mat-card-title>{{player.remainingPoints}}</mat-card-title>
-        {{player.name}}
-        <!--More Content vertical-->
-        <div class="d-flex">
-            <mat-card *ngFor="let entry of player.cricketMap.entries()" class="m-1">
-                <mat-card-title>{{entry[0]}}</mat-card-title>
-                hits: {{entry[1]}}
-            </mat-card>
-        </div>
-    </mat-card>
+<div class="container">
+    <div class="d-flex flex-column bd-highlight mb-3">
+        <mat-card *ngFor="let player of playerService._players" class="m-1">
+            <mat-card-subtitle>last: {{player.lastScore}}</mat-card-subtitle>
+            <mat-card-title>{{player.remainingPoints}}</mat-card-title>
+            {{player.name}}
+            <!--More Content vertical-->
+            <div class="d-flex">
+                <mat-card *ngFor="let entry of player.cricketMap.entries()" class="m-1">
+                    <mat-card-title>{{entry[0]}}</mat-card-title>
+                    hits: {{entry[1]}}
+                </mat-card>
+            </div>
+        </mat-card>
+    </div>
 </div>
