@@ -36,24 +36,27 @@ export class InputButtonRowCricketComponent {
     // bullsEye
     if (points == 50) {
       this.cricketservice.setMultiplier(2);
+      this.setMatBageMultiplier(50);
     }
     // bull
     if (points == 25) {
       this.cricketservice.setMultiplier(1);
+      this.setMatBageMultiplier(25);
     }
-    // this.setMatBageMultiplier();
     this.cricketservice.score(points);
   }
 
   scoreWithMultiplier(primaryNumber: number) {
     this.cricketservice.setMultiplier(this.multiplier.value);
-    this.setMatBageMultiplier();
-
+    this.setMatBageMultiplier(primaryNumber);
     this.cricketservice.score(primaryNumber * +this.multiplier.value);
 
   }
 
-  setMatBageMultiplier() {
-    this.matbadge = this.cricketservice.getMultiplier();
+  setMatBageMultiplier(primaryNumber: number) {
+    if (this.matbadge._id == primaryNumber) {
+      this.matbadge = this.cricketservice.getMultiplier();
+    }
+
   }
 }

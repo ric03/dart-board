@@ -19,7 +19,8 @@
   <div class="d-flex justify-content-center">
     <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let primaryNumber of sixButtons">
       <button mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(primaryNumber)" [matBadge]="matbadge"
-        matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">{{primaryNumber}}</button>
+        matBadge_id=primaryNumber matBadgePosition="after" matBadgeColor="accent"
+        matBadgeSize="medium">{{primaryNumber}}</button>
     </div>
   </div>
 </div>

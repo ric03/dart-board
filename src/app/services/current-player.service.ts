@@ -14,25 +14,31 @@ export class CurrentPlayerService {
   public _accumulatedPoints = 0;
   public _remainingPoints = 0;
   public _averagePoints = 0;
+  public _rounds = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
   public _cricketMap = new Map<number, number>();
 
   init(player: Player) {
     this.switchPlayer(player);
     this._remainingPoints = player.remainingPoints;
+    this._rounds = 1;
   }
 
   switchPlayer(player: Player) {
-    this.savePointsForStatistics();
     this._currentPlayer = player;
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
-    this.resetAccumulatedPoints();
-    this.resetThrows();
+    this._averagePoints = player.average;
+    this.reset();
   }
 
   private savePointsForStatistics() {
     this._currentPlayer.history.push(this._accumulatedPoints);
+  }
+
+  private reset() {
+    this.resetAccumulatedPoints();
+    this.resetThrows();
   }
 
   private resetAccumulatedPoints() {
@@ -48,7 +54,6 @@ export class CurrentPlayerService {
       this._remainingPoints -= points;
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
-      this.calcAverage();
     } else {
       throw new Error('Unable to reduce below 0');
     }
@@ -56,11 +61,12 @@ export class CurrentPlayerService {
 
   scoreCricket(points: number, multiplier: number) {
     if (this.hasThrowsRemaining()) {
-      this.storeCricketPointsAndMultiplier(points, multiplier);
-      this._remainingPoints += points;
-      this.accumulatePoints(points);
+      if (this._currentPlayer.cricketMap.has(points / multiplier) && this._currentPlayer.cricketMap.get(points) == 3) {
+        this._remainingPoints += points;
+        this.accumulatePoints(points);
+      }
+      this.storeMultiplier(points, multiplier);
       this.decrementRemainingThrows();
-      this.calcAverage();
     } else {
       throw new Error('Unable to reduce below 0');
     }
@@ -95,49 +101,80 @@ export class CurrentPlayerService {
   applyDartPoints() {
     this._currentPlayer.lastScore = this._accumulatedPoints;
     this._currentPlayer.remainingPoints -= this._accumulatedPoints;
+    this.savePointsForStatistics();
+    this.calcAverage();
   }
 
   applyCricketPoints() {
     this._currentPlayer.lastScore = this._accumulatedPoints;
     this._currentPlayer.remainingPoints += this._accumulatedPoints;
     this._currentPlayer.cricketMap = this._cricketMap;
+    this.savePointsForStatistics();
+    this.calcAverage();
   }
 
   calcAverage() {
-    let leng = this._currentPlayer.history.length;
-    let sum = this._currentPlayer.history.reduce((a, b) => a + b);
+    let arr = this._currentPlayer.history;
+    let leng = arr.length;
+    let sum = arr.reduce((a, b) => +a + +b);
     this._averagePoints = Math.round(sum / leng);
+    this._currentPlayer.average = this._averagePoints;
   }
 
   isDoubleOut(multiplier: number): boolean {
     return multiplier / 2 == 1;
   }
 
-  storeCricketPointsAndMultiplier(point: number, multiplier: number) {
-    let map = this._cricketMap;
-    if (map.has((point / multiplier))) {
-      map.forEach((value: number, key: number) => {
-        if (key == (point / multiplier)) {
-          var sumOfNumbers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
-          if (sumOfNumbers <= 3) {
-            map.set(key, sumOfNumbers);
-          }
-          if (sumOfNumbers >= 3) {
-            map.set(key, 3);
-          }
-          if (value <= multiplier) {
-            if (25 == (point / multiplier) && value == 2) {
-              map.set(25, 3);
+  storeMultiplier(point: number, multiplier: number) {
+    console.log(point + " ...." + multiplier)
+    let map = this._currentPlayer.cricketMap;
+
+    if (point > 0) {
+
+
+      if (map.has((point / multiplier))) {
+        map.forEach((value: number, key: number) => {
+
+          if (key == (point / multiplier)) {
+            var sumOfMultipliers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
+            if (sumOfMultipliers == 3) {
+              map.set(key, sumOfMultipliers);
             }
+            if (sumOfMultipliers < 3) {
+              map.set(key, sumOfMultipliers);
+            }
+            if (sumOfMultipliers > 3) {
+              map.set(key, 3);
+              var newMultiplier = +multiplier - +value;
+              if (newMultiplier > 0) {
+                this.setRestOfMultiplier(key, newMultiplier);
+              }
+
+            }
+            /*if (value <= multiplier) {
+              if (25 == (point / multiplier) && value == 2) {
+                map.set(25, 3);
+              }
+            }
+            */
           }
-        }
-      });
-    } else {
-      map.set(point / multiplier, multiplier);
+        });
+      } else {
+        map.set(point / multiplier, multiplier);
+      }
     }
+    this.sortMap();
   }
 
   sortMap() {
+    this._cricketMap = this._currentPlayer.cricketMap;
     this._cricketMap = new Map([...this._cricketMap].sort());
   }
+
+  setRestOfMultiplier(point: number, multiplierRest: number) {
+    console.log(multiplierRest)
+    this._remainingPoints += point * multiplierRest;
+    this.accumulatePoints(this._remainingPoints);
+  }
+
 }

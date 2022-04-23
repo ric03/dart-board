@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { QuitConfirmationDialog } from '../modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import { VictoryDialog } from "../modals/victory-dialog/victory-dialog.component";
-import { GameType } from '../util/GameType';
+import { QuitConfirmationDialog } from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import { VictoryDialog } from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import { GameType } from '../modals/enum/GameType';
 import { CurrentPlayerService } from "./current-player.service";
 import { Player } from '../modals/player/player.model';
 import { PlayerService } from "./player.service";
@@ -13,12 +13,13 @@ import { PlayerService } from "./player.service";
 })
 export class DartService {
   multiplier: number = 1;
+  public _gameType: string = '';
+  playerNames: string[] = [];
+  roundCount: number = 1;
 
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 501, lastScore: 0, history: [0], cricketMap: new Map() };
+    return { id, name, remainingPoints: 501, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
   }
-
-  public _gameType: string = '';
 
   constructor(private playerService: PlayerService,
     private currentPlayerService: CurrentPlayerService,
@@ -32,18 +33,16 @@ export class DartService {
   }
 
   initPlayers(playerNames: string[]) {
-    if (this._gameType == GameType.Cricket) {
-      this.playerService.setupCricketPlayers(playerNames);
-    } else {
-      this.playerService.setupDartPlayers(playerNames);
-    }
+    this.playerNames = playerNames;
+    this.playerService.setupDartPlayers(playerNames);
+    this.roundCount = 1;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
 
   score(points: number) {
     if (this.currentPlayerService.isOvershot(points)) {
       this.displayOvershotNotification();
-      this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+      this.switchPlayer();
     } else {
       this.currentPlayerService.scoreDart(points);
       if (GameType.DoubleOut501 == this._gameType) {
@@ -61,7 +60,7 @@ export class DartService {
     } else {
       if (this.currentPlayerService.hasNoThrowsRemaining()) {
         this.currentPlayerService.applyDartPoints();
-        this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+        this.switchPlayer();
       }
     }
   }
@@ -73,14 +72,20 @@ export class DartService {
         this.handleVictory();
       } else {
         this.displayDoubleOutFailNotification();
-        this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+        this.switchPlayer();
       }
     } else {
       if (this.currentPlayerService.hasNoThrowsRemaining()) {
         this.currentPlayerService.applyDartPoints();
-        this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+        this.switchPlayer();
+
       }
     }
+  }
+
+  private switchPlayer() {
+    this.inkrementRoundCount();
+    this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
 
   private displayDoubleOutFailNotification() {
@@ -108,5 +113,11 @@ export class DartService {
 
   setMultiplier(multiplier: number) {
     this.multiplier = multiplier;
+  }
+
+  inkrementRoundCount() {
+    if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
+      this.currentPlayerService._rounds = this.roundCount += 1
+    }
   }
 }

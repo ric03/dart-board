@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { QuitConfirmationDialog } from '../modals/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import { VictoryDialog } from "../modals/victory-dialog/victory-dialog.component";
+import { QuitConfirmationDialog } from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import { VictoryDialog } from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import { CurrentPlayerService } from "./current-player.service";
 import { Player } from '../modals/player/player.model';
 import { PlayerService } from "./player.service";
@@ -22,9 +22,12 @@ export class CricketService {
    *
   */
   multiplier: number = 1;
+  playerNames: string[] = [];
+  roundCount: number = 0;
+  public _gameType: string = '';
 
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 0, lastScore: 0, history: [0], cricketMap: new Map() };
+    return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
   }
 
   constructor(private playerService: PlayerService,
@@ -34,18 +37,25 @@ export class CricketService {
   ) {
   }
 
+  setGameType(gameType: string) {
+    this._gameType = gameType;
+  }
+
   initPlayers(playerNames: string[]) {
+    this.playerNames = playerNames;
     this.playerService.setupCricketPlayers(playerNames);
+    this.roundCount = 1;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
+
   // anpassen
   score(points: number) {
     this.currentPlayerService.scoreCricket(points, this.multiplier);
     if (this.currentPlayerService.hasNoThrowsRemaining()) {
       this.currentPlayerService.applyCricketPoints();
-      this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+      this.switchPlayer();
     }
-    this.currentPlayerService.sortMap();
+   this.currentPlayerService.sortMap();
   }
 
   //entfällt
@@ -72,5 +82,15 @@ export class CricketService {
 
   setMultiplier(multiplier: number) {
     this.multiplier = multiplier;
+  }
+  private switchPlayer() {
+    this.inkrementRoundCount();
+    this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+  }
+
+  inkrementRoundCount() {
+    if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
+      this.currentPlayerService._rounds = this.roundCount += 1
+    }
   }
 }
