@@ -19,6 +19,7 @@ import { HiddenPlayersDialog } from './dialogTemplates/hidden-players-dialog/hid
 import { CricketBoardModule } from './modules/cricket-board/cricket-board.module';
 import { MatCardModule } from '@angular/material/card';
 import { CurrentPlayerProgressModule } from './modules/current-player-progress/current-player-progress.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -42,10 +43,12 @@ import { CurrentPlayerProgressModule } from './modules/current-player-progress/c
 
     MatButtonModule,
     MatSnackBarModule,
-    MatToolbarModule,
     MatBottomSheetModule,
     MatDialogModule,
     MatCardModule,
+    MatMenuModule,
+    MatToolbarModule,
+
 
 
     NgbModule,
