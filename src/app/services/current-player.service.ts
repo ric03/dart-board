@@ -67,7 +67,6 @@ export class CurrentPlayerService {
       } else {
         this.storeMultiplier(points, multiplier);
       }
-
       this.decrementRemainingThrows();
     } else {
       throw new Error('Unable to reduce below 0');

@@ -21,7 +21,7 @@ export class InputButtonRowCricketComponent {
   matBadgeHidden: MatBadge["_hidden"] = true;
   toggleOne: boolean = false;
 
-  constructor(private cricketservice: CricketService, public currentPlayerService: CurrentPlayerService
+  constructor(public cricketservice: CricketService, public currentPlayerService: CurrentPlayerService
   ) {
   }
 

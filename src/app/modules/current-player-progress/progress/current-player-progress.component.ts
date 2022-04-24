@@ -20,4 +20,9 @@ export class CurrentPlayerProgressComponent {
   getCurrentPoints(): number {
     return this.currentPlayerService._remainingPoints - this.currentPlayerService._accumulatedPoints;
   }
+  getLastThreeOfHistory() {
+    return this.currentPlayerService._currentPlayer.history.reverse().slice(0, 3);
+
+
+  }
 }

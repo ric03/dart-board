@@ -15,7 +15,7 @@ export class InputButtonRowComponent {
   multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
 
-  constructor(private dartService: DartService,
+  constructor(public dartService: DartService,
   ) {
   }
 

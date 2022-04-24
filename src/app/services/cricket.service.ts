@@ -25,6 +25,7 @@ export class CricketService {
   playerNames: string[] = [];
   roundCount: number = 0;
   public _gameType: string = '';
+  public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
     return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
@@ -45,35 +46,34 @@ export class CricketService {
     this.playerNames = playerNames;
     this.playerService.setupCricketPlayers(playerNames);
     this.roundCount = 1;
+    this._hideAll = false;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
 
   // anpassen
   score(points: number) {
-    this.currentPlayerService.scoreCricket(points, this.multiplier);
-    if (this.currentPlayerService.hasNoThrowsRemaining()) {
-      this.currentPlayerService.applyCricketPoints();
-      this.switchPlayer();
+    if (this.currentPlayerService._rounds == 45) {
+      this.displayRoundCountNotification();
+    } else {
+      this.currentPlayerService.scoreCricket(points, this.multiplier);
+      if (this.cricketWinCheck()) {
+        this.handleVictory();
+      } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
+        this.currentPlayerService.applyCricketPoints();
+        this.switchPlayer();
+      }
     }
-   this.currentPlayerService.sortMap();
+    this.currentPlayerService.sortMap();
   }
 
-  //entfällt
-  private displayOvershotNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
-    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 3000 })
-  }
-
-  //bleibt
   private async handleVictory() {
+    this._hideAll = true;
     this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
     setTimeout(() => {
       this.dialog.closeAll();
       this.dialog.open(QuitConfirmationDialog);
     }, 4000);
-
-
   }
 
   getMultiplier() {
@@ -85,12 +85,52 @@ export class CricketService {
   }
   private switchPlayer() {
     this.inkrementRoundCount();
+    this.setCurrentPlayerAsFristofList();
     this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
+  }
+
+  private displayRoundCountNotification() {
+    const playerName = this.currentPlayerService._currentPlayer.name;
+    this.handleVictoryRoundcount();
+    this._hideAll = true;
+    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', { duration: 7000 })
+    setTimeout(() => {
+      this.dialog.closeAll();
+      this.dialog.open(QuitConfirmationDialog);
+    }, 4000);
+  }
+
+  private async handleVictoryRoundcount() {
+    this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
+    this.dialog.open(VictoryDialog);
+    // TO DO: Open PointsOverview as Option
+    setTimeout(() => {
+      this.dialog.closeAll();
+      this.dialog.open(QuitConfirmationDialog);
+    }, 4000);
+  }
+
+  getPlayerWithHighestScore() {
+    let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
+    var winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
+    return winner[0];
   }
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      this.currentPlayerService._rounds = this.roundCount += 1
+      if (this.currentPlayerService._rounds < 45) {
+        this.currentPlayerService._rounds = this.roundCount += 1;
+      }
     }
+  }
+  setCurrentPlayerAsFristofList() {
+    var current = this.playerService._players.shift();
+    this.playerService._players.push(current!);
+  }
+
+  private cricketWinCheck() {
+    // check cricktArray of all Values == 3 && currentPlayer have most points then Won
+    return Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
+      && this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore();
   }
 }

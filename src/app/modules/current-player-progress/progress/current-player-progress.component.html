@@ -13,6 +13,16 @@
         Round
         {{currentPlayerService._rounds}} of 45
       </mat-card>
+      <mat-card class="m-1">
+        <mat-card-subtitle>
+          Last 3 of <br> {{currentPlayerService._currentPlayer.name}}:
+        </mat-card-subtitle>
+        <mat-card-title>
+          <div *ngFor="let last of getLastThreeOfHistory()">
+            {{last}}
+          </div>
+        </mat-card-title>
+      </mat-card>
     </div>
     <mat-progress-bar color="warn" mode="determinate" [value]='getDartCount()'></mat-progress-bar>
   </div>

@@ -16,6 +16,7 @@ export class DartService {
   public _gameType: string = '';
   playerNames: string[] = [];
   roundCount: number = 1;
+  public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
     return { id, name, remainingPoints: 501, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
@@ -36,11 +37,14 @@ export class DartService {
     this.playerNames = playerNames;
     this.playerService.setupDartPlayers(playerNames);
     this.roundCount = 1;
+    this._hideAll = false;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
 
   score(points: number) {
-    if (this.currentPlayerService.isOvershot(points)) {
+    if (this.currentPlayerService._rounds == 45) {
+      this.displayRoundCountNotification();
+    } else if (this.currentPlayerService.isOvershot(points)) {
       this.displayOvershotNotification();
       this.switchPlayer();
     } else {
@@ -85,6 +89,7 @@ export class DartService {
 
   private switchPlayer() {
     this.inkrementRoundCount();
+    this.setCurrentPlayerAsFristofList();
     this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
 
@@ -98,7 +103,31 @@ export class DartService {
     this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 5000 })
   }
 
+  private displayRoundCountNotification() {
+    const playerName = this.currentPlayerService._currentPlayer.name;
+    this.handleVictoryRoundcount();
+    this._hideAll = true;
+    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', { duration: 7000 })
+    setTimeout(() => {
+      this.dialog.closeAll();
+      this.dialog.open(QuitConfirmationDialog);
+    }, 4000);
+  }
+
+  private async handleVictoryRoundcount() {
+    let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
+    var winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
+    this.currentPlayerService._currentPlayer = winner[0];
+    this.dialog.open(VictoryDialog);
+    // TO DO: Open PointsOverview as Option
+    setTimeout(() => {
+      this.dialog.closeAll();
+      this.dialog.open(QuitConfirmationDialog);
+    }, 4000);
+  }
+
   private async handleVictory() {
+    this._hideAll = true;
     this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
     setTimeout(() => {
@@ -117,7 +146,14 @@ export class DartService {
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      this.currentPlayerService._rounds = this.roundCount += 1
+      if (this.currentPlayerService._rounds < 45) {
+        this.currentPlayerService._rounds = this.roundCount += 1;
+      }
     }
+  }
+
+  setCurrentPlayerAsFristofList() {
+    var current = this.playerService._players.shift();
+    this.playerService._players.push(current!);
   }
 }
