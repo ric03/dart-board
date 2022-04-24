@@ -5,8 +5,8 @@
             <mat-card-title>{{player.remainingPoints}}</mat-card-title>
             {{player.name}}
             <!--More Content vertical-->
-            <div class="d-flex">
-                <mat-card *ngFor="let entry of player.cricketMap.entries()" class="m-1">
+            <div class="d-flex flex-wrap">
+                <mat-card *ngFor="let entry of player.cricketMap.entries() ;let i=index" class="m-1">
                     <mat-card-title>{{entry[0]}}</mat-card-title>
                     hits: {{entry[1]}}
                 </mat-card>
