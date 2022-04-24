@@ -142,17 +142,11 @@ export class CurrentPlayerService {
             }
             if (sumOfMultipliers > 3) {
               map.set(key, 3);
-              var newMultiplier = multiplier - value;
+              var newMultiplier = sumOfMultipliers - 3;
               if (newMultiplier > 0) {
-                this.setRestOfMultiplier(key, newMultiplier);
+                this.setRestOfMultiplier(key, newMultiplier, multiplier);
               }
             }
-            /*if (value <= multiplier) {
-              if (25 == (point / multiplier) && value == 2) {
-                map.set(25, 3);
-              }
-            }
-            */
           }
         });
       } else {
@@ -163,14 +157,17 @@ export class CurrentPlayerService {
   }
 
   sortMap() {
+    this._currentPlayer.cricketMap = new Map([...this._cricketMap].sort());
     this._cricketMap = this._currentPlayer.cricketMap;
-    this._cricketMap = new Map([...this._cricketMap].sort());
+
   }
 
-  setRestOfMultiplier(point: number, multiplierRest: number) {
-    console.log(multiplierRest)
+  setRestOfMultiplier(point: number, multiplierRest: number, multiplier: number) {
+    //bullseye
+    if (point == 25 && multiplier == 2) {
+      point = 50;
+    }
     this._remainingPoints += point * multiplierRest;
-    console.log(this._remainingPoints)
     this.accumulatePoints(this._remainingPoints);
   }
 
