@@ -57,6 +57,7 @@ export class CricketService {
     } else {
       this.currentPlayerService.scoreCricket(points, this.multiplier);
       if (this.cricketWinCheck()) {
+        this.currentPlayerService.applyCricketPoints();
         this.handleVictory();
       } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
         this.currentPlayerService.applyCricketPoints();
@@ -129,8 +130,17 @@ export class CricketService {
   }
 
   private cricketWinCheck() {
-    // check cricktArray of all Values == 3 && currentPlayer have most points then Won
-    return Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
-      && this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore();
+    // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
+    if (Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
+      && this.currentPlayerService._cricketMap.size == 7) {
+      if (this.getPlayerWithHighestScore().remainingPoints == 0) {
+        return true;
+      } else if (this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()) {
+        return true;
+      } else if (this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
+        return true;
+      }
+    }
+    return false;
   }
 }
