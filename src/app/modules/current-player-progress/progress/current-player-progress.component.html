@@ -3,22 +3,23 @@
     <div class="d-flex justify-content-center mt-3">
       <mat-card class="m-1">
         <mat-card-subtitle>
-          Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }} <br>
           Current Average: {{currentPlayerService._averagePoints}}
         </mat-card-subtitle>
         <mat-card-title>
           {{currentPlayerService._currentPlayer.name}}:
           {{currentPlayerService._remainingPoints}}</mat-card-title>
         <br>
+        Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }}
+        <br>
         Round
         {{currentPlayerService._rounds}} of 45
       </mat-card>
       <mat-card class="m-1">
         <mat-card-subtitle>
-          Last 3 of <br> {{currentPlayerService._currentPlayer.name}}:
+          History:
         </mat-card-subtitle>
         <mat-card-title>
-          <div *ngFor="let last of getLastThreeOfHistory()">
+          <div *ngFor="let last of currentPlayerService._last3History">
             {{last}}
           </div>
         </mat-card-title>
