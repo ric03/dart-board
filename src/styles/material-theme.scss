@@ -27,6 +27,48 @@ $dark-theme: mat.define-dark-theme((
     warn: $dark-warn,
   )
 ));
+
+//mY second-Theme
+
+$dark-primary2: mat.define-palette(mat.$orange-palette, A700);
+$dark-accent2: mat.define-palette(mat.$purple-palette, A100);
+
+// The warn palette is optional (defaults to red).
+$dark-warn2: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$dark-theme2: mat.define-dark-theme((color: (
+      primary: $dark-primary2,
+      accent: $dark-accent2,
+      warn: $dark-warn2,
+    )));
+
+
+  //mY third-Theme
+
+  $dark-primary2: mat.define-palette(mat.$deep-purple-palette, 500);
+  $dark-complentary2: mat.define-palette(mat.$light-green-palette, 400);
+  $dark-analogous1: mat.define-palette(mat.$indigo-palette, A400);
+  $dark-analogous2: mat.define-palette(mat.$purple-palette, A400);
+  $dark-triadic1: mat.define-palette(mat.$pink-palette, A400);
+  $dark-triadic2: mat.define-palette(mat.$red-palette, 800);
+  // The warn palette is optional (defaults to red).
+  $dark-warn2: mat.define-palette(mat.$red-palette);
+
+  // Create the theme object. A theme consists of configurations for individual
+  // theming systems such as "color" or "typography".
+  $dark-theme3: mat.define-dark-theme((color: (
+        primary: $dark-primary2,
+        accent: $dark-complentary2,
+        analogous1: $dark-analogous1,
+        analogous2: $dark-analogous2,
+        tradic1: $dark-triadic1,
+        tradic2: $dark-triadic2,
+        warn: $dark-warn2,
+      )));
+
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.

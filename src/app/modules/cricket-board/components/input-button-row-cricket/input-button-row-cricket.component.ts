@@ -20,6 +20,10 @@ export class InputButtonRowCricketComponent {
   buttonColor: ThemePalette = 'primary';
   matBadgeHidden: MatBadge["_hidden"] = true;
   toggleOne: boolean = false;
+  centered = true;
+  unbounded = false;
+  color = "lightgrey";
+  radius = 28;
 
   constructor(public cricketservice: CricketService, public currentPlayerService: CurrentPlayerService
   ) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { MatButtonToggleChange } from "@angular/material/button-toggle";
-import { ThemePalette } from "@angular/material/core";
+import { MatRipple, ThemePalette } from "@angular/material/core";
 import { DartService } from "../../../../services/dart.service";
 
 @Component({
@@ -14,8 +14,12 @@ export class InputButtonRowComponent {
   readonly twentyButtons = [...Array(20)].map((_, index) => index + 1);
   multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
-
-  constructor(public dartService: DartService,
+  centered = true;
+  unbounded = false;
+  color = "lightgrey";
+  radius = 28;
+   //[matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"
+  constructor(public dartService: DartService
   ) {
   }
 
