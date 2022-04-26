@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { DEFAULT_PLAYER, Player } from "../modals/player/player.model";
+import {Injectable} from '@angular/core';
+import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
 
 
 export const MAX_REMAINING_THROWS = 3;

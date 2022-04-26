@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { QuitConfirmationDialog } from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import { VictoryDialog } from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import { CurrentPlayerService } from "./current-player.service";
-import { Player } from '../modals/player/player.model';
-import { PlayerService } from "./player.service";
+import {Injectable} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {QuitConfirmationDialog} from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {Player} from '../models/player/player.model';
+import {CurrentPlayerService} from "./current-player.service";
+import {PlayerService} from "./player.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class CricketService {
    * oder
    * derjenige der alles 3mal getroffen hat && die meisten Punkte hat
    *
-  */
+   */
   multiplier: number = 1;
   playerNames: string[] = [];
   roundCount: number = 0;
@@ -28,13 +28,13 @@ export class CricketService {
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
+    return {id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0};
   }
 
   constructor(private playerService: PlayerService,
-    private currentPlayerService: CurrentPlayerService,
-    private dialog: MatDialog,
-    private snackbar: MatSnackBar,
+              private currentPlayerService: CurrentPlayerService,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
   ) {
   }
 
@@ -84,6 +84,7 @@ export class CricketService {
   setMultiplier(multiplier: number) {
     this.multiplier = multiplier;
   }
+
   private switchPlayer() {
     this.inkrementRoundCount();
     this.setCurrentPlayerAsFristofList();
@@ -94,7 +95,7 @@ export class CricketService {
     const playerName = this.currentPlayerService._currentPlayer.name;
     this.handleVictoryRoundcount();
     this._hideAll = true;
-    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', { duration: 7000 })
+    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
     setTimeout(() => {
       this.dialog.closeAll();
       this.dialog.open(QuitConfirmationDialog);
@@ -124,6 +125,7 @@ export class CricketService {
       }
     }
   }
+
   setCurrentPlayerAsFristofList() {
     var current = this.playerService._players.shift();
     this.playerService._players.push(current!);

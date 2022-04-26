@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from "@angular/router";
-import { GameType } from '../../../modals/enum/GameType';
+import {Component} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from "@angular/router";
+import {GameType} from '../../../models/enum/GameType';
 
 @Component({
   selector: 'app-game-selection',
@@ -27,7 +27,7 @@ export class GameSelectionComponent {
   }
 
   constructor(private fb: FormBuilder,
-    private router: Router,
+              private router: Router,
   ) {
   }
 
@@ -51,9 +51,9 @@ export class GameSelectionComponent {
     const gameType = this.formGroup.value.gameType;
     // noinspection JSIgnoredPromiseFromCall
     if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501) {
-      this.router.navigate(['dartboard'], { queryParams: { gameType, playerNames } });
+      this.router.navigate(['dartboard'], {queryParams: {gameType, playerNames}});
     } else {
-      this.router.navigate(['cricketboard'], { queryParams: { gameType, playerNames } });
+      this.router.navigate(['cricketboard'], {queryParams: {gameType, playerNames}});
     }
 
   }

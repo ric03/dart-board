@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
-import { DartService } from "./dart.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { CricketService } from './cricket.service';
-import { GameType } from '../modals/enum/GameType';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {EMPTY, Observable, of} from 'rxjs';
+import {GameType} from '../models/enum/GameType';
+import {CricketService} from './cricket.service';
+import {DartService} from "./dart.service";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class GameInitializationResolver implements Resolve<boolean> {
       }
       return of(true);
     }
-    this.snackbar.open(`Sorry, please add at least 1 Player.`, 'OK', { duration: 3000 });
+    this.snackbar.open(`Sorry, please add at least 1 Player.`, 'OK', {duration: 3000});
     return EMPTY;
   }
 }

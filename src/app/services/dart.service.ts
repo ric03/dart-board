@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { QuitConfirmationDialog } from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import { VictoryDialog } from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import { GameType } from '../modals/enum/GameType';
-import { CurrentPlayerService } from "./current-player.service";
-import { Player } from '../modals/player/player.model';
-import { PlayerService } from "./player.service";
+import {Injectable} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {QuitConfirmationDialog} from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
+import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {GameType} from '../models/enum/GameType';
+import {Player} from '../models/player/player.model';
+import {CurrentPlayerService} from "./current-player.service";
+import {PlayerService} from "./player.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +19,13 @@ export class DartService {
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 501, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
+    return {id, name, remainingPoints: 501, lastScore: 0, history: [], cricketMap: new Map(), average: 0};
   }
 
   constructor(private playerService: PlayerService,
-    private currentPlayerService: CurrentPlayerService,
-    private dialog: MatDialog,
-    private snackbar: MatSnackBar,
+              private currentPlayerService: CurrentPlayerService,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
   ) {
   }
 
@@ -95,19 +95,19 @@ export class DartService {
 
   private displayDoubleOutFailNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.snackbar.open(`Sorry ${playerName}, you haven't end with double. Switching players.`, 'OK', { duration: 5000 })
+    this.snackbar.open(`Sorry ${playerName}, you haven't end with double. Switching players.`, 'OK', {duration: 5000})
   }
 
   private displayOvershotNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', { duration: 5000 })
+    this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', {duration: 5000})
   }
 
   private displayRoundCountNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
     this.handleVictoryRoundcount();
     this._hideAll = true;
-    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', { duration: 7000 })
+    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
     setTimeout(() => {
       this.dialog.closeAll();
       this.dialog.open(QuitConfirmationDialog);
