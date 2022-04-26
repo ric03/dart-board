@@ -135,7 +135,7 @@ export class CurrentPlayerService {
         map.forEach((value: number, key: number) => {
 
           if (key == (point / multiplier)) {
-            var sumOfMultipliers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
+            const sumOfMultipliers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
             if (sumOfMultipliers == 3) {
               map.set(key, sumOfMultipliers);
             }
@@ -144,7 +144,7 @@ export class CurrentPlayerService {
             }
             if (sumOfMultipliers > 3) {
               map.set(key, 3);
-              var newMultiplier = sumOfMultipliers - 3;
+              const newMultiplier = sumOfMultipliers - 3;
               if (newMultiplier > 0) {
                 this.setRestOfMultiplier(key, newMultiplier, multiplier);
               }
