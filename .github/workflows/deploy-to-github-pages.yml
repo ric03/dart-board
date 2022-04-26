@@ -17,9 +17,13 @@ jobs:
 
       - run: npm run build:ci -- --base-href /dart-board/ --deploy-url /dart-board/
 
+      - name: Add a 404 workaround # https://angular.io/guide/deployment#server-configuration
+        working-directory: dist/dart-board
+        run: cp index.html 404.html
+
       - name: Deploy to GitHub Pages
         if: success()
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4.3.2
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: dist/dart-board # The folder the action should deploy.
