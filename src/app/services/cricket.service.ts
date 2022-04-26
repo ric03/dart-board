@@ -67,18 +67,14 @@ export class CricketService {
     this.currentPlayerService.sortMap();
   }
 
-  private async handleVictory() {
+  private handleVictory() {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
+    // TODO: Open PointsOverview as Option
     setTimeout(() => {
       this.dialog.closeAll();
       this.dialog.open(QuitConfirmationDialog);
     }, 4000);
-  }
-
-  getMultiplier() {
-    return this.multiplier;
   }
 
   setMultiplier(multiplier: number) {
@@ -93,7 +89,7 @@ export class CricketService {
 
   private displayRoundCountNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.handleVictoryRoundcount();
+    this.handleVictoryRoundCount();
     this._hideAll = true;
     this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
     setTimeout(() => {
@@ -102,7 +98,7 @@ export class CricketService {
     }, 4000);
   }
 
-  private async handleVictoryRoundcount() {
+  private handleVictoryRoundCount() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
     this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
@@ -114,7 +110,7 @@ export class CricketService {
 
   getPlayerWithHighestScore() {
     let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    var winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
+    const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
     return winner[0];
   }
 
@@ -127,7 +123,7 @@ export class CricketService {
   }
 
   setCurrentPlayerAsFristofList() {
-    var current = this.playerService._players.shift();
+    const current = this.playerService._players.shift();
     this.playerService._players.push(current!);
   }
 
@@ -135,11 +131,9 @@ export class CricketService {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
       && this.currentPlayerService._cricketMap.size == 7) {
-      if (this.getPlayerWithHighestScore().remainingPoints == 0) {
-        return true;
-      } else if (this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()) {
-        return true;
-      } else if (this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
+      if (this.getPlayerWithHighestScore().remainingPoints == 0
+        || this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()
+        || this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
         return true;
       }
     }
