@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FormControl } from "@angular/forms";
-import { MatButtonToggleChange } from "@angular/material/button-toggle";
-import { MatRipple, ThemePalette } from "@angular/material/core";
-import { DartService } from "../../../../services/dart.service";
+import {Component} from '@angular/core';
+import {FormControl} from "@angular/forms";
+import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {ThemePalette} from "@angular/material/core";
+import {DartService} from "../../../../services/dart.service";
 
 @Component({
   selector: 'app-input-button-row',
@@ -18,12 +18,12 @@ export class InputButtonRowComponent {
   unbounded = false;
   color = "lightgrey";
   radius = 28;
-   //[matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"
+
   constructor(public dartService: DartService
   ) {
   }
 
-  changeButtonColor({ value }: MatButtonToggleChange) {
+  changeButtonColor({value}: MatButtonToggleChange) {
     switch (value) {
       // @formatter:off
       case '1': this.buttonColor = 'primary'; break;
