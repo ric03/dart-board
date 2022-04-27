@@ -1,6 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {VictoryDialog} from '../app/models/victory-dialog/victory-dialog.component';
+import {VictoryDialog} from "../app/dialogTemplates/victory-dialog/victory-dialog.component";
 
 describe('VictoryDialog', () => {
   let component: VictoryDialog;
