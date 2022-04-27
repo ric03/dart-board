@@ -83,7 +83,6 @@ export class DartService {
       if (this.currentPlayerService.hasNoThrowsRemaining()) {
         this.currentPlayerService.applyDartPoints();
         this.switchPlayer();
-
       }
     }
   }
@@ -106,7 +105,7 @@ export class DartService {
 
   private displayRoundCountNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;
-    this.handleVictoryRoundcount();
+    this.handleVictoryRoundCount();
     this._hideAll = true;
     this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
     setTimeout(() => {
@@ -115,9 +114,9 @@ export class DartService {
     }, 4000);
   }
 
-  private async handleVictoryRoundcount() {
-    let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    var winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
+  private handleVictoryRoundCount() {
+    const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
+    const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
     this.currentPlayerService._currentPlayer = winner[0];
     this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
@@ -127,7 +126,7 @@ export class DartService {
     }, 4000);
   }
 
-  private async handleVictory() {
+  private handleVictory() {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
@@ -152,7 +151,7 @@ export class DartService {
   }
 
   setCurrentPlayerAsFristofList() {
-    var current = this.playerService._players.shift();
+    const current = this.playerService._players.shift();
     this.playerService._players.push(current!);
   }
 }
