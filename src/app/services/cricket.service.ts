@@ -6,6 +6,7 @@ import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.co
 import {Player} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
+import {RoundCountService} from "./round-count.service";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class CricketService {
               private currentPlayerService: CurrentPlayerService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
+              private roundCountService: RoundCountService,
   ) {
   }
 
@@ -43,6 +45,7 @@ export class CricketService {
   }
 
   initPlayers(playerNames: string[]) {
+    this.roundCountService.reset();
     this.playerNames = playerNames;
     this.playerService.setupCricketPlayers(playerNames);
     this.roundCount = 1;
@@ -52,7 +55,7 @@ export class CricketService {
 
   // anpassen
   score(points: number) {
-    if (this.currentPlayerService._rounds == 45) {
+    if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
     } else {
       this.currentPlayerService.scoreCricket(points, this.multiplier);
@@ -116,9 +119,7 @@ export class CricketService {
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      if (this.currentPlayerService._rounds < 45) {
-        this.currentPlayerService._rounds = this.roundCount += 1;
-      }
+      this.roundCountService.incrementRoundCount()
     }
   }
 

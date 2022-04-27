@@ -7,6 +7,7 @@ import {GameType} from '../models/enum/GameType';
 import {Player} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
+import {RoundCountService} from "./round-count.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,7 @@ import {PlayerService} from "./player.service";
 export class DartService {
   multiplier: number = 1;
   public _gameType: string = '';
-  playerNames: string[] = [];
-  roundCount: number = 1;
+  private playerNames: string[] = [];
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
@@ -26,6 +26,7 @@ export class DartService {
               private currentPlayerService: CurrentPlayerService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
+              private roundCountService: RoundCountService,
   ) {
   }
 
@@ -34,15 +35,15 @@ export class DartService {
   }
 
   initPlayers(playerNames: string[]) {
+    this.roundCountService.reset();
     this.playerNames = playerNames;
     this.playerService.setupDartPlayers(playerNames);
-    this.roundCount = 1;
     this._hideAll = false;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
 
   score(points: number) {
-    if (this.currentPlayerService._rounds == 45) {
+    if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
     } else if (this.currentPlayerService.isOvershot(points)) {
       this.displayOvershotNotification();
@@ -146,9 +147,7 @@ export class DartService {
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      if (this.currentPlayerService._rounds < 45) {
-        this.currentPlayerService._rounds = this.roundCount += 1;
-      }
+      this.roundCountService.incrementRoundCount();
     }
   }
 

@@ -14,7 +14,6 @@ export class CurrentPlayerService {
   public _accumulatedPoints = 0;
   public _remainingPoints = 0;
   public _averagePoints = 0;
-  public _rounds = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
   public _cricketMap = new Map<number, number>();
   public _last3History: number[] = [];
@@ -22,7 +21,6 @@ export class CurrentPlayerService {
   init(player: Player) {
     this.switchPlayer(player);
     this._remainingPoints = player.remainingPoints;
-    this._rounds = 1;
     this._last3History = [];
   }
 

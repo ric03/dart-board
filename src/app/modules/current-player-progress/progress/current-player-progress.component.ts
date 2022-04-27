@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { CurrentPlayerService, MAX_REMAINING_THROWS } from "../../../services/current-player.service";
+import {Component} from '@angular/core';
+import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../services/current-player.service";
+import {RoundCountService} from "../../../services/round-count.service";
 
 @Component({
   selector: 'app-current-player-progress',
@@ -10,7 +11,9 @@ export class CurrentPlayerProgressComponent {
 
   readonly maxRemainingThrows = MAX_REMAINING_THROWS
 
-  constructor(public currentPlayerService: CurrentPlayerService) {
+  constructor(public currentPlayerService: CurrentPlayerService,
+              public roundCountService: RoundCountService
+  ) {
   }
 
   getDartCount(): number {
