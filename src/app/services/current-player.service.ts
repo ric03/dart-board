@@ -26,7 +26,7 @@ export class CurrentPlayerService {
 
   switchPlayer(player: Player) {
     this._currentPlayer = player;
-    this._last3History = this.getLastThreeOfHistory();
+    this._last3History = this.getLastThreeThrows();
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
     this._averagePoints = player.average;
@@ -171,8 +171,8 @@ export class CurrentPlayerService {
     this.accumulatePoints(this._remainingPoints);
   }
 
-  getLastThreeOfHistory() {
-    return this._currentPlayer.history.reverse().slice(0, 3);
+  getLastThreeThrows() {
+    return this._currentPlayer.history.slice(-3);
   }
 
 }
