@@ -12,12 +12,8 @@ import {DartService} from "../../../../services/dart.service";
 export class InputButtonRowComponent {
 
   readonly twentyButtons = [...Array(20)].map((_, index) => index + 1);
-  multiplier: FormControl = new FormControl('1');
+  readonly multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
-  centered = true;
-  unbounded = false;
-  color = "lightgrey";
-  radius = 28;
 
   constructor(public dartService: DartService
   ) {
