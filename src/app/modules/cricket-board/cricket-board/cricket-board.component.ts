@@ -1,5 +1,4 @@
-import {Component, HostListener} from '@angular/core';
-import {environment} from 'src/environments/environment';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-cricket-component',
@@ -7,14 +6,4 @@ import {environment} from 'src/environments/environment';
   styleUrls: ['./cricket-board.component.scss']
 })
 export class CricketBoardComponent {
-  private env = environment;
-
-  // TODO extract into service and enable conditionally?
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event: any) {
-    if (this.env.production) {
-      event.preventDefault();
-    }
-  }
-
 }
