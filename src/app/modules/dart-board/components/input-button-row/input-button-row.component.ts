@@ -12,10 +12,10 @@ import {DartService} from "../../../../services/dart.service";
 export class InputButtonRowComponent {
 
   readonly twentyButtons = [...Array(20)].map((_, index) => index + 1);
-  readonly multiplier: FormControl = new FormControl('1');
+  readonly multiplierControl: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
 
-  constructor(public dartService: DartService
+  constructor(public dartService: DartService,
   ) {
   }
 
@@ -30,20 +30,20 @@ export class InputButtonRowComponent {
     }
   }
 
-  score(points: number) {
-    // bullsEye
-    if (this.multiplier.value == 1 && points == 50) {
-      this.dartService.setMultiplier(2);
-    }
-    // bull
-    if (this.multiplier.value == 1 && points == 25) {
-      this.dartService.setMultiplier(1);
-    }
-    this.dartService.score(points);
+  scoreBull() {
+    this.dartService.score({value: 25, multiplier: 1})
   }
 
-  scoreWithMultiplier(primaryNumber: number) {
-    this.dartService.setMultiplier(this.multiplier.value);
-    this.dartService.score(primaryNumber * +this.multiplier.value);
+  scoreBullsEye() {
+    this.dartService.score({value: 25, multiplier: 2})
+  }
+
+  scoreMiss() {
+    this.dartService.score({value: 0, multiplier: 1})
+  }
+
+  scoreWithMultiplier(value: number) {
+    const multiplier: number = +this.multiplierControl.value;
+    this.dartService.score({value, multiplier});
   }
 }

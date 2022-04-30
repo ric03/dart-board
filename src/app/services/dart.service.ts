@@ -4,7 +4,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {QuitConfirmationDialog} from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
 import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {GameType} from '../models/enum/GameType';
-import {Player} from '../models/player/player.model';
+import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
@@ -42,7 +42,10 @@ export class DartService {
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }
 
-  score(points: number) {
+  score(_throw: Throw) {
+    this.setMultiplier(_throw.multiplier);
+    const points = _throw.value * _throw.multiplier;
+
     if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
     } else if (this.currentPlayerService.isOvershot(points)) {

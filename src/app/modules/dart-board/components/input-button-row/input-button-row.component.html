@@ -4,25 +4,25 @@
     <button
       mat-flat-button color="primary"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
-      (click)="score(25)">
+      (click)="scoreBull()">
       Bull
     </button>
     <button
       class="ms-3" mat-flat-button color="accent"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
-      (click)="score(50)">
+      (click)="scoreBullsEye()">
       BullsEye
     </button>
     <button
       class="ms-3" mat-flat-button color="warn"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
-      (click)="score(0)">
+      (click)="scoreMiss()">
       Miss
     </button>
   </div>
 
   <div class="d-flex justify-content-center mt-3">
-    <mat-button-toggle-group value="1" [formControl]="multiplier" (change)="changeButtonColor($event)">
+    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
       <mat-button-toggle value="1">Single</mat-button-toggle>
       <mat-button-toggle value="2">Double</mat-button-toggle>
       <mat-button-toggle value="3">Triple</mat-button-toggle>
