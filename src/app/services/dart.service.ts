@@ -13,7 +13,6 @@ import {RoundCountService} from "./round-count.service";
   providedIn: 'root'
 })
 export class DartService {
-  private multiplier: number = 1;
   private _gameType: string = '';
   private playerNames: string[] = [];
   public _hideAll: boolean = false;
@@ -43,7 +42,6 @@ export class DartService {
   }
 
   score(_throw: Throw) {
-    this.setMultiplier(_throw.multiplier);
     const points = _throw.value * _throw.multiplier;
 
     if (this.roundCountService.getRemainingRounds() == 0) {
@@ -54,7 +52,7 @@ export class DartService {
     } else {
       this.currentPlayerService.scoreDart(points);
       if (GameType.DoubleOut501 == this._gameType) {
-        this.checksFor501DoubleOut(this.multiplier);
+        this.checksFor501DoubleOut(_throw.multiplier);
       } else {
         this.checksFor501();
       }
@@ -137,10 +135,6 @@ export class DartService {
       this.dialog.closeAll();
       this.dialog.open(QuitConfirmationDialog);
     }, 4000);
-  }
-
-  setMultiplier(multiplier: number) {
-    this.multiplier = multiplier;
   }
 
   inkrementRoundCount() {
