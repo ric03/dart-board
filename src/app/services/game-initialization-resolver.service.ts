@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {EMPTY, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {GameType} from '../models/enum/GameType';
 import {CricketService} from './cricket.service';
 import {DartService} from "./dart.service";
@@ -11,24 +10,23 @@ import {DartService} from "./dart.service";
 })
 export class GameInitializationResolver implements Resolve<boolean> {
 
-  constructor(private dartService: DartService, private cricketService: CricketService, private snackbar: MatSnackBar,
+  constructor(private dartService: DartService,
+              private cricketService: CricketService,
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    let gameType: string = route.queryParamMap.get('gameType')!;
+  resolve(route: ActivatedRouteSnapshot, _unused: RouterStateSnapshot): Observable<boolean> {
+    const gameType = <GameType>route.queryParamMap.get('gameType')!;
     const playerNames = route.queryParamMap.getAll('playerNames');
-    if (playerNames.length > 0) {
-      if (gameType == GameType.Cricket) {
-        this.cricketService.setGameType(gameType);
-        this.cricketService.initPlayers(playerNames);
-      } else {
-        this.dartService.setGameType(gameType);
-        this.dartService.initPlayers(playerNames);
-      }
-      return of(true);
+
+    if (gameType == GameType.Cricket) {
+      this.cricketService.setGameType(GameType.Cricket);
+      this.cricketService.initPlayers(playerNames);
+    } else {
+      this.dartService.setGameType(gameType);
+      this.dartService.initPlayers(playerNames);
     }
-    this.snackbar.open(`Sorry, please add at least 1 Player.`, 'OK', {duration: 3000});
-    return EMPTY;
+    return of(true);
+
   }
 }

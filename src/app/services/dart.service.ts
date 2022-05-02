@@ -13,7 +13,7 @@ import {RoundCountService} from "./round-count.service";
   providedIn: 'root'
 })
 export class DartService {
-  private _gameType: string = '';
+  private _gameType: GameType = GameType.Simple501;
   private playerNames: string[] = [];
   public _hideAll: boolean = false;
 
@@ -29,7 +29,7 @@ export class DartService {
   ) {
   }
 
-  setGameType(gameType: string) {
+  setGameType(gameType: GameType) {
     this._gameType = gameType;
   }
 

@@ -49,7 +49,7 @@ export class GameSelectionComponent {
   onSubmit() {
     const playerNames = this.formGroup.value.playerNames;
     const gameType = this.formGroup.value.gameType;
-    // noinspection JSIgnoredPromiseFromCall
+
     if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501) {
       this.router.navigate(['dartboard'], {queryParams: {gameType, playerNames}});
     } else {
