@@ -172,7 +172,7 @@ export class CurrentPlayerService {
   }
 
   getLastThreeThrows() {
-    return this._currentPlayer.history.slice(-3);
+    return this._currentPlayer.history.slice(-3).reverse();
   }
 
 }
