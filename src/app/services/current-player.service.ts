@@ -21,7 +21,6 @@ export class CurrentPlayerService {
   init(player: Player) {
     this.switchPlayer(player);
     this._remainingPoints = player.remainingPoints;
-    this._last3History = [];
   }
 
   switchPlayer(player: Player) {
@@ -157,9 +156,9 @@ export class CurrentPlayerService {
   }
 
   sortMap() {
-    this._currentPlayer.cricketMap = new Map([...this._cricketMap].sort());
-    this._cricketMap = this._currentPlayer.cricketMap;
-
+    const sortedMap = new Map([...this._cricketMap].sort());
+    this._currentPlayer.cricketMap = sortedMap;
+    this._cricketMap = sortedMap;
   }
 
   setRestOfMultiplier(point: number, multiplierRest: number, multiplier: number) {
