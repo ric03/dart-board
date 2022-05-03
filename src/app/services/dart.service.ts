@@ -120,21 +120,13 @@ export class DartService {
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
     this.currentPlayerService._currentPlayer = winner[0];
     this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    // TODO: Open PointsOverview as Option
   }
 
   private handleVictory() {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    // TODO: Open PointsOverview as Option
   }
 
   inkrementRoundCount() {

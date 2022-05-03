@@ -74,10 +74,6 @@ export class CricketService {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
     // TODO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
   }
 
   setMultiplier(multiplier: number) {
@@ -104,11 +100,7 @@ export class CricketService {
   private handleVictoryRoundCount() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
     this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    // TODO: Open PointsOverview as Option
   }
 
   getPlayerWithHighestScore() {
