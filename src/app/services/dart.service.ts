@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {QuitConfirmationDialog} from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {GameType} from '../models/enum/GameType';
 import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
@@ -105,21 +104,17 @@ export class DartService {
   }
 
   private displayRoundCountNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
-    this.handleVictoryRoundCount();
     this._hideAll = true;
-    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    this.handleVictoryByReachingRoundLimit();
   }
 
-  private handleVictoryRoundCount() {
+  private handleVictoryByReachingRoundLimit() {
     const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
-    this.currentPlayerService._currentPlayer = winner[0];
-    this.dialog.open(VictoryDialog);
+    this.currentPlayerService._currentPlayer = winner[0]; // TODO consider a draw
+
+    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
+    this.dialog.open(VictoryDialog, {data});
     // TODO: Open PointsOverview as Option
   }
 

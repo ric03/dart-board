@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {QuitConfirmationDialog} from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {Player} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
@@ -87,26 +86,22 @@ export class CricketService {
   }
 
   private displayRoundCountNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
-    this.handleVictoryRoundCount();
     this._hideAll = true;
-    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', {duration: 7000})
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    this.handleVictoryByReachingRoundLimit();
   }
 
-  private handleVictoryRoundCount() {
+  private handleVictoryByReachingRoundLimit() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
-    this.dialog.open(VictoryDialog);
+
+    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
+    this.dialog.open(VictoryDialog, {data});
     // TODO: Open PointsOverview as Option
   }
 
   getPlayerWithHighestScore() {
     let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
-    return winner[0];
+    return winner[0]; // TODO consider a draw
   }
 
   inkrementRoundCount() {

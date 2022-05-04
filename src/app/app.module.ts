@@ -12,7 +12,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HiddenPlayersDialog} from './dialogTemplates/hidden-players-dialog/hidden-players-dialog.component';
-import {QuitConfirmationDialog} from './dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
 import {VictoryDialog} from './dialogTemplates/victory-dialog/victory-dialog.component';
 import {CricketBoardModule} from './modules/cricket-board/cricket-board.module';
 import {CurrentPlayerProgressModule} from './modules/current-player-progress/current-player-progress.module';
@@ -27,7 +26,6 @@ import {noop} from "./shared/util";
   declarations: [
     AppComponent,
     VictoryDialog,
-    QuitConfirmationDialog,
     HiddenPlayersDialog,
   ],
   imports: [
