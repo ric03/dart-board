@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { FormControl } from "@angular/forms";
-import { MatBadge } from '@angular/material/badge';
-import { MatButton } from '@angular/material/button';
-import { MatButtonToggleChange } from "@angular/material/button-toggle";
-import { ThemePalette } from "@angular/material/core";
-import { CricketService } from 'src/app/services/cricket.service';
-import { CurrentPlayerService } from 'src/app/services/current-player.service';
+import {Component} from '@angular/core';
+import {FormControl} from "@angular/forms";
+import {MatBadge} from '@angular/material/badge';
+import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {ThemePalette} from "@angular/material/core";
+import {CricketService} from 'src/app/services/cricket.service';
+import {CurrentPlayerService} from 'src/app/services/current-player.service';
 
 
 @Component({
@@ -15,11 +14,9 @@ import { CurrentPlayerService } from 'src/app/services/current-player.service';
 })
 export class InputButtonRowCricketComponent {
 
-  readonly sixButtons = [...Array(6)].map((_, index) => index + 15);
   multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
   matBadgeHidden: MatBadge["_hidden"] = true;
-  toggleOne: boolean = false;
   centered = true;
   unbounded = false;
   color = "lightgrey";
@@ -29,7 +26,7 @@ export class InputButtonRowCricketComponent {
   ) {
   }
 
-  changeButtonColor({ value }: MatButtonToggleChange) {
+  changeButtonColor({value}: MatButtonToggleChange) {
     switch (value) {
       // @formatter:off
       case '1': this.buttonColor = 'primary'; break;

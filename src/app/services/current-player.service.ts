@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { DEFAULT_PLAYER, Player } from "../modals/player/player.model";
+import {Injectable} from '@angular/core';
+import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -14,7 +14,6 @@ export class CurrentPlayerService {
   public _accumulatedPoints = 0;
   public _remainingPoints = 0;
   public _averagePoints = 0;
-  public _rounds = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
   public _cricketMap = new Map<number, number>();
   public _last3History: number[] = [];
@@ -22,13 +21,11 @@ export class CurrentPlayerService {
   init(player: Player) {
     this.switchPlayer(player);
     this._remainingPoints = player.remainingPoints;
-    this._rounds = 1;
-    this._last3History = [];
   }
 
   switchPlayer(player: Player) {
     this._currentPlayer = player;
-    this._last3History = this.getLastThreeOfHistory();
+    this._last3History = this.getLastThreeThrows();
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
     this._averagePoints = player.average;
@@ -135,7 +132,7 @@ export class CurrentPlayerService {
         map.forEach((value: number, key: number) => {
 
           if (key == (point / multiplier)) {
-            var sumOfMultipliers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
+            const sumOfMultipliers = +value + +multiplier; // das ist ja kaputt :-( --> hat mich ewig viel zeit gekostet
             if (sumOfMultipliers == 3) {
               map.set(key, sumOfMultipliers);
             }
@@ -144,7 +141,7 @@ export class CurrentPlayerService {
             }
             if (sumOfMultipliers > 3) {
               map.set(key, 3);
-              var newMultiplier = sumOfMultipliers - 3;
+              const newMultiplier = sumOfMultipliers - 3;
               if (newMultiplier > 0) {
                 this.setRestOfMultiplier(key, newMultiplier, multiplier);
               }
@@ -159,9 +156,9 @@ export class CurrentPlayerService {
   }
 
   sortMap() {
-    this._currentPlayer.cricketMap = new Map([...this._cricketMap].sort());
-    this._cricketMap = this._currentPlayer.cricketMap;
-
+    const sortedMap = new Map([...this._cricketMap].sort());
+    this._currentPlayer.cricketMap = sortedMap;
+    this._cricketMap = sortedMap;
   }
 
   setRestOfMultiplier(point: number, multiplierRest: number, multiplier: number) {
@@ -173,8 +170,8 @@ export class CurrentPlayerService {
     this.accumulatePoints(this._remainingPoints);
   }
 
-  getLastThreeOfHistory() {
-    return this._currentPlayer.history.reverse().slice(0, 3);
+  getLastThreeThrows() {
+    return this._currentPlayer.history.slice(-3).reverse();
   }
 
 }
