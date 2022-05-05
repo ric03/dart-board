@@ -12,7 +12,7 @@
         Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }}
         <br>
         Round
-        {{currentPlayerService._rounds}} of 45
+        {{roundCountService.roundCount}} of 45
       </mat-card>
       <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
         <mat-card-subtitle>

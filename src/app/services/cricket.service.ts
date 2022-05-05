@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { QuitConfirmationDialog } from '../dialogTemplates/quit-confirmation-dialog/quit-confirmation-dialog.component';
-import { VictoryDialog } from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import { CurrentPlayerService } from "./current-player.service";
-import { Player } from '../modals/player/player.model';
-import { PlayerService } from "./player.service";
+import {Injectable} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {Player} from '../models/player/player.model';
+import {CurrentPlayerService} from "./current-player.service";
+import {PlayerService} from "./player.service";
+import {RoundCountService} from "./round-count.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class CricketService {
    * oder
    * derjenige der alles 3mal getroffen hat && die meisten Punkte hat
    *
-  */
+   */
   multiplier: number = 1;
   playerNames: string[] = [];
   roundCount: number = 0;
@@ -28,13 +28,14 @@ export class CricketService {
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
+    return {id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0};
   }
 
   constructor(private playerService: PlayerService,
-    private currentPlayerService: CurrentPlayerService,
-    private dialog: MatDialog,
-    private snackbar: MatSnackBar,
+              private currentPlayerService: CurrentPlayerService,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
+              private roundCountService: RoundCountService,
   ) {
   }
 
@@ -43,6 +44,7 @@ export class CricketService {
   }
 
   initPlayers(playerNames: string[]) {
+    this.roundCountService.reset();
     this.playerNames = playerNames;
     this.playerService.setupCricketPlayers(playerNames);
     this.roundCount = 1;
@@ -52,7 +54,7 @@ export class CricketService {
 
   // anpassen
   score(points: number) {
-    if (this.currentPlayerService._rounds == 45) {
+    if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
     } else {
       this.currentPlayerService.scoreCricket(points, this.multiplier);
@@ -67,23 +69,16 @@ export class CricketService {
     this.currentPlayerService.sortMap();
   }
 
-  private async handleVictory() {
+  private handleVictory() {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
-  }
-
-  getMultiplier() {
-    return this.multiplier;
+    // TODO: Open PointsOverview as Option
   }
 
   setMultiplier(multiplier: number) {
     this.multiplier = multiplier;
   }
+
   private switchPlayer() {
     this.inkrementRoundCount();
     this.setCurrentPlayerAsFristofList();
@@ -91,41 +86,32 @@ export class CricketService {
   }
 
   private displayRoundCountNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
-    this.handleVictoryRoundcount();
     this._hideAll = true;
-    this.snackbar.open(`Sorry ${playerName}, you have reached the roundlimit of 45. Stopping game.`, 'OK', { duration: 7000 })
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    this.handleVictoryByReachingRoundLimit();
   }
 
-  private async handleVictoryRoundcount() {
+  private handleVictoryByReachingRoundLimit() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
-    this.dialog.open(VictoryDialog);
-    // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
-      this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+
+    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
+    this.dialog.open(VictoryDialog, {data});
+    // TODO: Open PointsOverview as Option
   }
 
   getPlayerWithHighestScore() {
     let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    var winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
-    return winner[0];
+    const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
+    return winner[0]; // TODO consider a draw
   }
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      if (this.currentPlayerService._rounds < 45) {
-        this.currentPlayerService._rounds = this.roundCount += 1;
-      }
+      this.roundCountService.incrementRoundCount()
     }
   }
+
   setCurrentPlayerAsFristofList() {
-    var current = this.playerService._players.shift();
+    const current = this.playerService._players.shift();
     this.playerService._players.push(current!);
   }
 
@@ -133,11 +119,9 @@ export class CricketService {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
       && this.currentPlayerService._cricketMap.size == 7) {
-      if (this.getPlayerWithHighestScore().remainingPoints == 0) {
-        return true;
-      } else if (this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()) {
-        return true;
-      } else if (this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
+      if (this.getPlayerWithHighestScore().remainingPoints == 0
+        || this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()
+        || this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
         return true;
       }
     }
