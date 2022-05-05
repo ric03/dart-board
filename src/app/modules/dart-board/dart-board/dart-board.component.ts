@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { environment } from "../../../../environments/environment";
 
 
@@ -10,9 +10,12 @@ import { environment } from "../../../../environments/environment";
 })
 export class DartBoardComponent {
 
+  constructor() {
+
+  }
   private env = environment;
 
-  // TODO extract into service and enable conditionally?
+  // TODO extract into service and enable conditionally? --> keine Ahnung wie!
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
     if (this.env.production) {

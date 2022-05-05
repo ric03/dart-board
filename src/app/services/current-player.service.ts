@@ -18,16 +18,19 @@ export class CurrentPlayerService {
   public _currentPlayer: Player = DEFAULT_PLAYER;
   public _cricketMap = new Map<number, number>();
   public _last3History: number[] = [];
+  public _history: number[] = [];
 
   init(player: Player) {
     this.switchPlayer(player);
     this._remainingPoints = player.remainingPoints;
     this._rounds = 1;
     this._last3History = [];
+    this._history = [];
   }
 
   switchPlayer(player: Player) {
     this._currentPlayer = player;
+    this._history = this.getHistory();
     this._last3History = this.getLastThreeOfHistory();
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
@@ -174,7 +177,10 @@ export class CurrentPlayerService {
   }
 
   getLastThreeOfHistory() {
-    return this._currentPlayer.history.reverse().slice(0, 3);
+    return this._currentPlayer.history.slice(-3).reverse();
   }
 
+  getHistory() {
+    return this._currentPlayer.history.reverse();
+  }
 }

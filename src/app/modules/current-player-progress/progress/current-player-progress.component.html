@@ -14,7 +14,7 @@
         Round
         {{currentPlayerService._rounds}} of 45
       </mat-card>
-      <mat-card class="m-1">
+      <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
         <mat-card-subtitle>
           History:
         </mat-card-subtitle>

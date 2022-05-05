@@ -128,12 +128,30 @@ export class DartService {
 
   private async handleVictory() {
     this._hideAll = true;
-    this.dialog.open(VictoryDialog);
+    this.initQuit()
+  }
+
+  async initQuit() {
+    var vic = this.dialog.open(VictoryDialog);
     // TO DO: Open PointsOverview as Option
-    setTimeout(() => {
-      this.dialog.closeAll();
+    var boo = await this.sleepAndClose(4000, vic);
+    console.log(boo);
+    if (boo == true) {
       this.dialog.open(QuitConfirmationDialog);
-    }, 4000);
+    }
+  }
+
+  sleepAndClose(ms: number, vic: any) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.closeDialogBoolean(vic));
+      }, ms);
+    });
+  }
+
+  closeDialogBoolean(vic: any) {
+    vic.close()
+    return true;
   }
 
   getMultiplier() {

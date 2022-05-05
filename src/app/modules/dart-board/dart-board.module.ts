@@ -7,6 +7,7 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { PrevetReloadService } from 'src/app/services/prevet-reload.service';
 import { GameSelectionModule } from '../game-selection/game-selection.module';
 import { ScoreBoardModule } from '../score-board/score-board.module';
 import { InputButtonRowComponent } from "./components/input-button-row/input-button-row.component";
