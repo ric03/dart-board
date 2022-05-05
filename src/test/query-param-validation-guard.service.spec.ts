@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {QueryParamValidationGuard} from './query-param-validation-guard.service';
+import {QueryParamValidationGuard} from '../app/services/query-param-validation-guard.service';
 
 describe('QueryParamValidationGuard', () => {
   let guard: QueryParamValidationGuard;
