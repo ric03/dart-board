@@ -1,6 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-
-import {RoundCountService} from './round-count.service';
+import {RoundCountService} from "../app/services/round-count.service";
 
 describe('RoundCountService', () => {
   let service: RoundCountService;

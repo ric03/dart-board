@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
+import {RedirectWarningService} from "../app/services/redirect-warning.service";
 
-import {RedirectWarningService} from './redirect-warning.service';
 
 describe('RedirectWarningService', () => {
   let service: RedirectWarningService;

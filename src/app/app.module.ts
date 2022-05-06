@@ -8,7 +8,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HiddenPlayersDialog} from './dialogTemplates/hidden-players-dialog/hidden-players-dialog.component';
@@ -48,8 +47,6 @@ import {noop} from "./shared/util";
     MatCardModule,
     MatMenuModule,
     MatToolbarModule,
-
-    NgbModule,
   ],
   providers: [
     RedirectWarningService,
