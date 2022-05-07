@@ -16,9 +16,9 @@ export class InputButtonRowCricketComponent {
 
   readonly availableButtonValues: number[] = [15, 16, 17, 18, 19, 20]
 
-  readonly multiplier: FormControl = new FormControl('1');
+  readonly multiplierControl: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
-  matBadgeHidden: MatBadge["_hidden"] = true;
+  isMatBadgeHidden: MatBadge["_hidden"] = true;
 
 
   constructor(public cricketService: CricketService,
@@ -37,24 +37,23 @@ export class InputButtonRowCricketComponent {
     }
   }
 
-  score(points: number) {
-    // bullsEye
-    if (points == 50) {
-      this.cricketService.setMultiplier(2);
-    }
-    // bull
-    if (points == 25) {
-      this.cricketService.setMultiplier(1);
-    }
-    this.matBadgeHidden = false;
-    this.cricketService.score(points);
+  scoreBull() {
+    this.cricketService.score({value: 25, multiplier: 1})
   }
 
-  scoreWithMultiplier(primaryNumber: number) {
-    this.cricketService.setMultiplier(this.multiplier.value);
-    this.matBadgeHidden = false;
-    this.cricketService.score(primaryNumber * +this.multiplier.value);
+  scoreBullsEye() {
+    this.cricketService.score({value: 25, multiplier: 2})
+  }
 
+  scoreMiss() {
+    this.cricketService.score({value: 0, multiplier: 1})
+  }
+
+  scoreWithMultiplier(value: number) {
+    this.isMatBadgeHidden = false;
+
+    const multiplier = +this.multiplierControl.value;
+    this.cricketService.score({value, multiplier});
   }
 
   getBadgeCountValue(primaryNumber: number) {

@@ -3,25 +3,25 @@
   <div class="d-flex justify-content-center mt-3">
     <button mat-flat-button color="primary"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="getBadgeCountValue(25)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
-            (click)="score(25)"
+            [matBadge]="getBadgeCountValue(25)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
+            (click)="scoreBull()"
     >Bull
     </button>
     <button mat-flat-button color="accent" class="ms-3"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="getBadgeCountValue(50)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
-            (click)="score(50)"
+            [matBadge]="getBadgeCountValue(50)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
+            (click)="scoreBullsEye()"
     >BullsEye
     </button>
     <button mat-flat-button color="warn" class="ms-3"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            (click)="score(0)"
+            (click)="scoreMiss()"
     >Miss
     </button>
   </div>
 
   <div class="d-flex justify-content-center mt-3">
-    <mat-button-toggle-group value="1" [formControl]="multiplier" (change)="changeButtonColor($event)">
+    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
       <mat-button-toggle value="1">Single</mat-button-toggle>
       <mat-button-toggle value="2">Double</mat-button-toggle>
       <mat-button-toggle value="3">Triple</mat-button-toggle>
@@ -34,7 +34,7 @@
     >
       <button mat-fab [color]="buttonColor"
               matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-              [matBadge]="getBadgeCountValue(btnValue)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
+              [matBadge]="getBadgeCountValue(btnValue)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
               (click)="scoreWithMultiplier(btnValue)"
       >{{btnValue}}</button>
     </div>
