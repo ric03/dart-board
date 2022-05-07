@@ -1,22 +1,20 @@
 <div [hidden]="this.cricketService._hideAll" class="container-sm">
 
   <div class="d-flex justify-content-center mt-3">
-    <button matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            mat-flat-button color="primary"
-            [matBadgeHidden]="matBadgeHidden" [matBadge]="setMatBage(25)"
-            matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium"
+    <button mat-flat-button color="primary"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            [matBadge]="setMatBage(25)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
             (click)="score(25)"
     >Bull
     </button>
-    <button matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            mat-flat-button color="accent" class="ms-3"
-            [matBadgeHidden]="matBadgeHidden" [matBadge]="setMatBage(25)"
-            matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium"
+    <button mat-flat-button color="accent" class="ms-3"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            [matBadge]="setMatBage(25)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
             (click)="score(50)"
     >BullsEye
     </button>
-    <button matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            mat-flat-button color="warn" class="ms-3"
+    <button mat-flat-button color="warn" class="ms-3"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
             (click)="score(0)"
     >Miss
     </button>
