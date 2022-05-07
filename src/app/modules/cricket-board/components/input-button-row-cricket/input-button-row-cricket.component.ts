@@ -17,11 +17,6 @@ export class InputButtonRowCricketComponent {
   multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
   matBadgeHidden: MatBadge["_hidden"] = true;
-  centered = true;
-  unbounded = false;
-  color = "lightgrey";
-  radius = 28;
-
 
   constructor(public cricketService: CricketService,
               public currentPlayerService: CurrentPlayerService
