@@ -3,13 +3,13 @@
   <div class="d-flex justify-content-center mt-3">
     <button mat-flat-button color="primary"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="setMatBage(25)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
+            [matBadge]="getBadgeCountValue(25)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
             (click)="score(25)"
     >Bull
     </button>
     <button mat-flat-button color="accent" class="ms-3"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="setMatBage(50)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
+            [matBadge]="getBadgeCountValue(50)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
             (click)="score(50)"
     >BullsEye
     </button>
@@ -34,7 +34,7 @@
     >
       <button mat-fab [color]="buttonColor"
               matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-              [matBadge]="setMatBage(btnValue)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
+              [matBadge]="getBadgeCountValue(btnValue)" [matBadgeHidden]="matBadgeHidden" matBadgeColor="accent"
               (click)="scoreWithMultiplier(btnValue)"
       >{{btnValue}}</button>
     </div>

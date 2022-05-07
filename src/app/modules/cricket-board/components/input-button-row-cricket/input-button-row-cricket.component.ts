@@ -57,7 +57,7 @@ export class InputButtonRowCricketComponent {
 
   }
 
-  setMatBage(primaryNumber: number) {
+  getBadgeCountValue(primaryNumber: number) {
     return this.currentPlayerService._currentPlayer.cricketMap.get(primaryNumber);
   }
 }
