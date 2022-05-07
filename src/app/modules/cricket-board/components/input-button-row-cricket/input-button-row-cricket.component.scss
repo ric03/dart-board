@@ -1,5 +1,8 @@
-.w-20-percent {
-  width: 20%;
+/**
+ * We want to display six buttons in a single row
+ */
+.w-16-percent {
+  width: calc(100% / 6);
 }
 
 /*

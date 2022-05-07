@@ -14,9 +14,12 @@ import {CurrentPlayerService} from 'src/app/services/current-player.service';
 })
 export class InputButtonRowCricketComponent {
 
-  multiplier: FormControl = new FormControl('1');
+  readonly availableButtonValues: number[] = [15, 16, 17, 18, 19, 20]
+
+  readonly multiplier: FormControl = new FormControl('1');
   buttonColor: ThemePalette = 'primary';
   matBadgeHidden: MatBadge["_hidden"] = true;
+
 
   constructor(public cricketService: CricketService,
               public currentPlayerService: CurrentPlayerService
