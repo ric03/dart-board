@@ -22,7 +22,9 @@ export class InputButtonRowCricketComponent {
   color = "lightgrey";
   radius = 28;
 
-  constructor(public cricketservice: CricketService, public currentPlayerService: CurrentPlayerService
+
+  constructor(public cricketService: CricketService,
+              public currentPlayerService: CurrentPlayerService
   ) {
   }
 
@@ -40,20 +42,20 @@ export class InputButtonRowCricketComponent {
   score(points: number) {
     // bullsEye
     if (points == 50) {
-      this.cricketservice.setMultiplier(2);
+      this.cricketService.setMultiplier(2);
     }
     // bull
     if (points == 25) {
-      this.cricketservice.setMultiplier(1);
+      this.cricketService.setMultiplier(1);
     }
     this.matBadgeHidden = false;
-    this.cricketservice.score(points);
+    this.cricketService.score(points);
   }
 
   scoreWithMultiplier(primaryNumber: number) {
-    this.cricketservice.setMultiplier(this.multiplier.value);
+    this.cricketService.setMultiplier(this.multiplier.value);
     this.matBadgeHidden = false;
-    this.cricketservice.score(primaryNumber * +this.multiplier.value);
+    this.cricketService.score(primaryNumber * +this.multiplier.value);
 
   }
 
