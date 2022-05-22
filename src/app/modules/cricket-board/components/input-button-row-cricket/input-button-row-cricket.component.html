@@ -1,46 +1,42 @@
-<div [hidden]="this.cricketservice._hideAll" class="container-sm">
+<div [hidden]="this.cricketService._hideAll" class="container-sm">
 
   <div class="d-flex justify-content-center mt-3">
-    <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-flat-button color="primary" (click)="score(25)" [matBadgeHidden]="matBadgeHidden"
-      [matBadge]="setMatBage(25)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">Bull</button>
-    <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-flat-button color="accent" class="ms-3" (click)="score(50)" [matBadgeHidden]="matBadgeHidden"
-      [matBadge]="setMatBage(25)" matBadgePosition="after" matBadgeColor="accent"
-      matBadgeSize="medium">BullsEye</button>
-    <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-flat-button color="warn" class="ms-3" (click)="score(0)">Miss</button>
+    <button mat-flat-button color="primary"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            [matBadge]="getBadgeCountValue(25)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
+            (click)="scoreBull()"
+    >Bull
+    </button>
+    <button mat-flat-button color="accent" class="ms-3"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            [matBadge]="getBadgeCountValue(50)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
+            (click)="scoreBullsEye()"
+    >BullsEye
+    </button>
+    <button mat-flat-button color="warn" class="ms-3"
+            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            (click)="scoreMiss()"
+    >Miss
+    </button>
   </div>
 
   <div class="d-flex justify-content-center mt-3">
-    <mat-button-toggle-group value="1" [formControl]="multiplier" (change)="changeButtonColor($event)">
+    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
       <mat-button-toggle value="1">Single</mat-button-toggle>
       <mat-button-toggle value="2">Double</mat-button-toggle>
       <mat-button-toggle value="3">Triple</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
-  <div class="d-flex justify-content-center">
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(15)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(15)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">15</button>
-    </div>
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(16)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(16)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">16</button>
-    </div>
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(17)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(17)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">17</button>
-    </div>
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(18)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(18)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">18</button>
-    </div>
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(19)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(19)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">19</button>
-    </div>
-    <div class="w-20-percent mt-3 d-flex justify-content-center">
-      <button matRipple [matRippleColor]="color" [matRippleUnbounded]="unbounded"[matRippleCentered] = "centered" [matRippleRadius] = "radius"  mat-fab [color]="buttonColor" (click)="scoreWithMultiplier(20)" [matBadgeHidden]="matBadgeHidden"
-        [matBadge]="setMatBage(20)" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="medium">20</button>
+  <div class="d-flex flex-wrap">
+    <div class="w-16-percent mt-3 d-flex justify-content-center"
+         *ngFor="let btnValue of availableButtonValues"
+    >
+      <button mat-fab [color]="buttonColor"
+              matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+              [matBadge]="getBadgeCountValue(btnValue)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
+              (click)="scoreWithMultiplier(btnValue)"
+      >{{btnValue}}</button>
     </div>
   </div>
 </div>

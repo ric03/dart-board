@@ -20,8 +20,4 @@ export class CurrentPlayerProgressComponent {
     return this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100;
   }
 
-  getCurrentPoints(): number {
-    return this.currentPlayerService._remainingPoints - this.currentPlayerService._accumulatedPoints;
-  }
-
 }

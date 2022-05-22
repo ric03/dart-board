@@ -1,8 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { HiddenPlayersDialog } from 'src/app/dialogTemplates/hidden-players-dialog/hidden-players-dialog.component';
-import { CricketService } from 'src/app/services/cricket.service';
-import { PlayerService } from 'src/app/services/player.service';
+import {Component} from '@angular/core';
+import {PlayerService} from 'src/app/services/player.service';
 
 @Component({
   selector: 'app-cricket-overview-table',
@@ -11,11 +8,8 @@ import { PlayerService } from 'src/app/services/player.service';
 })
 export class CricketOverviewTableComponent {
 
-  constructor(public playerService: PlayerService, private dialog: MatDialog
+  constructor(public playerService: PlayerService,
   ) {
   }
 
-  showAllPlayers() {
-    this.dialog.open(HiddenPlayersDialog)
-  }
 }
