@@ -1,7 +1,7 @@
-import { Injectable, KeyValueDiffers } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { VictoryDialog, VictoryDialogData } from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import { Player } from '../models/player/player.model';
+import { Player, Throw } from '../models/player/player.model';
 import { CurrentPlayerService } from "./current-player.service";
 import { PlayerService } from "./player.service";
 import { RoundCountService } from "./round-count.service";
@@ -20,7 +20,6 @@ export class CricketService {
    * derjenige der alles 3mal getroffen hat && die meisten Punkte hat
    *
    */
-  multiplier: number = 1;
   playerNames: string[] = [];
   roundCount: number = 0;
   public _gameType: string = '';
@@ -51,11 +50,13 @@ export class CricketService {
   }
 
   // anpassen
-  score(points: number) {
+  score(_throw: Throw) {
+    const points = _throw.value * _throw.multiplier;
+
     if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
     } else {
-      this.currentPlayerService.scoreCricket(points, this.multiplier);
+      this.currentPlayerService.scoreCricket(points, _throw.multiplier);
       if (this.cricketWinCheck()) {
         this.currentPlayerService.applyCricketPoints();
         this.handleVictory();
@@ -71,10 +72,6 @@ export class CricketService {
     this._hideAll = true;
     this.dialog.open(VictoryDialog);
     // TODO: Open PointsOverview as Option
-  }
-
-  setMultiplier(multiplier: number) {
-    this.multiplier = multiplier;
   }
 
   private switchPlayer() {
