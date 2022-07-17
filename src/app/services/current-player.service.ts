@@ -87,7 +87,7 @@ export class CurrentPlayerService {
   }
 
   private accumulateCricketPoints(points: number, multiplier: number) {
-    if (this.checkPlayerWithSameHitAndThreeMultiplier(points, multiplier)) {
+    if (this.checkForClosedHit(points, multiplier)) {
       this._remainingPoints += points;
       this._accumulatedPoints += points;
     }
@@ -191,7 +191,7 @@ export class CurrentPlayerService {
     return this._currentPlayer.history.reverse();
   }
 
-  checkPlayerWithSameHitAndThreeMultiplier(points: number, multiplier: number) {
+  checkForClosedHit(points: number, multiplier: number) {
     let add = true;
     this.playerService._players.forEach((player: Player) => {
       if (player != this._currentPlayer
