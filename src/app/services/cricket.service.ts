@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import {Player} from '../models/player/player.model';
-import {CurrentPlayerService} from "./current-player.service";
-import {PlayerService} from "./player.service";
-import {RoundCountService} from "./round-count.service";
+import { Injectable, KeyValueDiffers } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { VictoryDialog, VictoryDialogData } from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import { Player } from '../models/player/player.model';
+import { CurrentPlayerService } from "./current-player.service";
+import { PlayerService } from "./player.service";
+import { RoundCountService } from "./round-count.service";
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +27,13 @@ export class CricketService {
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
-    return {id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0};
+    return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
   }
 
   constructor(private playerService: PlayerService,
-              private currentPlayerService: CurrentPlayerService,
-              private dialog: MatDialog,
-              private snackbar: MatSnackBar,
-              private roundCountService: RoundCountService,
+    private currentPlayerService: CurrentPlayerService,
+    private dialog: MatDialog,
+    private roundCountService: RoundCountService,
   ) {
   }
 
@@ -93,8 +91,8 @@ export class CricketService {
   private handleVictoryByReachingRoundLimit() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
 
-    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
-    this.dialog.open(VictoryDialog, {data});
+    const data: VictoryDialogData = { victoryByReachingRoundLimit: true }
+    this.dialog.open(VictoryDialog, { data });
     // TODO: Open PointsOverview as Option
   }
 
@@ -103,6 +101,7 @@ export class CricketService {
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
     return winner[0]; // TODO consider a draw
   }
+
 
   inkrementRoundCount() {
     if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {

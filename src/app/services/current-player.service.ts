@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
-import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
+import { Injectable } from '@angular/core';
+import { DEFAULT_PLAYER, Player } from "../models/player/player.model";
+import { PlayerService } from './player.service';
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -9,6 +10,9 @@ export const MAX_REMAINING_THROWS = 3;
   providedIn: 'root'
 })
 export class CurrentPlayerService {
+
+  constructor(private playerService: PlayerService) {
+  }
 
   public _remainingThrows = MAX_REMAINING_THROWS;
   public _accumulatedPoints = 0;
@@ -62,9 +66,9 @@ export class CurrentPlayerService {
 
   scoreCricket(points: number, multiplier: number) {
     if (this.hasThrowsRemaining()) {
-      if (this._cricketMap.has(points / multiplier) && this._cricketMap.get(points / multiplier) == 3) {
-        this._remainingPoints += points;
-        this.accumulatePoints(points);
+      if (this._cricketMap.has(points / multiplier)
+        && this._cricketMap.get(points / multiplier) == 3) {
+        this.accumulateCricketPoints(points, multiplier);
       } else {
         this.storeMultiplier(points, multiplier);
       }
@@ -80,6 +84,13 @@ export class CurrentPlayerService {
 
   private accumulatePoints(points: number) {
     this._accumulatedPoints += points;
+  }
+
+  private accumulateCricketPoints(points: number, multiplier: number) {
+    if (this.checkPlayerWithSameHitAndThreeMultiplier(points, multiplier)) {
+      this._remainingPoints += points;
+      this._accumulatedPoints += points;
+    }
   }
 
   private decrementRemainingThrows() {
@@ -164,11 +175,12 @@ export class CurrentPlayerService {
 
   setRestOfMultiplier(point: number, multiplierRest: number, multiplier: number) {
     //bullseye
+    let points = 0;
     if (point == 25 && multiplier == 2) {
       point = 50;
     }
-    this._remainingPoints += point * multiplierRest;
-    this.accumulatePoints(this._remainingPoints);
+    points = point * multiplierRest;
+    this.accumulateCricketPoints(points, multiplier);
   }
 
   getLastThreeThrows() {
@@ -178,4 +190,17 @@ export class CurrentPlayerService {
   getHistory() {
     return this._currentPlayer.history.reverse();
   }
+
+  checkPlayerWithSameHitAndThreeMultiplier(points: number, multiplier: number) {
+    let add = true;
+    this.playerService._players.forEach((player: Player) => {
+      if (player != this._currentPlayer
+        && player.cricketMap.has(points / multiplier)
+        && player.cricketMap.get(points / multiplier) == 3) {
+        add = false;
+      }
+    });
+    return add;
+  }
+
 }
