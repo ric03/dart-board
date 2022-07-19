@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {MatBadge} from '@angular/material/badge';
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
@@ -16,7 +16,7 @@ export class InputButtonRowCricketComponent {
 
   readonly availableButtonValues: number[] = [15, 16, 17, 18, 19, 20]
 
-  readonly multiplierControl: FormControl = new FormControl('1');
+  readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
   isMatBadgeHidden: MatBadge["_hidden"] = true;
 

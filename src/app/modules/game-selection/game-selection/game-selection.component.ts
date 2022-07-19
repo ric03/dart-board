@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormArray, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
 
@@ -13,7 +13,7 @@ export class GameSelectionComponent {
   // Create a reference, to make the enum accessible in the html-template
   gameType = GameType;
 
-  formGroup: FormGroup = this.fb.group({
+  formGroup: UntypedFormGroup = this.fb.group({
     gameType: GameType.Simple501,
     playerNames: this.fb.array([
       this.fb.control('first'),
@@ -26,13 +26,13 @@ export class GameSelectionComponent {
     playerNames: ['first', 'second']
   }
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
               private router: Router,
   ) {
   }
 
-  get playerNames(): FormArray {
-    return this.formGroup.get('playerNames') as FormArray;
+  get playerNames(): UntypedFormArray {
+    return this.formGroup.get('playerNames') as UntypedFormArray;
   }
 
   addPlayerName() {

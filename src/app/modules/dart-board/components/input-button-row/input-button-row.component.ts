@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
@@ -12,7 +12,7 @@ import {DartService} from "../../../../services/dart.service";
 export class InputButtonRowComponent {
 
   readonly twentyButtons = [...Array(20)].map((_, index) => index + 1);
-  readonly multiplierControl: FormControl = new FormControl('1');
+  readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
 
   constructor(public dartService: DartService,
