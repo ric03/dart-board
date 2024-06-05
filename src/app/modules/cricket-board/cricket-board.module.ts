@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CurrentPlayerProgressModule } from '../current-player-progress/current-player-progress.module';
+import {ScoreBoardModule} from "../score-board/score-board.module";
 
 
 @NgModule({
@@ -24,26 +25,27 @@ import { CurrentPlayerProgressModule } from '../current-player-progress/current-
     InputButtonRowCricketComponent,
     CricketOverviewTableComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
 
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatBadgeModule,
-    MatListModule,
-    MatCardModule,
-    MatProgressBarModule,
-
-
-    GameSelectionModule,
-    CurrentPlayerProgressModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatBadgeModule,
+        MatListModule,
+        MatCardModule,
+        MatProgressBarModule,
 
 
-  ]
+        GameSelectionModule,
+        CurrentPlayerProgressModule,
+        ScoreBoardModule,
+
+
+    ]
 })
 export class CricketBoardModule { }

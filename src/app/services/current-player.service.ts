@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DEFAULT_PLAYER, Player } from "../models/player/player.model";
 import { PlayerService } from './player.service';
+import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -66,10 +66,20 @@ export class CurrentPlayerService {
 
   scoreCricket(points: number, multiplier: number) {
     if (this.hasThrowsRemaining()) {
-      if (this._cricketMap.has(points / multiplier)
-        && this._cricketMap.get(points / multiplier) == 3) {
+      console.log(points)
+      console.log(multiplier)
+      console.log(points / multiplier)
+      console.log(this._cricketMap);
+      console.log(this._cricketMap.has(points / multiplier));
+      console.log(this._cricketMap.get(points / multiplier) === 3);
+      if (
+        this._cricketMap.has(points / multiplier)
+        &&
+        this._cricketMap.get(points / multiplier) === 3)
+      {
         this.accumulateCricketPoints(points, multiplier);
-      } else {
+      }
+      else {
         this.storeMultiplier(points, multiplier);
       }
       this.decrementRemainingThrows();
@@ -192,15 +202,9 @@ export class CurrentPlayerService {
   }
 
   checkForClosedHit(points: number, multiplier: number) {
-    let add = true;
-    this.playerService._players.forEach((player: Player) => {
-      if (player != this._currentPlayer
-        && player.cricketMap.has(points / multiplier)
-        && player.cricketMap.get(points / multiplier) == 3) {
-        add = false;
-      }
-    });
-    return add;
+    // FEHLER: Nur wenn alle Spieler 3 Treffer haben, darf nicht gezählt werden
+    return this.playerService._players.some((player: Player) =>
+      player.cricketMap.get(points / multiplier) !== 3)
   }
 
 }

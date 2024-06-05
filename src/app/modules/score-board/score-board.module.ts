@@ -22,9 +22,10 @@ import { CurrentPlayerProgressModule } from '../current-player-progress/current-
     CurrentPlayerProgressModule,
 
   ],
-  exports: [
-    ScoreboardComponent,
-  ]
+    exports: [
+        ScoreboardComponent,
+        PlayerOverviewComponent,
+    ]
 })
 export class ScoreBoardModule {
 }

@@ -1,6 +1,10 @@
 <div class="container">
+
     <div class="d-flex flex-column bd-highlight mb-3">
-        <mat-card *ngFor="let player of playerService._players" class="m-1">
+      <app-scoreboard-overview class="mt-3"></app-scoreboard-overview>
+      <button class="mt-3" mat-raised-button color="primary" (click)="showAllPlayerdetails()">Show Playerdetails</button>
+      <div class="mt-3" *ngIf="showPlayerDetails">
+      <mat-card *ngFor="let player of playerService._players" class="m-1">
             <mat-card-subtitle>last: {{player.lastScore}}</mat-card-subtitle>
             <mat-card-title>{{player.remainingPoints}}</mat-card-title>
             {{player.name}}
@@ -12,5 +16,6 @@
                 </mat-card>
             </div>
         </mat-card>
+      </div>
     </div>
 </div>

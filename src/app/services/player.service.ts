@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Player} from "../models/player/player.model";
 import {CricketService} from './cricket.service';
 import {DartService} from './dart.service';
+import {Player} from "../models/player/player.model";
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +42,5 @@ export class PlayerService {
       return nextIndex
     }
   }
-  
+
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { VictoryDialog, VictoryDialogData } from "../dialogTemplates/victory-dialog/victory-dialog.component";
-import { Player, Throw } from '../models/player/player.model';
+import {Player, Throw} from '../models/player/player.model';
 import { CurrentPlayerService } from "./current-player.service";
 import { PlayerService } from "./player.service";
 import { RoundCountService } from "./round-count.service";
@@ -53,7 +53,7 @@ export class CricketService {
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
 
-    if (this.roundCountService.getRemainingRounds() == 0) {
+    if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
     } else {
       this.currentPlayerService.scoreCricket(points, _throw.multiplier);
@@ -113,14 +113,17 @@ export class CricketService {
 
   private cricketWinCheck() {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
-    if (Array.from(this.currentPlayerService._cricketMap.values()).every(value => value == 3)
-      && this.currentPlayerService._cricketMap.size == 7) {
-      if (this.getPlayerWithHighestScore().remainingPoints == 0
-        || this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()
+    if (this.playerHasAllClosed()) {
+      if (this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()
         || this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
         return true;
       }
     }
     return false;
+  }
+
+  private playerHasAllClosed() {
+    return Array.from(this.currentPlayerService._cricketMap.values()).every(value => value === 3)
+      && this.currentPlayerService._cricketMap.size == 7;
   }
 }
