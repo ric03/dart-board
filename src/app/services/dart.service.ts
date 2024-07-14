@@ -7,6 +7,7 @@ import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,16 @@ export class DartService {
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {
-    return {id, name, remainingPoints: 501, lastScore: 0, history: [], cricketMap: new Map(), average: 0};
+    return {
+      id,
+      name,
+      remainingPoints: 501,
+      lastScore: 0,
+      history: [],
+      cricketMap: new Map(),
+      average: 0,
+      currentPoints: [],
+    };
   }
 
   constructor(private playerService: PlayerService,
@@ -42,6 +52,7 @@ export class DartService {
 
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
+    this.currentPlayerService._currentPlayer.currentPoints.push(points);
 
     if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
@@ -92,6 +103,7 @@ export class DartService {
     this.setCurrentPlayerAsFristofList();
     this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
+
 
   private displayDoubleOutFailNotification() {
     const playerName = this.currentPlayerService._currentPlayer.name;

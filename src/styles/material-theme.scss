@@ -14,6 +14,8 @@
 // https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 $dark-primary: mat.define-palette(mat.$light-blue-palette, A100, A200, A400);
 $dark-accent: mat.define-palette(mat.$purple-palette);
+$dark-green: mat.define-palette(mat.$green-palette, 500);
+$dark-orange: mat.define-palette(mat.$orange-palette, 800);
 
 // The warn palette is optional (defaults to red).
 $dark-warn: mat.define-palette(mat.$red-palette);
@@ -25,6 +27,8 @@ $dark-theme: mat.define-dark-theme((
     primary: $dark-primary,
     accent: $dark-accent,
     warn: $dark-warn,
+    green: $dark-green,
+    orange:$dark-orange,
   )
 ));
 
@@ -59,17 +63,15 @@ $dark-theme2: mat.define-dark-theme((color: (
   // Create the theme object. A theme consists of configurations for individual
   // theming systems such as "color" or "typography".
   $dark-theme3: mat.define-dark-theme((color: (
-        primary: $dark-primary2,
-        accent: $dark-complentary2,
-        analogous1: $dark-analogous1,
-        analogous2: $dark-analogous2,
-        tradic1: $dark-triadic1,
-        tradic2: $dark-triadic2,
-        warn: $dark-warn2,
+        primary: $dark-primary,
+        accent:  $dark-accent,
+        analogous: $dark-green,
+        tradic: $dark-orange,
+        warn: $dark-warn,
       )));
 
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($dark-theme);
+@include mat.all-component-themes($dark-theme3);

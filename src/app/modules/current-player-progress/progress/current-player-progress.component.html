@@ -1,18 +1,16 @@
 <div class="container">
-  <div class="m-1 p-3 border border-light">
+  <div class="m-3 border border-light rounded w-100">
     <div class="d-flex justify-content-center mt-3">
       <mat-card class="m-1">
         <mat-card-subtitle>
-          Current Average: {{currentPlayerService._averagePoints}}
+          Current Average: {{ currentPlayerService._averagePoints }}
         </mat-card-subtitle>
         <mat-card-title>
-          {{currentPlayerService._currentPlayer.name}}:<br>
-          {{currentPlayerService._remainingPoints}}</mat-card-title>
-        <br>
-        Remaining Throws {{ currentPlayerService._remainingThrows }} / {{ maxRemainingThrows }}
-        <br>
+          {{ currentPlayerService._currentPlayer.name }}:<br>
+          {{ currentPlayerService._remainingPoints }}
+        </mat-card-title>
         Round
-        {{roundCountService.roundCount}} of 45
+        {{ roundCountService.roundCount }} of 45
       </mat-card>
       <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
         <mat-card-subtitle>
@@ -20,11 +18,29 @@
         </mat-card-subtitle>
         <mat-card-title>
           <div *ngFor="let last of currentPlayerService._last3History">
-            {{last}}
+            {{ last }}
+          </div>
+        </mat-card-title>
+      </mat-card>
+      <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
+        <mat-card-subtitle>
+          current Hits:
+        </mat-card-subtitle>
+        <mat-card-title>
+          <div *ngFor="let last of currentPlayerService._currentPlayer.currentPoints.reverse()">
+            {{ last }}
           </div>
         </mat-card-title>
       </mat-card>
     </div>
-    <mat-progress-bar color="warn" mode="determinate" [value]='getDartCount()'></mat-progress-bar>
+
+    <div class="d-flex justify-content-center p-0 m-0">
+      <mat-progress-bar class="p-3 w-75" [color]='getProgressColor()' mode="determinate" [value]='getDartCount()'>
+      </mat-progress-bar>
+    </div>
+    <div class="d-flex justify-content-center p-0 m-0">
+      <strong [style]="{color:this.getProgressTextColor()}">{{ currentPlayerService._remainingThrows }}
+        / {{ maxRemainingThrows }}</strong>
+    </div>
   </div>
 </div>

@@ -19,7 +19,35 @@ export class CurrentPlayerProgressComponent {
   }
 
   getDartCount(): number {
+    console.log(this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100)
     return this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100;
   }
 
+  getProgressColor() {
+    const remainingThrows = this.currentPlayerService._remainingThrows;
+    switch (remainingThrows) {
+      case 3:
+        return 'primary';
+      case 2:
+        return 'accent';
+      case 1:
+        return 'warn';
+      default:
+        return undefined;
+    }
+  }
+
+  getProgressTextColor() {
+    const remainingThrows = this.currentPlayerService._remainingThrows;
+    switch (remainingThrows) {
+      case 3:
+        return 'lightblue';
+      case 2:
+        return 'purple';
+      case 1:
+        return 'red';
+      default:
+        return 'lightblue';
+    }
+  }
 }

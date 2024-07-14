@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatBadge} from '@angular/material/badge';
-import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
@@ -49,11 +49,12 @@ export class InputButtonRowCricketComponent {
     this.cricketService.score({value: 0, multiplier: 1})
   }
 
-  scoreWithMultiplier(value: number) {
+  scoreWithMultiplier(value: number, singelToggel: MatButtonToggle) {
     this.isMatBadgeHidden = false;
 
     const multiplier = +this.multiplierControl.value;
     this.cricketService.score({value, multiplier});
+    singelToggel._buttonElement.nativeElement.click();
   }
 
   getBadgeCountValue(primaryNumber: number) {

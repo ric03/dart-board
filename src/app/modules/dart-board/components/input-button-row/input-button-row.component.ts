@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
-import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 
@@ -42,8 +42,9 @@ export class InputButtonRowComponent {
     this.dartService.score({value: 0, multiplier: 1})
   }
 
-  scoreWithMultiplier(value: number) {
+  scoreWithMultiplier(value: number, singelToggel: MatButtonToggle) {
     const multiplier: number = +this.multiplierControl.value;
     this.dartService.score({value, multiplier});
+    singelToggel._buttonElement.nativeElement.click();
   }
 }

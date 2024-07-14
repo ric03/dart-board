@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from "@angular/material/dialog";
-import { VictoryDialog, VictoryDialogData } from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {Injectable} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {Player, Throw} from '../models/player/player.model';
-import { CurrentPlayerService } from "./current-player.service";
-import { PlayerService } from "./player.service";
-import { RoundCountService } from "./round-count.service";
+import {CurrentPlayerService} from "./current-player.service";
+import {PlayerService} from "./player.service";
+import {RoundCountService} from "./round-count.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {async, BehaviorSubject} from "rxjs";
+import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +28,24 @@ export class CricketService {
   public _gameType: string = '';
   public _hideAll: boolean = false;
 
+
   static createPlayer(name: string, id: number): Player {
-    return { id, name, remainingPoints: 0, lastScore: 0, history: [], cricketMap: new Map(), average: 0 };
+    return {
+      id,
+      name,
+      remainingPoints: 0,
+      lastScore: 0,
+      history: [],
+      cricketMap: new Map(),
+      average: 0,
+      currentPoints: [],
+    };
   }
 
   constructor(private playerService: PlayerService,
-    private currentPlayerService: CurrentPlayerService,
-    private dialog: MatDialog,
-    private roundCountService: RoundCountService,
+              private currentPlayerService: CurrentPlayerService,
+              private dialog: MatDialog,
+              private roundCountService: RoundCountService,
   ) {
   }
 
@@ -52,6 +65,7 @@ export class CricketService {
   // anpassen
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
+    this.currentPlayerService._currentPlayer.currentPoints.push(points);
 
     if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
@@ -80,6 +94,7 @@ export class CricketService {
     this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
 
+
   private displayRoundCountNotification() {
     this._hideAll = true;
     this.handleVictoryByReachingRoundLimit();
@@ -88,8 +103,8 @@ export class CricketService {
   private handleVictoryByReachingRoundLimit() {
     this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
 
-    const data: VictoryDialogData = { victoryByReachingRoundLimit: true }
-    this.dialog.open(VictoryDialog, { data });
+    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
+    this.dialog.open(VictoryDialog, {data});
     // TODO: Open PointsOverview as Option
   }
 
@@ -126,4 +141,5 @@ export class CricketService {
     return Array.from(this.currentPlayerService._cricketMap.values()).every(value => value === 3)
       && this.currentPlayerService._cricketMap.size == 7;
   }
+
 }

@@ -1,0 +1,34 @@
+import {Component, inject, OnInit} from '@angular/core';
+import {CurrentPlayerService} from "../../services/current-player.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+@Component({
+  selector: 'app-switch-player-snack',
+  templateUrl: './switch-player-snack.component.html',
+})
+export class SwitchPlayerSnackComponent implements OnInit {
+
+  public timeLeft: number = 5;
+  public currentPlayer = inject(CurrentPlayerService)._currentPlayer.name;
+  snackBarRef = inject(MatSnackBar);
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    this.startTimer();
+  }
+
+
+  startTimer() {
+    setInterval(() => {
+      if (this.timeLeft > 1) {
+        this.timeLeft--;
+      } else {
+        return
+      }
+    }, 1000);
+  }
+
+
+}

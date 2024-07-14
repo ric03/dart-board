@@ -23,7 +23,7 @@
 
   <div class="d-flex justify-content-center mt-3">
     <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
-      <mat-button-toggle value="1">Single</mat-button-toggle>
+      <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
       <mat-button-toggle value="2">Double</mat-button-toggle>
       <mat-button-toggle value="3">Triple</mat-button-toggle>
     </mat-button-toggle-group>
@@ -33,7 +33,8 @@
     <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let primaryNumber of twentyButtons">
       <button matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleCentered]="true"
               [matRippleRadius]="42" mat-fab [color]="buttonColor"
-              (click)="scoreWithMultiplier(primaryNumber)">{{primaryNumber}}</button>
+              (click)="scoreWithMultiplier(primaryNumber, singelToggel)">{{ primaryNumber }}
+      </button>
     </div>
   </div>
 

@@ -20,12 +20,14 @@ import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module
 import {ScoreBoardModule} from './modules/score-board/score-board.module';
 import {RedirectWarningService} from "./services/redirect-warning.service";
 import {noop} from "./shared/util";
+import {SwitchPlayerSnackComponent} from './dialogTemplates/switch-player-snack/switch-player-snack.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VictoryDialog,
     HiddenPlayersDialog,
+    SwitchPlayerSnackComponent,
   ],
   imports: [
     BrowserModule,

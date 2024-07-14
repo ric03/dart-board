@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
-import { PlayerService } from './player.service';
+import {Injectable} from '@angular/core';
+import {PlayerService} from './player.service';
 import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
+import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -11,7 +13,7 @@ export const MAX_REMAINING_THROWS = 3;
 })
 export class CurrentPlayerService {
 
-  constructor(private playerService: PlayerService) {
+  constructor(private playerService: PlayerService, private snackbar: MatSnackBar) {
   }
 
   public _remainingThrows = MAX_REMAINING_THROWS;
@@ -24,17 +26,47 @@ export class CurrentPlayerService {
   public _history: number[] = [];
 
   init(player: Player) {
-    this.switchPlayer(player);
-    this._remainingPoints = player.remainingPoints;
-  }
-
-  switchPlayer(player: Player) {
     this._currentPlayer = player;
     this._last3History = this.getLastThreeThrows();
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
     this._averagePoints = player.average;
-    this.reset();
+    this.reset()
+    this._remainingPoints = player.remainingPoints;
+  }
+
+  switchPlayer(player: Player) {
+    this.showPlayerSwitchSnackbar(player);
+  }
+
+  private showPlayerSwitchSnackbar(player: Player) {
+
+    const snack = this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {duration: 5000})
+    snack.afterOpened().subscribe(() => {
+      this.getAllButtonsToDisable(true);
+    })
+
+    snack.afterDismissed().subscribe(() => {
+      this.getAllButtonsToDisable(false);
+      this._currentPlayer = player;
+      this._last3History = this.getLastThreeThrows();
+      this._remainingPoints = this._currentPlayer.remainingPoints;
+      this._cricketMap = this._currentPlayer.cricketMap;
+      this._averagePoints = player.average;
+      this._history = this._currentPlayer.history;
+      this.reset();
+      this._currentPlayer.currentPoints = [];
+    })
+
+  }
+
+  private getAllButtonsToDisable(disabled: boolean) {
+    // @ts-ignore
+    for (const btn of document.getElementsByTagName("button")) {
+      if (btn.innerText !== 'OK') {
+        btn.disabled = disabled;
+      }
+    }
   }
 
   private savePointsForStatistics() {
@@ -66,20 +98,12 @@ export class CurrentPlayerService {
 
   scoreCricket(points: number, multiplier: number) {
     if (this.hasThrowsRemaining()) {
-      console.log(points)
-      console.log(multiplier)
-      console.log(points / multiplier)
-      console.log(this._cricketMap);
-      console.log(this._cricketMap.has(points / multiplier));
-      console.log(this._cricketMap.get(points / multiplier) === 3);
       if (
         this._cricketMap.has(points / multiplier)
         &&
-        this._cricketMap.get(points / multiplier) === 3)
-      {
+        this._cricketMap.get(points / multiplier) === 3) {
         this.accumulateCricketPoints(points, multiplier);
-      }
-      else {
+      } else {
         this.storeMultiplier(points, multiplier);
       }
       this.decrementRemainingThrows();
@@ -97,6 +121,7 @@ export class CurrentPlayerService {
   }
 
   private accumulateCricketPoints(points: number, multiplier: number) {
+    console.log(this.checkForClosedHit(points, multiplier));
     if (this.checkForClosedHit(points, multiplier)) {
       this._remainingPoints += points;
       this._accumulatedPoints += points;
@@ -202,7 +227,11 @@ export class CurrentPlayerService {
   }
 
   checkForClosedHit(points: number, multiplier: number) {
-    // FEHLER: Nur wenn alle Spieler 3 Treffer haben, darf nicht gezählt werden
+    // FEHLER: Nur wenn alle Spieler 3 Treffer haben und es mehr als einen Spieler gibt, darf nicht gezählt werden
+    if (this.playerService._players.length < 2) {
+      return true;
+    }
+
     return this.playerService._players.some((player: Player) =>
       player.cricketMap.get(points / multiplier) !== 3)
   }
