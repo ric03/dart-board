@@ -26,8 +26,8 @@
         current Hits:
       </mat-card-subtitle>
       <mat-card-title>
-        <div *ngFor="let last of currentPlayerService._currentPlayer.currentPoints.reverse()">
-          {{ last }}
+        <div *ngFor="let hit of this.last3Hits">
+          {{ hit }}
         </div>
       </mat-card-title>
     </mat-card>

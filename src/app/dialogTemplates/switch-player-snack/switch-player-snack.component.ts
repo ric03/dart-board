@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CurrentPlayerService} from "../../services/current-player.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PlayerService} from "../../services/player.service";
 
 @Component({
   selector: 'app-switch-player-snack',
@@ -9,7 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class SwitchPlayerSnackComponent implements OnInit {
 
   public timeLeft: number = 5;
-  public currentPlayer = inject(CurrentPlayerService)._currentPlayer.name;
+  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer).name;
   snackBarRef = inject(MatSnackBar);
 
   constructor() {
