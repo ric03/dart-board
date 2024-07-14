@@ -13,8 +13,7 @@ export class CurrentPlayerProgressComponent {
   readonly maxRemainingThrows = MAX_REMAINING_THROWS
 
   constructor(public currentPlayerService: CurrentPlayerService,
-              public roundCountService: RoundCountService,
-              public playerService: PlayerService
+              public roundCountService: RoundCountService
   ) {
   }
 
