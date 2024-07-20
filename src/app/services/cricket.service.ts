@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";

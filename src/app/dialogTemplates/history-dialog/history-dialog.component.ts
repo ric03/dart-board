@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
 import {HistoryEntry} from "../../models/player/player.model";
-import {MatButtonModule} from "@angular/material/button";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {CommonModule} from "@angular/common";
 
 export interface HistoryDialogData {
