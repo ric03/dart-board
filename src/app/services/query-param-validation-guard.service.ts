@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import {Observable} from 'rxjs';
 import {GameType} from "../models/enum/GameType";
 
 @Injectable({
   providedIn: 'root'
 })
-export class QueryParamValidationGuard implements CanActivate {
+export class QueryParamValidationGuard  {
 
   constructor(private router: Router,
               private snackbar: MatSnackBar

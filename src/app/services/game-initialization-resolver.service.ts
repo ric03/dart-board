@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {GameType} from '../models/enum/GameType';
 import {CricketService} from './cricket.service';
@@ -8,7 +8,7 @@ import {DartService} from "./dart.service";
 @Injectable({
   providedIn: 'root'
 })
-export class GameInitializationResolver implements Resolve<boolean> {
+export class GameInitializationResolver  {
 
   constructor(private dartService: DartService,
               private cricketService: CricketService,
