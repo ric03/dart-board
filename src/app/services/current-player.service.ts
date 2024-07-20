@@ -2,11 +2,11 @@ import {inject, Injectable} from '@angular/core';
 import {PlayerService} from './player.service';
 import {DEFAULT_PLAYER, HistoryEntry, Player, Throw} from "../models/player/player.model";
 import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 import {BehaviorSubject} from "rxjs";
 import {HistoryDialog, HistoryDialogData} from "../dialogTemplates/history-dialog/history-dialog.component";
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 import {RoundCountService} from "./round-count.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 export const MAX_REMAINING_THROWS = 3;

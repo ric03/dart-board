@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../services/current-player.service";
 import {RoundCountService} from "../../../services/round-count.service";
-import {PlayerService} from "../../../services/player.service";
-import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-current-player-progress',

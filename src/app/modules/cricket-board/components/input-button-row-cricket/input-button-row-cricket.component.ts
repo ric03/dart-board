@@ -18,7 +18,7 @@ export class InputButtonRowCricketComponent {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
-  isMatBadgeHidden: MatBadge["_hidden"] = true;
+  isMatBadgeHidden: MatBadge['hidden'] = true;
 
 
   constructor(public cricketService: CricketService,
