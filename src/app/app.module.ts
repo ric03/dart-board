@@ -1,10 +1,5 @@
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
-import {MatLegacyCardModule as MatCardModule} from '@angular/material/legacy-card';
-import {MatLegacyDialogModule as MatDialogModule} from '@angular/material/legacy-dialog';
-import {MatLegacyMenuModule as MatMenuModule} from '@angular/material/legacy-menu';
-import {MatLegacySnackBarModule as MatSnackBarModule} from '@angular/material/legacy-snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -20,6 +15,11 @@ import {ScoreBoardModule} from './modules/score-board/score-board.module';
 import {RedirectWarningService} from "./services/redirect-warning.service";
 import {noop} from "./shared/util";
 import {SwitchPlayerSnackComponent} from './dialogTemplates/switch-player-snack/switch-player-snack.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatCardModule} from "@angular/material/card";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [

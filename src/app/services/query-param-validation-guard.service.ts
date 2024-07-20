@@ -1,45 +1,40 @@
-import {Injectable} from '@angular/core';
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import {Observable} from 'rxjs';
 import {GameType} from "../models/enum/GameType";
+import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from "@angular/router";
+import {inject} from "@angular/core";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class QueryParamValidationGuard  {
+export function isValidGameType(gameType: string | null): boolean {
+  return Object
+    .values(GameType)
+    .some(e => e == gameType)
+}
 
-  constructor(private router: Router,
-              private snackbar: MatSnackBar
-  ) {
-  }
+// noinspection JSMethodCanBeStatic
+export function isValidPlayerCount(playerCount: number): boolean {
+  return playerCount > 0
+}
 
-  canActivate(route: ActivatedRouteSnapshot,
-              _unused: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const playerCount = route.queryParamMap.getAll('playerNames').length
-    const gameType = route.queryParamMap.get('gameType')
 
-    if (this.isValidGameType(gameType) && this.isValidPlayerCount(playerCount)) {
-      return true
-    } else {
-      /**
-       * We have to manually redirect to root ('/'), otherwise we get a blank screen
-       * For more info, please refer to https://github.com/angular/angular/issues/16211
-       */
-      this.router.navigate([])
-      this.snackbar.open(`Sorry, something went wrong. Please try again.`, 'OK', {duration: 3000});
-      return false
-    }
-  }
+export const queryParamValidationGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot,
+) => {
+  const playerCount = route.queryParamMap.getAll('playerNames').length
+  const gameType = route.queryParamMap.get('gameType')
+  const router = inject(Router)
+  const snackbar = inject(MatSnackBar)
 
-  private isValidGameType(gameType: string | null): boolean {
-    return Object
-      .values(GameType)
-      .some(e => e == gameType)
-  }
-
-  // noinspection JSMethodCanBeStatic
-  private isValidPlayerCount(playerCount: number): boolean {
-    return playerCount > 0
+  if (isValidGameType(gameType) && isValidPlayerCount(playerCount)) {
+    return true
+  } else {
+    /**
+     * We have to manually redirect to root ('/'), otherwise we get a blank screen
+     * For more info, please refer to https://github.com/angular/angular/issues/16211
+     */
+    router.navigate([])
+    snackbar.open(`Sorry, something went wrong. Please try again.`, 'OK', {duration: 3000});
+    return false
   }
 }
+
+

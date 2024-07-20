@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CurrentPlayerProgressComponent} from './progress/current-player-progress.component';
-import {MatLegacyCardModule as MatCardModule} from '@angular/material/legacy-card';
-import {MatLegacyListModule as MatListModule} from '@angular/material/legacy-list';
-import {MatLegacyProgressBarModule as MatProgressBarModule} from '@angular/material/legacy-progress-bar';
 import {MatStepperModule} from "@angular/material/stepper";
-import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
+import {MatListModule} from "@angular/material/list";
+import {MatCardModule} from "@angular/material/card";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({

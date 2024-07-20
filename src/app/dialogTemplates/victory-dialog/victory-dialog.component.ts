@@ -1,9 +1,10 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
 import {CurrentPlayerService} from "../../services/current-player.service";
 import {ROUND_LIMIT} from "../../services/round-count.service";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {RouterModule} from "@angular/router";
+import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {NgIf} from "@angular/common";
 
 export interface VictoryDialogData {
   victoryByReachingRoundLimit: boolean;
@@ -24,9 +25,10 @@ export interface VictoryDialogData {
   `,
   standalone: true,
   imports: [
-    MatDialogModule,
+    RouterModule,
     MatButtonModule,
-    RouterModule
+    MatDialogModule,
+    NgIf,
   ],
   styles: []
 })

@@ -1,10 +1,10 @@
 import {TestBed} from '@angular/core/testing';
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 import {CurrentPlayerService} from "../app/services/current-player.service";
 import {DartService} from "../app/services/dart.service";
 import {PlayerService} from "../app/services/player.service";
 import {RoundCountService} from "../app/services/round-count.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 describe('DartService', () => {
   let service: DartService;

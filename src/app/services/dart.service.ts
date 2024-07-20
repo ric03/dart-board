@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {GameType} from '../models/enum/GameType';
 import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'

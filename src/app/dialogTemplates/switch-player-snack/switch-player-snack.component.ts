@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CurrentPlayerService} from "../../services/current-player.service";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
 import {PlayerService} from "../../services/player.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-switch-player-snack',
