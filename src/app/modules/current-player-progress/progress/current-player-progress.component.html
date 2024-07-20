@@ -11,22 +11,22 @@
       Round
       {{ roundCountService.roundCount }} of 45
     </mat-card>
-    <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
+    <mat-card class="m-1 matcardpointer" (click)="currentPlayerService.showHistory()">
       <mat-card-subtitle>
         History:
       </mat-card-subtitle>
       <mat-card-title>
-        <div *ngFor="let last of currentPlayerService._last3History">
-          {{ last }}
+        <div *ngFor="let last of currentPlayerService.getHistory() ">
+          {{ last.sum }}
         </div>
       </mat-card-title>
     </mat-card>
-    <mat-card class="m-1" (click)="currentPlayerService.getHistory()">
+    <mat-card class="m-1">
       <mat-card-subtitle>
         current Hits:
       </mat-card-subtitle>
       <mat-card-title>
-        <div *ngFor="let hit of this.last3Hits">
+        <div *ngFor="let hit of currentPlayerService.getLastThreeThrows()">
           {{ hit }}
         </div>
       </mat-card-title>
@@ -34,7 +34,7 @@
   </div>
 
   <div class="d-flex justify-content-center p-0 m-0">
-    <mat-progress-bar class="p-3 w-75" [color]='getProgressColor()' mode="determinate" [value]='getDartCount()'>
+    <mat-progress-bar class="p-3 w-75" [color]='getProgressColor()' mode="determinate" [value]='getThrowCount()'>
     </mat-progress-bar>
   </div>
   <div class="d-flex justify-content-center p-0 m-0">

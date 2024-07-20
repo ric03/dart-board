@@ -11,7 +11,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HiddenPlayersDialog} from './dialogTemplates/hidden-players-dialog/hidden-players-dialog.component';
-import {VictoryDialog} from './dialogTemplates/victory-dialog/victory-dialog.component';
 import {CricketBoardModule} from './modules/cricket-board/cricket-board.module';
 import {CurrentPlayerProgressModule} from './modules/current-player-progress/current-player-progress.module';
 import {DartBoardModule} from './modules/dart-board/dart-board.module';
@@ -25,7 +24,6 @@ import {SwitchPlayerSnackComponent} from './dialogTemplates/switch-player-snack/
 @NgModule({
   declarations: [
     AppComponent,
-    VictoryDialog,
     HiddenPlayersDialog,
     SwitchPlayerSnackComponent,
   ],

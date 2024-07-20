@@ -1,8 +1,12 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {PlayerService} from './player.service';
-import {DEFAULT_PLAYER, Player} from "../models/player/player.model";
+import {DEFAULT_PLAYER, HistoryEntry, Player, Throw} from "../models/player/player.model";
 import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {BehaviorSubject} from "rxjs";
+import {HistoryDialog, HistoryDialogData} from "../dialogTemplates/history-dialog/history-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {RoundCountService} from "./round-count.service";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -12,8 +16,10 @@ export const MAX_REMAINING_THROWS = 3;
   providedIn: 'root'
 })
 export class CurrentPlayerService {
+  private roundCountService = inject(RoundCountService);
+  private isToResetRound: boolean = false
 
-  constructor(private playerService: PlayerService, private snackbar: MatSnackBar) {
+  constructor(private playerService: PlayerService, private snackbar: MatSnackBar, private dialog: MatDialog) {
   }
 
   public _remainingThrows = MAX_REMAINING_THROWS;
@@ -22,12 +28,12 @@ export class CurrentPlayerService {
   public _averagePoints = 0;
   public _currentPlayer: Player = DEFAULT_PLAYER;
   public _cricketMap = new Map<number, number>();
-  public _last3History: number[] = [];
-  public _history: number[] = [];
+  public _last3History: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  public _history: HistoryEntry[] = [];
 
   init(player: Player) {
     this._currentPlayer = player;
-    this._last3History = this.getLastThreeThrows();
+    this._last3History.next(this.getLastThreeThrows());
     this._remainingPoints = this._currentPlayer.remainingPoints;
     this._cricketMap = this._currentPlayer.cricketMap;
     this._averagePoints = player.average;
@@ -35,11 +41,11 @@ export class CurrentPlayerService {
     this._remainingPoints = player.remainingPoints;
   }
 
-  switchPlayer(player: Player) {
-    this.showPlayerSwitchSnackbar(player);
+  switchPlayer(player: Player, isNewRound: boolean) {
+    this.showPlayerSwitchSnackbar(player, isNewRound);
   }
 
-  private showPlayerSwitchSnackbar(player: Player) {
+  private showPlayerSwitchSnackbar(player: Player, isNewRound: boolean) {
 
     const snack = this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {duration: 5000})
     snack.afterOpened().subscribe(() => {
@@ -47,15 +53,22 @@ export class CurrentPlayerService {
     })
 
     snack.afterDismissed().subscribe(() => {
-      this.getAllButtonsToDisable(false);
-      this._currentPlayer = player;
-      this._last3History = this.getLastThreeThrows();
-      this._remainingPoints = this._currentPlayer.remainingPoints;
-      this._cricketMap = this._currentPlayer.cricketMap;
-      this._averagePoints = player.average;
-      this._history = this._currentPlayer.history;
-      this.reset();
-      this._currentPlayer.currentPoints = [];
+      if (this.isToResetRound) {
+        this.resetRound();
+        this.isToResetRound = false;
+      } else {
+        if (isNewRound) {
+          this.roundCountService.incrementRoundCount();
+        }
+        this.getAllButtonsToDisable(false);
+        this._currentPlayer = player;
+        this._last3History.next(this.getLastThreeThrows());
+        this._remainingPoints = this._currentPlayer.remainingPoints;
+        this._cricketMap = this._currentPlayer.cricketMap;
+        this._averagePoints = player.average;
+        this._history = this._currentPlayer.history;
+        this.reset();
+      }
     })
 
   }
@@ -63,19 +76,35 @@ export class CurrentPlayerService {
   private getAllButtonsToDisable(disabled: boolean) {
     // @ts-ignore
     for (const btn of document.getElementsByTagName("button")) {
-      if (btn.innerText !== 'OK') {
+      if (btn.innerText !== 'OK' && btn.innerText !== 'REVERT') {
         btn.disabled = disabled;
       }
     }
   }
 
+  //TODO: implement revert
+  revert() {
+    console.log('revert');
+    this.isToResetRound = true;
+
+  }
+
+  private resetRound() {
+    this.resetAccumulatedPoints();
+    this.resetThrows();
+    this.roundCountService.decrementRoundCount();
+    this._currentPlayer.last3History = [];
+    this.getAllButtonsToDisable(false);
+  }
+
   private savePointsForStatistics() {
-    this._currentPlayer.history.push(this._accumulatedPoints);
+    this._currentPlayer.history.push({sum: this._accumulatedPoints, hits: this._last3History.value});
   }
 
   private reset() {
     this.resetAccumulatedPoints();
     this.resetThrows();
+    this._currentPlayer.last3History = [];
   }
 
   private resetAccumulatedPoints() {
@@ -89,6 +118,7 @@ export class CurrentPlayerService {
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
       this._remainingPoints -= points;
+      this._last3History.value.push(points);
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
     } else {
@@ -121,7 +151,6 @@ export class CurrentPlayerService {
   }
 
   private accumulateCricketPoints(points: number, multiplier: number) {
-    console.log(this.checkForClosedHit(points, multiplier));
     if (this.checkForClosedHit(points, multiplier)) {
       this._remainingPoints += points;
       this._accumulatedPoints += points;
@@ -146,26 +175,30 @@ export class CurrentPlayerService {
     return expectedRemainingPoints < 0;
   }
 
-  applyDartPoints() {
+  applyPoints(isCricket?: boolean) {
     this._currentPlayer.lastScore = this._accumulatedPoints;
-    this._currentPlayer.remainingPoints -= this._accumulatedPoints;
-    this.savePointsForStatistics();
-    this.calcAverage();
-  }
-
-  applyCricketPoints() {
-    this._currentPlayer.lastScore = this._accumulatedPoints;
-    this._currentPlayer.remainingPoints += this._accumulatedPoints;
+    if (isCricket) {
+      this._currentPlayer.remainingPoints += this._accumulatedPoints;
+    } else {
+      this._currentPlayer.remainingPoints -= this._accumulatedPoints;
+    }
     this.savePointsForStatistics();
     this.calcAverage();
   }
 
   calcAverage() {
-    let arr = this._currentPlayer.history;
+    let arr: number[] = [];
+    this._currentPlayer.history.forEach((entry: HistoryEntry) => {
+      entry.hits.forEach((hit: number) => {
+        arr.push(hit);
+      });
+    });
     let leng = arr.length;
-    let sum = arr.reduce((a, b) => +a + +b);
-    this._averagePoints = Math.round(sum / leng);
-    this._currentPlayer.average = this._averagePoints;
+    if (leng > 0) {
+      let sum = arr.reduce((a, b) => +a + +b);
+      this._averagePoints = Math.round(sum / leng);
+      this._currentPlayer.average = this._averagePoints;
+    }
   }
 
   isDoubleOut(multiplier: number): boolean {
@@ -219,11 +252,11 @@ export class CurrentPlayerService {
   }
 
   getLastThreeThrows() {
-    return this._currentPlayer.history.slice(-3).reverse();
+    return this._currentPlayer.last3History.slice(-3).reverse();
   }
 
   getHistory() {
-    return this._currentPlayer.history.reverse();
+    return this._currentPlayer.history.slice(-3).reverse();
   }
 
   checkForClosedHit(points: number, multiplier: number) {
@@ -236,4 +269,11 @@ export class CurrentPlayerService {
       player.cricketMap.get(points / multiplier) !== 3)
   }
 
+  showHistory() {
+    const data: HistoryDialogData = {playername: this._currentPlayer.name, history: this._currentPlayer.history}
+    if (this._currentPlayer.history.length > 0) {
+      this.dialog.open(HistoryDialog, {data});
+    }
+
+  }
 }

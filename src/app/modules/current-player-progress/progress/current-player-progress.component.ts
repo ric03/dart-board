@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../services/current-player.service";
 import {RoundCountService} from "../../../services/round-count.service";
 import {PlayerService} from "../../../services/player.service";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-current-player-progress',
@@ -11,16 +12,13 @@ import {PlayerService} from "../../../services/player.service";
 export class CurrentPlayerProgressComponent {
 
   readonly maxRemainingThrows = MAX_REMAINING_THROWS
-  last3Hits: number[] = [];
 
   constructor(public currentPlayerService: CurrentPlayerService,
               public roundCountService: RoundCountService
   ) {
-    this.last3Hits = currentPlayerService._currentPlayer.currentPoints.reverse();
   }
 
-  getDartCount(): number {
-    console.log(this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100)
+  getThrowCount(): number {
     return this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100;
   }
 

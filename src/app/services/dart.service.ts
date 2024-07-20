@@ -7,7 +7,6 @@ import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
-import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +25,7 @@ export class DartService {
       history: [],
       cricketMap: new Map(),
       average: 0,
-      currentPoints: [],
+      last3History: [],
     };
   }
 
@@ -52,7 +51,7 @@ export class DartService {
 
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.currentPoints.push(points);
+    this.currentPlayerService._currentPlayer.last3History.push(points);
 
     if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
@@ -71,11 +70,11 @@ export class DartService {
 
   private checksFor501() {
     if (this.currentPlayerService.hasReachedZeroPoints()) {
-      this.currentPlayerService.applyDartPoints();
+      this.currentPlayerService.applyPoints();
       this.handleVictory();
     } else {
       if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyDartPoints();
+        this.currentPlayerService.applyPoints();
         this.switchPlayer();
       }
     }
@@ -84,7 +83,7 @@ export class DartService {
   private checksFor501DoubleOut(multiplier: number) {
     if (this.currentPlayerService.hasReachedZeroPoints()) {
       if (this.currentPlayerService.isDoubleOut(multiplier)) {
-        this.currentPlayerService.applyDartPoints();
+        this.currentPlayerService.applyPoints();
         this.handleVictory();
       } else {
         this.displayDoubleOutFailNotification();
@@ -92,16 +91,17 @@ export class DartService {
       }
     } else {
       if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyDartPoints();
+        this.currentPlayerService.applyPoints();
         this.switchPlayer();
       }
     }
   }
 
   private switchPlayer() {
-    this.inkrementRoundCount();
+    this.currentPlayerService.switchPlayer(
+      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer),
+      this.isNewRound());
     this.setCurrentPlayerAsFristofList();
-    this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
 
 
@@ -136,14 +136,13 @@ export class DartService {
     // TODO: Open PointsOverview as Option
   }
 
-  inkrementRoundCount() {
-    if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      this.roundCountService.incrementRoundCount();
-    }
+  isNewRound() {
+    return this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1];
   }
 
   setCurrentPlayerAsFristofList() {
     const current = this.playerService._players.shift();
     this.playerService._players.push(current!);
   }
+
 }

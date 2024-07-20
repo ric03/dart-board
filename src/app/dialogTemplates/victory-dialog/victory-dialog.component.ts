@@ -1,7 +1,9 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
 import {CurrentPlayerService} from "../../services/current-player.service";
 import {ROUND_LIMIT} from "../../services/round-count.service";
+import {MatButtonModule} from "@angular/material/button";
+import {RouterModule} from "@angular/router";
 
 export interface VictoryDialogData {
   victoryByReachingRoundLimit: boolean;
@@ -12,7 +14,7 @@ export interface VictoryDialogData {
   template: `
     <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.name }}. You have won.</h1>
     <mat-dialog-content>
-      <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of {{roundLimit}} rounds.</p>
+      <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of {{ roundLimit }} rounds.</p>
       <p>Do you want to play again?</p>
     </mat-dialog-content>
     <mat-dialog-actions>
@@ -20,6 +22,12 @@ export interface VictoryDialogData {
       <button mat-button mat-dialog-close="">No, stay here and look around.</button>
     </mat-dialog-actions>
   `,
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    RouterModule
+  ],
   styles: []
 })
 export class VictoryDialog {

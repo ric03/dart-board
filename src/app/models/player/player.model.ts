@@ -1,4 +1,8 @@
-import {BehaviorSubject} from "rxjs";
+export interface HistoryEntry {
+  sum: number,
+  hits: number[],
+
+}
 
 export interface Player {
   id: number,
@@ -7,10 +11,10 @@ export interface Player {
 
   remainingPoints: number,
   lastScore: number,
-  history: number[],
+  history: HistoryEntry[],
   cricketMap: Map<number, number>,
   average: number;
-  currentPoints: number[];
+  last3History: number[];
 }
 
 export interface Throw {
@@ -23,8 +27,8 @@ export const DEFAULT_PLAYER: Player = {
   name: 'unknown',
   remainingPoints: -1,
   lastScore: -1,
-  history: [-1],
+  history: [{sum: -1, hits: [-1]}],
   cricketMap: new Map<number, number>(),
   average: 0,
-  currentPoints: [-1],
+  last3History: [-1],
 };

@@ -12,9 +12,7 @@ export class SwitchPlayerSnackComponent implements OnInit {
   public timeLeft: number = 5;
   public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer).name;
   snackBarRef = inject(MatSnackBar);
-
-  constructor() {
-  }
+  currentPlayerService = inject(CurrentPlayerService);
 
   ngOnInit(): void {
     this.startTimer();

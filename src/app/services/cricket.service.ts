@@ -5,9 +5,6 @@ import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {async, BehaviorSubject} from "rxjs";
-import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +35,7 @@ export class CricketService {
       history: [],
       cricketMap: new Map(),
       average: 0,
-      currentPoints: [],
+      last3History: [],
     };
   }
 
@@ -65,17 +62,17 @@ export class CricketService {
   // anpassen
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.currentPoints.push(points);
+    this.currentPlayerService._currentPlayer.last3History.push(points);
 
     if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
     } else {
       this.currentPlayerService.scoreCricket(points, _throw.multiplier);
       if (this.cricketWinCheck()) {
-        this.currentPlayerService.applyCricketPoints();
+        this.currentPlayerService.applyPoints(true);
         this.handleVictory();
       } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyCricketPoints();
+        this.currentPlayerService.applyPoints(true);
         this.switchPlayer();
       }
     }
@@ -89,9 +86,9 @@ export class CricketService {
   }
 
   private switchPlayer() {
-    this.inkrementRoundCount();
+    this.currentPlayerService.switchPlayer(
+      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer), this.isNewRound());
     this.setCurrentPlayerAsFristofList();
-    this.currentPlayerService.switchPlayer(this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer));
   }
 
 
@@ -115,10 +112,8 @@ export class CricketService {
   }
 
 
-  inkrementRoundCount() {
-    if (this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1]) {
-      this.roundCountService.incrementRoundCount()
-    }
+  isNewRound() {
+    return this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1];
   }
 
   setCurrentPlayerAsFristofList() {
