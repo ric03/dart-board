@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {GameType} from '../models/enum/GameType';
 import {CricketService} from './cricket.service';
@@ -8,7 +8,7 @@ import {DartService} from "./dart.service";
 @Injectable({
   providedIn: 'root'
 })
-export class GameInitializationResolver  {
+export class GameInitializationResolver {
 
   constructor(private dartService: DartService,
               private cricketService: CricketService,
@@ -19,7 +19,7 @@ export class GameInitializationResolver  {
     const gameType = <GameType>route.queryParamMap.get('gameType')!;
     const playerNames = route.queryParamMap.getAll('playerNames');
 
-    if (gameType == GameType.Cricket) {
+    if (gameType === GameType.Cricket) {
       this.cricketService.setGameType(GameType.Cricket);
       this.cricketService.initPlayers(playerNames);
     } else {

@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center mt-3">
     <mat-card class="m-1">
       <mat-card-subtitle>
-        Current Average: {{ currentPlayerService._averagePoints }}
+        Current Average: <br> {{ currentPlayerService._averagePoints }}
       </mat-card-subtitle>
       <mat-card-title>
         {{ currentPlayerService._currentPlayer.name }}:<br>
@@ -23,7 +23,7 @@
     </mat-card>
     <mat-card class="m-1">
       <mat-card-subtitle>
-        current Hits:
+        Hits:
       </mat-card-subtitle>
       <mat-card-title>
         <div *ngFor="let hit of currentPlayerService.getLastThreeThrows()">
