@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
@@ -37,8 +37,8 @@ export class InputButtonRowComponent {
     for (let i = 0; i < 20; i++) {
       this.twentyButtons.push({zahl: i + 1, badge: true});
     }
-    currentPlayerService._currentPlayer.pipe(distinctUntilChanged())
-      .subscribe(data => {
+    currentPlayerService._last3History.pipe(distinctUntilChanged())
+      .subscribe(() => {
         this.resetBadges()
       })
   }
