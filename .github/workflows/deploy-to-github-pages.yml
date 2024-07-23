@@ -17,9 +17,9 @@ jobs:
 
       - run: npm run build:ci -- --base-href /dart-board/ --deploy-url /dart-board/
 
-      #      - name: Add a 404 workaround # https://angular.io/guide/deployment#server-configuration
-      #        working-directory: dist/dart-board
-      #        run: cp dist/dart-board/browser/index.html dist/dart-board/browser/404.html
+      - name: Add a 404 workaround # https://angular.io/guide/deployment#server-configuration
+        working-directory: dist/dart-board/browser
+        run: cp index.html 404.html
 
       - name: Deploy to GitHub Pages
         if: success()
