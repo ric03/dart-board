@@ -23,8 +23,8 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: success()
-        uses: JamesIves/github-pages-deploy-action@v4.3.2
+        uses: JamesIves/github-pages-deploy-action@v4.6.3
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: dist/dart-board # The folder the action should deploy.
+          folder: dist/dart-board/browser # The folder the action should deploy.
           clean: true # Automatically remove files from the target branch
