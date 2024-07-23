@@ -19,7 +19,7 @@ jobs:
 
       - name: Add a 404 workaround # https://angular.io/guide/deployment#server-configuration
         working-directory: dist/dart-board
-        run: cp index.html 404.html
+        run: cp ./index.html ./404.html
 
       - name: Deploy to GitHub Pages
         if: success()
