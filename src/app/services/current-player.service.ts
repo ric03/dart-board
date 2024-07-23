@@ -26,16 +26,16 @@ export class CurrentPlayerService {
   public _accumulatedPoints = 0;
   public _remainingPoints = 0;
   public _averagePoints = 0;
-  public _currentPlayer: Player = DEFAULT_PLAYER;
+  public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _cricketMap = new Map<number, number>();
   public _last3History: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   public _history: HistoryEntry[] = [];
 
   init(player: Player) {
-    this._currentPlayer = player;
+    this._currentPlayer.next(player);
     this._last3History.next(this.getLastThreeThrows());
-    this._remainingPoints = this._currentPlayer.remainingPoints;
-    this._cricketMap = this._currentPlayer.cricketMap;
+    this._remainingPoints = this._currentPlayer.value.remainingPoints;
+    this._cricketMap = this._currentPlayer.value.cricketMap;
     this._averagePoints = player.average;
     this.reset()
     this._remainingPoints = player.remainingPoints;
@@ -61,12 +61,12 @@ export class CurrentPlayerService {
           this.roundCountService.incrementRoundCount();
         }
         this.getAllButtonsToDisable(false);
-        this._currentPlayer = player;
+        this._currentPlayer.next(player);
         this._last3History.next(this.getLastThreeThrows());
-        this._remainingPoints = this._currentPlayer.remainingPoints;
-        this._cricketMap = this._currentPlayer.cricketMap;
+        this._remainingPoints = this._currentPlayer.value.remainingPoints;
+        this._cricketMap = this._currentPlayer.value.cricketMap;
         this._averagePoints = player.average;
-        this._history = this._currentPlayer.history;
+        this._history = this._currentPlayer.value.history;
         this.reset();
       }
     })
@@ -93,18 +93,18 @@ export class CurrentPlayerService {
     this.resetAccumulatedPoints();
     this.resetThrows();
     this.roundCountService.decrementRoundCount();
-    this._currentPlayer.last3History = [];
+    this._currentPlayer.value.last3History = [];
     this.getAllButtonsToDisable(false);
   }
 
   private savePointsForStatistics() {
-    this._currentPlayer.history.push({sum: this._accumulatedPoints, hits: this._last3History.value});
+    this._currentPlayer.value.history.push({sum: this._accumulatedPoints, hits: this._last3History.value});
   }
 
   private reset() {
     this.resetAccumulatedPoints();
     this.resetThrows();
-    this._currentPlayer.last3History = [];
+    this._currentPlayer.value.last3History = [];
   }
 
   private resetAccumulatedPoints() {
@@ -166,21 +166,21 @@ export class CurrentPlayerService {
   }
 
   hasReachedZeroPoints(): boolean {
-    const aggregatedRemainingPoints = this._currentPlayer.remainingPoints - this._accumulatedPoints;
+    const aggregatedRemainingPoints = this._currentPlayer.value.remainingPoints - this._accumulatedPoints;
     return aggregatedRemainingPoints == 0;
   }
 
   isOvershot(points: number): boolean {
-    const expectedRemainingPoints = this._currentPlayer.remainingPoints - this._accumulatedPoints - points;
+    const expectedRemainingPoints = this._currentPlayer.value.remainingPoints - this._accumulatedPoints - points;
     return expectedRemainingPoints < 0;
   }
 
   applyPoints(isCricket?: boolean) {
-    this._currentPlayer.lastScore = this._accumulatedPoints;
+    this._currentPlayer.value.lastScore = this._accumulatedPoints;
     if (isCricket) {
-      this._currentPlayer.remainingPoints += this._accumulatedPoints;
+      this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     } else {
-      this._currentPlayer.remainingPoints -= this._accumulatedPoints;
+      this._currentPlayer.value.remainingPoints -= this._accumulatedPoints;
     }
     this.savePointsForStatistics();
     this.calcAverage();
@@ -188,7 +188,7 @@ export class CurrentPlayerService {
 
   calcAverage() {
     let arr: number[] = [];
-    this._currentPlayer.history.forEach((entry: HistoryEntry) => {
+    this._currentPlayer.value.history.forEach((entry: HistoryEntry) => {
       entry.hits.forEach((hit: number) => {
         arr.push(hit);
       });
@@ -197,7 +197,7 @@ export class CurrentPlayerService {
     if (leng > 0) {
       let sum = arr.reduce((a, b) => +a + +b);
       this._averagePoints = Math.round(sum / leng);
-      this._currentPlayer.average = this._averagePoints;
+      this._currentPlayer.value.average = this._averagePoints;
     }
   }
 
@@ -206,7 +206,7 @@ export class CurrentPlayerService {
   }
 
   storeMultiplier(point: number, multiplier: number) {
-    let map = this._currentPlayer.cricketMap;
+    let map = this._currentPlayer.value.cricketMap;
     if (point > 0) {
       if (map.has((point / multiplier))) {
         map.forEach((value: number, key: number) => {
@@ -237,7 +237,7 @@ export class CurrentPlayerService {
 
   sortMap() {
     const sortedMap = new Map([...this._cricketMap].sort());
-    this._currentPlayer.cricketMap = sortedMap;
+    this._currentPlayer.value.cricketMap = sortedMap;
     this._cricketMap = sortedMap;
   }
 
@@ -252,11 +252,11 @@ export class CurrentPlayerService {
   }
 
   getLastThreeThrows() {
-    return this._currentPlayer.last3History.slice(-3).reverse();
+    return this._currentPlayer.value.last3History.slice(-3).reverse();
   }
 
   getHistory() {
-    return this._currentPlayer.history.slice(-3).reverse();
+    return this._currentPlayer.value.history.slice(-3).reverse();
   }
 
   checkForClosedHit(points: number, multiplier: number) {
@@ -270,8 +270,11 @@ export class CurrentPlayerService {
   }
 
   showHistory() {
-    const data: HistoryDialogData = {playername: this._currentPlayer.name, history: this._currentPlayer.history}
-    if (this._currentPlayer.history.length > 0) {
+    const data: HistoryDialogData = {
+      playername: this._currentPlayer.value.name,
+      history: this._currentPlayer.value.history
+    }
+    if (this._currentPlayer.value.history.length > 0) {
       this.dialog.open(HistoryDialog, {data});
     }
 

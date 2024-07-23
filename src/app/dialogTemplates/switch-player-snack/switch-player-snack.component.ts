@@ -10,7 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class SwitchPlayerSnackComponent implements OnInit {
 
   public timeLeft: number = 5;
-  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer).name;
+  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer.value).name;
   snackBarRef = inject(MatSnackBar);
   currentPlayerService = inject(CurrentPlayerService);
 

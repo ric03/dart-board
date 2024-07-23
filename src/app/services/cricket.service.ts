@@ -62,7 +62,7 @@ export class CricketService {
   // anpassen
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.last3History.push(points);
+    this.currentPlayerService._currentPlayer.value.last3History.push(points);
 
     if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
@@ -87,7 +87,7 @@ export class CricketService {
 
   private switchPlayer() {
     this.currentPlayerService.switchPlayer(
-      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer), this.isNewRound());
+      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer.value), this.isNewRound());
     this.setCurrentPlayerAsFristofList();
   }
 
@@ -98,7 +98,7 @@ export class CricketService {
   }
 
   private handleVictoryByReachingRoundLimit() {
-    this.currentPlayerService._currentPlayer = this.getPlayerWithHighestScore();
+    this.currentPlayerService._currentPlayer.next(this.getPlayerWithHighestScore());
 
     const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
     this.dialog.open(VictoryDialog, {data});
@@ -113,7 +113,7 @@ export class CricketService {
 
 
   isNewRound() {
-    return this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1];
+    return this.currentPlayerService._currentPlayer.value.name == this.playerNames[this.playerNames.length - 1];
   }
 
   setCurrentPlayerAsFristofList() {
@@ -124,7 +124,7 @@ export class CricketService {
   private cricketWinCheck() {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (this.playerHasAllClosed()) {
-      if (this.currentPlayerService._currentPlayer == this.getPlayerWithHighestScore()
+      if (this.currentPlayerService._currentPlayer.value == this.getPlayerWithHighestScore()
         || this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
         return true;
       }

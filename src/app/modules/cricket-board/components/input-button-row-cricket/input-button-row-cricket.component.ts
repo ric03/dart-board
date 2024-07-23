@@ -58,6 +58,6 @@ export class InputButtonRowCricketComponent {
   }
 
   getBadgeCountValue(primaryNumber: number) {
-    return this.currentPlayerService._currentPlayer.cricketMap.get(primaryNumber);
+    return this.currentPlayerService._currentPlayer.value.cricketMap.get(primaryNumber);
   }
 }

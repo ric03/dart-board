@@ -13,7 +13,7 @@ export interface VictoryDialogData {
 @Component({
   selector: 'app-victory-dialog',
   template: `
-    <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.name }}. You have won.</h1>
+    <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.value.name }}. You have won.</h1>
     <mat-dialog-content>
       <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of {{ roundLimit }} rounds.</p>
       <p>Do you want to play again?</p>

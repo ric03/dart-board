@@ -51,7 +51,7 @@ export class DartService {
 
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.last3History.push(points);
+    this.currentPlayerService._currentPlayer.value.last3History.push(points);
 
     if (this.roundCountService.getRemainingRounds() == 0) {
       this.displayRoundCountNotification();
@@ -99,19 +99,19 @@ export class DartService {
 
   private switchPlayer() {
     this.currentPlayerService.switchPlayer(
-      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer),
+      this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer.value),
       this.isNewRound());
     this.setCurrentPlayerAsFristofList();
   }
 
 
   private displayDoubleOutFailNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
+    const playerName = this.currentPlayerService._currentPlayer.value.name;
     this.snackbar.open(`Sorry ${playerName}, you haven't end with double. Switching players.`, 'OK', {duration: 5000})
   }
 
   private displayOvershotNotification() {
-    const playerName = this.currentPlayerService._currentPlayer.name;
+    const playerName = this.currentPlayerService._currentPlayer.value.name;
     this.snackbar.open(`Sorry ${playerName}, you have overshot. Switching players.`, 'OK', {duration: 5000})
   }
 
@@ -123,7 +123,7 @@ export class DartService {
   private handleVictoryByReachingRoundLimit() {
     const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.min(...arrOfPoints));
-    this.currentPlayerService._currentPlayer = winner[0]; // TODO consider a draw
+    this.currentPlayerService._currentPlayer.next(winner[0]); // TODO consider a draw
 
     const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
     this.dialog.open(VictoryDialog, {data});
@@ -137,7 +137,7 @@ export class DartService {
   }
 
   isNewRound() {
-    return this.currentPlayerService._currentPlayer.name == this.playerNames[this.playerNames.length - 1];
+    return this.currentPlayerService._currentPlayer.value.name == this.playerNames[this.playerNames.length - 1];
   }
 
   setCurrentPlayerAsFristofList() {

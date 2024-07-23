@@ -4,18 +4,24 @@
     <button
       mat-flat-button color="primary"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
+      [matBadge]="bullBadgeCount" [matBadgeHidden]="matBadgeHiddenBull"
+      matBadgeColor="accent"
       (click)="scoreBull()">
       Bull
     </button>
     <button
       class="ms-3" mat-flat-button color="accent"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
+      [matBadge]="bullsEyeBadgeCount" [matBadgeHidden]="matBadgeHiddenBullsEye"
+      matBadgeColor="accent"
       (click)="scoreBullsEye()">
       BullsEye
     </button>
     <button
       class="ms-3" mat-flat-button color="warn"
       matRipple matRippleColor="orange" [matRippleRadius]="42"
+      [matBadge]="missBadgeCount" [matBadgeHidden]="matBadgeHiddenMiss"
+      matBadgeColor="accent"
       (click)="scoreMiss()">
       Miss
     </button>
@@ -30,10 +36,14 @@
   </div>
 
   <div class="d-flex flex-wrap">
-    <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let primaryNumber of twentyButtons">
-      <button matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleCentered]="true"
+    <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let inputButton of twentyButtons">
+      <button matRipple matRippleColor="orange" [matRippleUnbounded]="true"
+              [matRippleCentered]="true"
               [matRippleRadius]="42" mat-fab [color]="buttonColor"
-              (click)="scoreWithMultiplier(primaryNumber, singelToggel)">{{ primaryNumber }}
+              [matBadge]="inputButton.badgeValue" [matBadgeHidden]="inputButton.badge"
+              matBadgeColor="accent"
+              (click)="scoreWithMultiplier(inputButton, singelToggel)">{{ inputButton.zahl }}
+
       </button>
     </div>
   </div>

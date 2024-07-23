@@ -12,6 +12,7 @@ import {CurrentPlayerProgressModule} from "../current-player-progress/current-pl
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatBadgeModule} from "@angular/material/badge";
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatRippleModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatBadgeModule,
 
     GameSelectionModule,
     ScoreBoardModule,
