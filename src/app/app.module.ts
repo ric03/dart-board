@@ -20,8 +20,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    MatIcon,
   ],
   providers: [
     RedirectWarningService,

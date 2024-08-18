@@ -13,8 +13,10 @@ export interface HistoryDialogData {
   selector: 'app-history-dialog',
   template: `
     <h1 mat-dialog-title>history of: {{ data.playername }}</h1>
-    <mat-dialog-content *ngFor="let entry of data.history">
-      points: {{ entry.sum }} | hits: {{ entry.hits.slice(-3) }}
+    <mat-dialog-content>
+      <div *ngFor="let entry of data.history">
+        points: {{ entry.sum }} | hits: {{ entry.hits.slice(-3) }}
+      </div>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close="">Close</button>

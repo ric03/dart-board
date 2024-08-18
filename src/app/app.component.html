@@ -1,8 +1,11 @@
-<mat-toolbar class="mat-elevation-z6">
-  <a mat-button color="accent" class="font-size-20" [matMenuTriggerFor]="menueItmes">Dart Board</a>
+<mat-toolbar class="justify-content-between">
+  <button mat-button color="accent" class="font-size-20" [matMenuTriggerFor]="menueItmes">Dart Board</button>
   <mat-menu #menueItmes="matMenu">
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
     <button mat-menu-item routerLink="">Game-Selection</button>
   </mat-menu>
+  <button mat-icon-button (click)="localInstall()" [hidden]="installBtnHidden">
+    <mat-icon>install_mobile</mat-icon>
+  </button>
 </mat-toolbar>
 <router-outlet></router-outlet>
