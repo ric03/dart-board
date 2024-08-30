@@ -1,6 +1,7 @@
 import {Component, HostListener, inject, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter, map} from "rxjs";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   installBtnHidden: boolean = true
   private wakeLock: WakeLockSentinel | null = null;
   private router: Router = inject(Router);
+  appVersion: string = environment.appVersion;
 
 
   @HostListener('window:beforeinstallprompt', ['$event'])
