@@ -1,14 +1,19 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnDestroy, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
+import {filter, map} from "rxjs";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+
   title = 'dart-board';
   private deferredPrompt: any;
 
   installBtnHidden: boolean = true
+  private wakeLock: WakeLockSentinel | null = null;
+  private router: Router = inject(Router);
 
 
   @HostListener('window:beforeinstallprompt', ['$event'])
@@ -26,6 +31,24 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.installBtnHidden = false;
+    this.initDisplayAlwaysOnMode().then(promise => console.log(promise));
+    this.checkWakelockOnNavigatiomn();
+  }
+
+
+  private checkWakelockOnNavigatiomn() {
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map(async () => {
+        if (this.wakeLock !== null) {
+          this.wakeLock = await navigator.wakeLock.request("screen");
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.releaseDisplayAlwaysOnMode();
   }
 
 
@@ -56,4 +79,21 @@ export class AppComponent implements OnInit {
 
   }
 
+  private async initDisplayAlwaysOnMode() {
+    try {
+      this.wakeLock = await navigator.wakeLock.request("screen");
+    } catch (err) {
+      // the wake lock request fails - usually system related, such being low on battery
+      // @ts-ignore
+      console.log(`${err.name}, ${err.message}`);
+    }
+
+
+  }
+
+  private releaseDisplayAlwaysOnMode() {
+    this.wakeLock!.release().then(() => {
+      this.wakeLock = null;
+    });
+  }
 }
