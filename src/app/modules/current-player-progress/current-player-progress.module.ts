@@ -6,6 +6,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
+import {ScoreBoardModule} from "../score-board/score-board.module";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {MatInputModule} from "@angular/material/input";
     MatProgressBarModule,
     MatStepperModule,
     MatInputModule,
+    ScoreBoardModule,
 
   ],
   exports: [

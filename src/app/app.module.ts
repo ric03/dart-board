@@ -27,7 +27,6 @@ import {MatIcon} from "@angular/material/icon";
 @NgModule({
   declarations: [
     AppComponent,
-    HiddenPlayersDialog,
     SwitchPlayerSnackComponent,
   ],
   imports: [
@@ -42,6 +41,7 @@ import {MatIcon} from "@angular/material/icon";
     GameSelectionModule,
     PageNotFoundModule,
     CurrentPlayerProgressModule,
+    HiddenPlayersDialog,
 
     MatButtonModule,
     MatSnackBarModule,

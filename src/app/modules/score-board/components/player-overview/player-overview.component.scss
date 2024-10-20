@@ -1,0 +1,19 @@
+.minHight {
+  max-height: 100px !important;
+  min-height: 100px !important;
+  min-width: 75px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  margin: 1px !important;
+  padding: 1px !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+  scale: 0.75;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

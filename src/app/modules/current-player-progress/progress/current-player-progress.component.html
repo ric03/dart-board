@@ -1,44 +1,41 @@
 <div class="m-3 border border-light rounded">
-  <div class="d-flex justify-content-center mt-3">
-    <mat-card class="m-1">
-      <mat-card-subtitle>
-        Current Average: <br> {{ currentPlayerService._averagePoints }}
-      </mat-card-subtitle>
-      <mat-card-title>
-        {{ currentPlayerService._currentPlayer.value.name }}:<br>
-        {{ currentPlayerService._remainingPoints }}
-      </mat-card-title>
-      Round
-      {{ roundCountService.roundCount }} of 45
-    </mat-card>
-    <mat-card class="m-1 matcardpointer" (click)="currentPlayerService.showHistory()">
-      <mat-card-subtitle>
-        History:
-      </mat-card-subtitle>
-      <mat-card-title>
-        <div *ngFor="let last of currentPlayerService.getHistory() ">
-          {{ last.sum }}
+  <div class="d-flex flex-row">
+    <div class="m-2 w-50 justify-content-center">
+      <mat-card class="d-flex h-100 m-1 matcardpointer justify-content-center"
+                (click)="currentPlayerService.showHistory()">
+        <mat-card-title>
+          {{ currentPlayerService._currentPlayer.value.name }}:<br>
+          {{ currentPlayerService._remainingPoints }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          ⌀ {{ currentPlayerService._averagePoints }}
+        </mat-card-subtitle>
+        <div>
+          ➶
+          <div *ngFor="let hit of currentPlayerService.getLastThreeThrows(), let i = index"
+               class="d-inline-flex p-1 m-1">
+            <mat-card>
+              {{ hit }}
+            </mat-card>
+          </div>
         </div>
-      </mat-card-title>
-    </mat-card>
-    <mat-card class="m-1">
-      <mat-card-subtitle>
-        Hits:
-      </mat-card-subtitle>
-      <mat-card-title>
-        <div *ngFor="let hit of currentPlayerService.getLastThreeThrows()">
-          {{ hit }}
-        </div>
-      </mat-card-title>
-    </mat-card>
+      </mat-card>
+    </div>
+    <div class="justify-content-center w-50">
+      <app-scoreboard-overview></app-scoreboard-overview>
+    </div>
   </div>
-
-  <div class="d-flex justify-content-center p-0 m-0">
-    <mat-progress-bar class="p-3 w-75" [color]='getProgressColor()' mode="determinate" [value]='getThrowCount()'>
+  <div class="justify-content-center py-3 px-3 w-100">
+    <mat-progress-bar class="d-flex w-100 justify-content-center" [color]='getProgressColor()' mode="determinate"
+                      [value]='getThrowCount()'>
     </mat-progress-bar>
-  </div>
-  <div class="d-flex justify-content-center p-0 m-0">
-    <strong [style]="{color:this.getProgressTextColor()}">{{ currentPlayerService._remainingThrows }}
-      / {{ maxRemainingThrows }}</strong>
+    <strong class="d-flex w-100 justify-content-center"
+            [style]="{color:this.getProgressTextColor()}">{{ currentPlayerService._remainingThrows }}
+      / {{ maxRemainingThrows }}
+    </strong>
+    <div class="d-flex w-100 justify-content-center">
+      ⟳ {{ roundCountService.roundCount }} of 45
+    </div>
   </div>
 </div>
+

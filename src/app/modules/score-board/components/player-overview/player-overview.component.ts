@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 @Component({
   selector: 'app-scoreboard-overview',
   templateUrl: './player-overview.component.html',
+  styleUrls: ['./player-overview.component.scss']
 })
 export class PlayerOverviewComponent {
 
@@ -17,4 +18,6 @@ export class PlayerOverviewComponent {
   showAllPlayers() {
     this.dialog.open(HiddenPlayersDialog)
   }
+
+  protected readonly PlayerService = PlayerService;
 }
