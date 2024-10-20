@@ -4,6 +4,14 @@
     <mat-card-title>{{ player.remainingPoints }}</mat-card-title>
     {{ player.name }}
   </mat-card>
+  <div>
+    <mat-card (click)="showAllPlayers()" class="minHight">
+      <mat-card-subtitle>All <br>Players</mat-card-subtitle>
+      <mat-card-title>
+        <mat-icon>touch_app</mat-icon>
+      </mat-card-title>
+    </mat-card>
+  </div>
 </div>
 <div class="d-flex flex-row flex-wrap justify-content-center" *ngIf="(playerService._players.length > 4)">
   <div *ngFor="let player of playerService._players ;let i=index">
@@ -14,11 +22,14 @@
         <mat-card-subtitle>last: {{ player.lastScore }}</mat-card-subtitle>
       </mat-card>
     </div>
-    <div *ngIf="i == 4">
-      <mat-card (click)="showAllPlayers()" class="minHight">
-        <mat-card-subtitle>All <br>Players</mat-card-subtitle>
-        <mat-card-title>...</mat-card-title>
-      </mat-card>
-    </div>
+  </div>
+  <div>
+    <mat-card (click)="showAllPlayers()" class="minHight">
+      <mat-card-subtitle>All <br>Players</mat-card-subtitle>
+      <mat-card-title>
+        <mat-icon>touch_app</mat-icon>
+      </mat-card-title>
+    </mat-card>
   </div>
 </div>
+

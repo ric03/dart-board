@@ -17,7 +17,7 @@ import {NgForOf} from "@angular/common";
           </mat-card-title>
           <br>
           last∑ {{ player.lastScore }}<br>
-          last3➶ {{ player.last3History }}<br>
+          last➶ {{ player.last3History }}<br>
           ⌀ {{ player.average }}<br>
         </mat-card>
       </div>

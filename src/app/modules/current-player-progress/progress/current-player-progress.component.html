@@ -1,24 +1,23 @@
 <div class="m-3 border border-light rounded">
   <div class="d-flex flex-row">
     <div class="m-2 w-50 justify-content-center">
-      <mat-card class="d-flex h-100 m-1 matcardpointer justify-content-center"
+      <mat-card class="m-1 matcardpointer justify-content-center"
                 (click)="currentPlayerService.showHistory()">
         <mat-card-title>
-          {{ currentPlayerService._currentPlayer.value.name }}:<br>
-          {{ currentPlayerService._remainingPoints }}
+          {{ currentPlayerService._currentPlayer.value.name }}<br>
+          {{ currentPlayerService._remainingPoints }}<br>
+          ⌀ {{ currentPlayerService._averagePoints }}
         </mat-card-title>
         <mat-card-subtitle>
-          ⌀ {{ currentPlayerService._averagePoints }}
-        </mat-card-subtitle>
-        <div>
+          <br>
           ➶
           <div *ngFor="let hit of currentPlayerService.getLastThreeThrows(), let i = index"
-               class="d-inline-flex p-1 m-1">
-            <mat-card>
+               class="d-inline-flex">
+            <mat-card class="pb-0 pt-0 mt-0 mb-0 me-1 pe-1 ps-1 ms-1">
               {{ hit }}
             </mat-card>
           </div>
-        </div>
+        </mat-card-subtitle>
       </mat-card>
     </div>
     <div class="justify-content-center w-50">

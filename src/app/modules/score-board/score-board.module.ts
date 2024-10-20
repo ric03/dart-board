@@ -4,6 +4,7 @@ import {PlayerOverviewComponent} from './components/player-overview/player-overv
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatIcon} from "@angular/material/icon";
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     MatListModule,
     MatCardModule,
     MatProgressBarModule,
+    MatIcon,
   ],
   exports: [
     PlayerOverviewComponent,
