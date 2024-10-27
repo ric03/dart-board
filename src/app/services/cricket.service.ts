@@ -125,7 +125,7 @@ export class CricketService {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (this.playerHasAllClosed()) {
       if (this.currentPlayerService._currentPlayer.value == this.getPlayerWithHighestScore()
-        || this.currentPlayerService._remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
+        || this.currentPlayerService._remainingPointsToDisplay >= this.getPlayerWithHighestScore().remainingPoints) {
         return true;
       }
     }

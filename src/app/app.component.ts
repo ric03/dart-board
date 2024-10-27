@@ -1,5 +1,5 @@
 import {Component, HostListener, inject, OnDestroy, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from "@angular/router";
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 import {filter, map} from "rxjs";
 import {environment} from "../environments/environment";
 
@@ -31,29 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
-    this.installBtnHidden = false;
-    this.initDisplayAlwaysOnMode().then(promise => console.log(promise));
-    this.checkWakelockOnNavigatiomn();
-  }
-
-
-  private checkWakelockOnNavigatiomn() {
-    this.router.events.pipe(
-      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-      map(async () => {
-        if (this.wakeLock !== null) {
-          this.wakeLock = await navigator.wakeLock.request("screen");
-        }
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.releaseDisplayAlwaysOnMode();
-  }
-
-
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnloadHandler(event: any) {
     event.preventDefault();
@@ -62,6 +39,41 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:onload', ['$event'])
   public onload(event: any) {
     event.preventDefault();
+    this.initDisplayAlwaysOnMode().then(() => {
+      this.showScreenLockIndicator();
+    });
+  }
+
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange() {
+    this.initDisplayAlwaysOnMode().then(() => {
+      this.showScreenLockIndicator();
+    });
+  }
+
+  ngOnInit(): void {
+    this.installBtnHidden = false;
+    this.initDisplayAlwaysOnMode().then(() => {
+      this.showScreenLockIndicator();
+    });
+    this.checkWakelockOnNavigation();
+  }
+
+  ngOnDestroy(): void {
+    this.releaseDisplayAlwaysOnMode();
+  }
+
+
+  private checkWakelockOnNavigation() {
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd || e instanceof NavigationStart || e instanceof NavigationCancel || e instanceof NavigationError),
+      map(async () => {
+        console.error('navigate');
+        this.initDisplayAlwaysOnMode().then(() => {
+          this.showScreenLockIndicator();
+        });
+      })
+    );
   }
 
   localInstall() {
@@ -97,5 +109,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.wakeLock!.release().then(() => {
       this.wakeLock = null;
     });
+  }
+
+  private showScreenLockIndicator() {
+    window.document.body.classList.add("display-always-on-indicator")
+    setTimeout(() => {
+      window.document.body.classList.remove("display-always-on-indicator")
+    }, 4000)
   }
 }

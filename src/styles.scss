@@ -33,5 +33,13 @@ mat-card {
   cursor: pointer;
   text-align: center;
   background-color: green !important;
-  min-height: 100% !important;
+}
+
+.maxHight {
+  max-height: 38% !important;
+  overflow: clip;
+}
+
+.display-always-on-indicator {
+  border: 5px solid orange;
 }

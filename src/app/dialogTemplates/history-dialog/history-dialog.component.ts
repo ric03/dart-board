@@ -1,22 +1,30 @@
 import {Component, Inject} from '@angular/core';
-import {HistoryEntry} from "../../models/player/player.model";
+import {Player} from "../../models/player/player.model";
 import {CommonModule} from "@angular/common";
 import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
 
 export interface HistoryDialogData {
-  playername: string;
-  history: HistoryEntry[];
+  player: Player;
 }
 
 @Component({
   selector: 'app-history-dialog',
   template: `
-    <h1 mat-dialog-title>history of: {{ data.playername }}</h1>
+    <h1 mat-dialog-title>history of: {{ data.player.name }}</h1>
     <mat-dialog-content>
-      <div *ngFor="let entry of data.history">
-        points: {{ entry.sum }} | hits: {{ entry.hits.slice(-3) }}
-      </div>
+      <mat-card class="mb-1">
+        <mat-card-title>{{ data.player.remainingPoints }}
+        </mat-card-title>
+        <br>
+        last∑ {{ data.player.lastScore }}<br>
+        last➶ {{ data.player.last3History }}<br>
+        ⌀ {{ data.player.average }}<br>
+        <mat-card *ngFor="let plyerhis of data.player.history">
+          {{ plyerhis.sum }} | {{ plyerhis.hits }}
+        </mat-card>
+      </mat-card>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close="">Close</button>
@@ -26,7 +34,8 @@ export interface HistoryDialogData {
   imports: [
     MatDialogModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
+    MatCardModule,
   ],
   styles: []
 })

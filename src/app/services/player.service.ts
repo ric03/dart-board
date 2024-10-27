@@ -43,4 +43,9 @@ export class PlayerService {
     }
   }
 
+  getPlayer(player: Player): Player {
+    const indexOfCurrentPlayer = this._players.findIndex(({id}) => id == player.id)
+    return this._players[indexOfCurrentPlayer]
+  }
+
 }

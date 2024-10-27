@@ -27,7 +27,7 @@ export const DEFAULT_PLAYER: Player = {
   name: 'unknown',
   remainingPoints: -1,
   lastScore: -1,
-  history: [{sum: -1, hits: [-1]}],
+  history: [],
   cricketMap: new Map<number, number>(),
   average: 0,
   last3History: [-1],

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {PlayerService} from './player.service';
-import {DEFAULT_PLAYER, HistoryEntry, Player, Throw} from "../models/player/player.model";
+import {DEFAULT_PLAYER, HistoryEntry, Player} from "../models/player/player.model";
 import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
 import {BehaviorSubject} from "rxjs";
 import {HistoryDialog, HistoryDialogData} from "../dialogTemplates/history-dialog/history-dialog.component";
@@ -24,7 +24,7 @@ export class CurrentPlayerService {
 
   public _remainingThrows = MAX_REMAINING_THROWS;
   public _accumulatedPoints = 0;
-  public _remainingPoints = 0;
+  public _remainingPointsToDisplay = 0;
   public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _cricketMap = new Map<number, number>();
@@ -34,11 +34,10 @@ export class CurrentPlayerService {
   init(player: Player) {
     this._currentPlayer.next(player);
     this._last3History.next(this.getLastThreeThrows());
-    this._remainingPoints = this._currentPlayer.value.remainingPoints;
+    this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
     this._cricketMap = this._currentPlayer.value.cricketMap;
     this._averagePoints = player.average;
     this.reset()
-    this._remainingPoints = player.remainingPoints;
   }
 
   switchPlayer(player: Player, isNewRound: boolean) {
@@ -63,7 +62,7 @@ export class CurrentPlayerService {
         this.getAllButtonsToDisable(false);
         this._currentPlayer.next(player);
         this._last3History.next(this.getLastThreeThrows());
-        this._remainingPoints = this._currentPlayer.value.remainingPoints;
+        this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
         this._cricketMap = this._currentPlayer.value.cricketMap;
         this._averagePoints = player.average;
         this._history = this._currentPlayer.value.history;
@@ -98,7 +97,11 @@ export class CurrentPlayerService {
   }
 
   private savePointsForStatistics() {
-    this._currentPlayer.value.history.push({sum: this._accumulatedPoints, hits: this._last3History.value});
+    let playerHistory: HistoryEntry = {sum: 0, hits: []};
+    playerHistory.sum = this._accumulatedPoints;
+    playerHistory.hits.push(...this._currentPlayer.value.last3History);
+
+    this._currentPlayer.value.history.push(playerHistory);
   }
 
   private reset() {
@@ -117,11 +120,12 @@ export class CurrentPlayerService {
 
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
-      this._remainingPoints -= points;
+      this._remainingPointsToDisplay -= points;
       this._last3History.value.push(points);
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
     } else {
+      // TODO: show error message, wird manchmal geworfen, wenn man 3 mal auf den Button drückt, verhindert damit aber nicht das Spiel nur den Click zuviel
       throw new Error('Unable to reduce below 0');
     }
   }
@@ -152,7 +156,7 @@ export class CurrentPlayerService {
 
   private accumulateCricketPoints(points: number, multiplier: number) {
     if (this.checkForClosedHit(points, multiplier)) {
-      this._remainingPoints += points;
+      this._remainingPointsToDisplay += points;
       this._accumulatedPoints += points;
     }
   }
@@ -260,7 +264,6 @@ export class CurrentPlayerService {
   }
 
   checkForClosedHit(points: number, multiplier: number) {
-    // FEHLER: Nur wenn alle Spieler 3 Treffer haben und es mehr als einen Spieler gibt, darf nicht gezählt werden
     if (this.playerService._players.length < 2) {
       return true;
     }
@@ -269,12 +272,11 @@ export class CurrentPlayerService {
       player.cricketMap.get(points / multiplier) !== 3)
   }
 
-  showHistory() {
+  showHistory(player?: Player) {
     const data: HistoryDialogData = {
-      playername: this._currentPlayer.value.name,
-      history: this._currentPlayer.value.history
+      player: this.playerService.getPlayer(player ?? this._currentPlayer.value),
     }
-    if (this._currentPlayer.value.history.length > 0) {
+    if (data.player.history.length > 0) {
       this.dialog.open(HistoryDialog, {data});
     }
 

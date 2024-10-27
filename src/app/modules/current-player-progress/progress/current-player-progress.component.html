@@ -1,15 +1,15 @@
 <div class="m-3 border border-light rounded">
   <div class="d-flex flex-row">
     <div class="m-2 w-50 justify-content-center">
-      <mat-card class="m-1 matcardpointer justify-content-center"
+      <mat-card class="matcardpointer justify-content-center"
                 (click)="currentPlayerService.showHistory()">
-        <mat-card-title>
-          {{ currentPlayerService._currentPlayer.value.name }}<br>
-          {{ currentPlayerService._remainingPoints }}<br>
-          ⌀ {{ currentPlayerService._averagePoints }}
-        </mat-card-title>
-        <mat-card-subtitle>
-          <br>
+        <mat-card-title class="flex-column">
+          <p> {{ currentPlayerService._currentPlayer.value.name }}
+          </p>
+          <h2> {{ this.currentPlayerService._remainingPointsToDisplay }}
+          </h2>
+          <p> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
+          </p>
           ➶
           <div *ngFor="let hit of currentPlayerService.getLastThreeThrows(), let i = index"
                class="d-inline-flex">
@@ -17,10 +17,10 @@
               {{ hit }}
             </mat-card>
           </div>
-        </mat-card-subtitle>
+        </mat-card-title>
       </mat-card>
     </div>
-    <div class="justify-content-center w-50">
+    <div class="m-2 w-50">
       <app-scoreboard-overview></app-scoreboard-overview>
     </div>
   </div>

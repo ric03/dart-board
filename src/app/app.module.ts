@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule, isDevMode} from '@angular/core';
+import {APP_INITIALIZER, isDevMode, NgModule} from '@angular/core';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserModule} from '@angular/platform-browser';
@@ -14,7 +14,6 @@ import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module
 import {ScoreBoardModule} from './modules/score-board/score-board.module';
 import {RedirectWarningService} from "./services/redirect-warning.service";
 import {noop} from "./shared/util";
-import {SwitchPlayerSnackComponent} from './dialogTemplates/switch-player-snack/switch-player-snack.component';
 import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDialogModule} from "@angular/material/dialog";
@@ -27,7 +26,6 @@ import {MatIcon} from "@angular/material/icon";
 @NgModule({
   declarations: [
     AppComponent,
-    SwitchPlayerSnackComponent,
   ],
   imports: [
     BrowserModule,

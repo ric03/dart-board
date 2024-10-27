@@ -1,4 +1,9 @@
 <div class="d-flex flex-column">
+  @if (this.currentPlayerService._currentPlayer.value.history.length > 0) {
+    <h3>
+      {{ getCurrentPlayerHistory().hits }} =  {{ getCurrentPlayerHistory().sum }}
+    </h3>
+  }
   <p><strong>NEXT Player: {{ this.nextPlayer }}</strong></p>
   <div class="d-flex flex-row justify-content-between">
     <p class="p-1">...closes in {{ this.timeLeft }}s</p>
