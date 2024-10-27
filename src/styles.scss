@@ -36,8 +36,14 @@ mat-card {
 }
 
 .maxHight {
-  max-height: 38% !important;
-  overflow: clip;
+  padding-top: 0;
+  @media (orientation: landscape) {
+    overflow: clip;
+    max-height: 36vh;
+  }
+  @media (orientation: portrait) {
+    overflow: clip;
+  }
 }
 
 .display-always-on-indicator {
