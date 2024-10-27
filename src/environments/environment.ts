@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  isRedirectWarningActive: false,
+  isRedirectWarningActive: true,
   appVersion: require('../../package.json').version + '--dev',
 };
 

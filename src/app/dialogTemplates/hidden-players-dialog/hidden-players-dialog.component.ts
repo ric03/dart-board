@@ -20,7 +20,7 @@ import {NgForOf, NgIf} from "@angular/common";
           @if (player.history.length > 0) {
             <mat-card class="mb-1" *ngFor="let plyerhis of player.history">
               last➶
-              {{ plyerhis.hits }} {{ plyerhis.sum }}<br>
+              {{ plyerhis.hits }} = {{ plyerhis.sum }}<br>
             </mat-card>
           }
           <br>

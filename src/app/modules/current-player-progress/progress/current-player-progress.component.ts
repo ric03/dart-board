@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../services/current-player.service";
 import {RoundCountService} from "../../../services/round-count.service";
 
@@ -9,10 +9,22 @@ import {RoundCountService} from "../../../services/round-count.service";
 export class CurrentPlayerProgressComponent {
 
   readonly maxRemainingThrows = MAX_REMAINING_THROWS
+  maxHight = "";
 
   constructor(public currentPlayerService: CurrentPlayerService,
               public roundCountService: RoundCountService,
   ) {
+  }
+
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange() {
+    console.error('orientation changed');
+    if (window.innerWidth > 1190) {
+      this.maxHight = 'maxHight';
+      console.error('orientation maxHight');
+    } else {
+      this.maxHight = '';
+    }
   }
 
   getThrowCount(): number {

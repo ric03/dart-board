@@ -31,30 +31,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  public beforeUnloadHandler(event: any) {
-    event.preventDefault();
-  }
-
   @HostListener('window:onload', ['$event'])
   public onload(event: any) {
     event.preventDefault();
     this.initDisplayAlwaysOnMode().then(() => {
-      this.showScreenLockIndicator();
+      console.info('wake lock requested');
     });
   }
 
   @HostListener('window:orientationchange', ['$event'])
   onOrientationChange() {
     this.initDisplayAlwaysOnMode().then(() => {
-      this.showScreenLockIndicator();
+      console.info('wake lock requested');
     });
   }
 
   ngOnInit(): void {
     this.installBtnHidden = false;
     this.initDisplayAlwaysOnMode().then(() => {
-      this.showScreenLockIndicator();
+      console.info('wake lock requested');
     });
     this.checkWakelockOnNavigation();
   }
@@ -70,8 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
       map(async () => {
         console.error('navigate');
         this.initDisplayAlwaysOnMode().then(() => {
-          this.showScreenLockIndicator();
-        });
+          console.info('wake lock requested');
+        })
       })
     );
   }
@@ -111,10 +106,4 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showScreenLockIndicator() {
-    window.document.body.classList.add("display-always-on-indicator")
-    setTimeout(() => {
-      window.document.body.classList.remove("display-always-on-indicator")
-    }, 4000)
-  }
 }
