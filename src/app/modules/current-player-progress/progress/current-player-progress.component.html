@@ -4,12 +4,12 @@
       <mat-card class="matcardpointer justify-content-center maxHight"
                 (click)="currentPlayerService.showHistory()">
         <mat-card-title class="flex-column">
-          <p> {{ currentPlayerService._currentPlayer.value.name }}
-          </p>
-          <h3> {{ this.currentPlayerService._remainingPointsToDisplay }}
-          </h3>
-          <p> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
-          </p>
+          <div> {{ currentPlayerService._currentPlayer.value.name }}
+          </div>
+          <h2> {{ this.currentPlayerService._remainingPointsToDisplay }}
+          </h2>
+          <div> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
+          </div>
           ➶
           <div *ngFor="let hit of currentPlayerService.getLastThreeThrows(), let i = index"
                class="d-inline-flex">
