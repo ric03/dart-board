@@ -8,7 +8,7 @@ export const ROUND_LIMIT = 45
 export class RoundCountService {
 
   private readonly INITIAL_ROUND_COUNT = 1;
-  private readonly MAX_ROUND_COUNT = ROUND_LIMIT;
+  readonly MAX_ROUND_COUNT = ROUND_LIMIT;
 
   roundCount: number = this.INITIAL_ROUND_COUNT;
 

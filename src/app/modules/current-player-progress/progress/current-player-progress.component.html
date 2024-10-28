@@ -1,13 +1,13 @@
-<div class="m-1 border border-light rounded maxHight">
+<div class="m-1 border border-lightrounded">
   <div class="d-flex flex-row">
     <div class="m-2 w-50 justify-content-center">
-      <mat-card class="matcardpointer justify-content-center"
+      <mat-card class="matcardpointer justify-content-center maxHight"
                 (click)="currentPlayerService.showHistory()">
         <mat-card-title class="flex-column">
           <p> {{ currentPlayerService._currentPlayer.value.name }}
           </p>
-          <h2> {{ this.currentPlayerService._remainingPointsToDisplay }}
-          </h2>
+          <h3> {{ this.currentPlayerService._remainingPointsToDisplay }}
+          </h3>
           <p> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
           </p>
           ➶
@@ -24,16 +24,22 @@
       <app-scoreboard-overview></app-scoreboard-overview>
     </div>
   </div>
-  <div class="justify-content-center py-1 px-1 w-100">
-    <mat-progress-bar class="d-flex w-100 justify-content-center" [color]='getProgressColor()' mode="determinate"
+  <div class="d-flex justify-content-center flex-column ps-3 pe-3">
+    <mat-progress-bar class="d-flex justify-content-center w-100" [color]='getProgressColor()'
+                      mode="determinate"
                       [value]='getThrowCount()'>
     </mat-progress-bar>
-    <strong class="d-flex w-100 justify-content-center"
-            [style]="{color:this.getProgressTextColor()}">{{ currentPlayerService._remainingThrows }}
-      / {{ maxRemainingThrows }}
-    </strong>
-    <div class="d-flex w-100 justify-content-center">
-      ⟳ {{ roundCountService.roundCount }} of 45
+    <div class="d-flex justify-content-evenly flex-row">
+      <strong
+        [style]="{color:this.getProgressTextColor()}">
+        <span>➶</span>
+        {{ currentPlayerService._remainingThrows }}
+        / {{ maxRemainingThrows }}
+
+      </strong>
+      <div>
+        ⟳ {{ roundCountService.roundCount }} of {{ roundCountService.MAX_ROUND_COUNT }}
+      </div>
     </div>
   </div>
 </div>
