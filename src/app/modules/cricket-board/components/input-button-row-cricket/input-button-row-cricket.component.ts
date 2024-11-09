@@ -14,7 +14,8 @@ import {CurrentPlayerService} from 'src/app/services/current-player.service';
 })
 export class InputButtonRowCricketComponent {
 
-  readonly availableButtonValues: number[] = [15, 16, 17, 18, 19, 20]
+  readonly availableButtonValuesUnitl17: number[] = [15, 16, 17]
+  readonly availableButtonValuesUnitl20: number[] = [18, 19, 20]
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
@@ -58,6 +59,6 @@ export class InputButtonRowCricketComponent {
   }
 
   getBadgeCountValue(primaryNumber: number) {
-    return this.currentPlayerService._currentPlayer.value.cricketMap.get(primaryNumber);
+    return this.currentPlayerService._currentPlayer.value.cricketMap.get(primaryNumber) ?? "0";
   }
 }

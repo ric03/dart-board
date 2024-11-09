@@ -1,22 +1,10 @@
 <div [hidden]="this.cricketService._hideAll" class="container-sm">
 
   <div class="d-flex justify-content-center mt-3">
-    <button mat-flat-button color="primary"
-            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="getBadgeCountValue(25)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
-            (click)="scoreBull()"
-    >Bull
-    </button>
-    <button mat-flat-button color="accent" class="ms-3"
-            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-            [matBadge]="getBadgeCountValue(50)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
-            (click)="scoreBullsEye()"
-    >BullsEye
-    </button>
     <button mat-flat-button color="warn" class="ms-3"
             matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
             (click)="scoreMiss()"
-    >Miss
+    >Nüscht
     </button>
   </div>
 
@@ -28,15 +16,59 @@
     </mat-button-toggle-group>
   </div>
 
-  <div class="d-flex flex-wrap">
-    <div class="w-16-percent mt-2 d-flex justify-content-center"
-         *ngFor="let btnValue of availableButtonValues"
+  <div class="d-flex flex-row flex-wrap justify-content-evenly">
+    <div class="d-flex flex-row justify-content-center mt-2"
+         *ngFor="let btnValue of availableButtonValuesUnitl17"
     >
-      <button mat-fab [color]="buttonColor"
+      <div class="d-flex flex-column">
+        <button mat-raised-button class="ms-1 justify-content-center" [color]="'accent'"
+        >{{ getBadgeCountValue(btnValue) }}
+        </button>
+        <button class="ms-2 mt-2 " mat-fab [color]="buttonColor"
+                matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+                (click)="scoreWithMultiplier(btnValue, singelToggel)"
+        >{{ btnValue }}
+        </button>
+      </div>
+    </div>
+    <div class="d-flex flex-column mt-2">
+      <button mat-raised-button class="ms-1 justify-content-center" [color]="'accent'"
+      >{{ getBadgeCountValue(25) }}
+      </button>
+      <button class="ms-2 mt-2 circ-hexa" mat-fab color="accent"
               matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
-              [matBadge]="getBadgeCountValue(btnValue)" [matBadgeHidden]="isMatBadgeHidden" matBadgeColor="accent"
-              (click)="scoreWithMultiplier(btnValue, singelToggel)"
-      >{{ btnValue }}
+              (click)="scoreBull()"
+      >
+        <span class="mt-2 material-symbols-outlined">trip_origin</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row flex-wrap justify-content-evenly">
+    <div class="d-flex flex-row justify-content-center mt-2"
+         *ngFor="let btnValue of availableButtonValuesUnitl20 , let i=index"
+    >
+      <div class="d-flex flex-column">
+        <button mat-raised-button class="ms-1 justify-content-center" [color]="'accent'"
+        >{{ getBadgeCountValue(btnValue) }}
+        </button>
+        <button class="ms-2 mt-2 " mat-fab [color]="buttonColor"
+                matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+                (click)="scoreWithMultiplier(btnValue, singelToggel)"
+        >{{ btnValue }}
+        </button>
+      </div>
+
+    </div>
+    <div class="d-flex flex-column mt-2">
+      <button mat-raised-button class="ms-1 justify-content-center" [color]="'accent'"
+      >{{ getBadgeCountValue(50) }}
+      </button>
+      <button class="ms-2 mt-2 circ-spike" mat-fab color="warn"
+              matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+              (click)="scoreBullsEye()"
+      >
+        <span class="mt-2 material-symbols-outlined">target</span>
       </button>
     </div>
   </div>
