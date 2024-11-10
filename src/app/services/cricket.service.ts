@@ -60,19 +60,15 @@ export class CricketService {
   }
 
   // anpassen
-  score(_throw: Throw) {
-    const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.value.last3History.push(points);
+  scoreCricketWithMultiplier(_throw: Throw) {
 
     if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
     } else {
-      this.currentPlayerService.scoreCricket(points, _throw.multiplier);
+      this.currentPlayerService.scoreCricket(_throw);
       if (this.cricketWinCheck()) {
-        this.currentPlayerService.applyPoints(true);
         this.handleVictory();
       } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyPoints(true);
         this.switchPlayer();
       }
     }
@@ -121,6 +117,14 @@ export class CricketService {
     this.playerService._players.push(current!);
   }
 
+  /**
+   * Der Spieler, der alle Felder ausgeworfen hat und dessen Punktzahl nicht geringer als die eines Gegners ist, gewinnt das Spiel.
+   * Der Spieler, der die höchste Punktzahl nach dem Rundenlimit hat, gewinnt das Spiel.
+   * Bei Punktgleichheit gewinnt der Spieler mit den meisten ausgeworfenen Feldern.
+   * Falls die Anzahl der ausgeworfenen Felder ebenfalls gleich ist,
+   * dann gibt es bis zu 10 mögliche zusätzliche Würfe, den Gewinner zu ermitteln.
+   * @private
+   */
   private cricketWinCheck() {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (this.playerHasAllClosed()) {
@@ -133,8 +137,8 @@ export class CricketService {
   }
 
   private playerHasAllClosed() {
-    return Array.from(this.currentPlayerService._cricketMap.values()).every(value => value === 3)
-      && this.currentPlayerService._cricketMap.size == 7;
+    return Array.from(this.currentPlayerService._currentPlayer.value.cricketMap.values()).every(value => value === 3)
+      && this.currentPlayerService._currentPlayer.value.cricketMap.size == 7;
   }
 
 }

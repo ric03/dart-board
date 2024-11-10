@@ -5,6 +5,20 @@
   width: calc(100% / 6);
 }
 
+.no-pointer {
+  pointer-events: none;
+  cursor: none;
+}
+
+.miss-scale {
+  scale: 1.5;
+  font-size: 0.8em !important;
+}
+
+.question-scale {
+  scale: 0.8;
+}
+
 .maxBtnWidth {
   max-width: 15% !important;
   min-width: 15% !important;

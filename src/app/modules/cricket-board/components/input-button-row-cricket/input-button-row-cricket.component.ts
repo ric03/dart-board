@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
-import {MatBadge} from '@angular/material/badge';
 import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
+import {PlayerService} from "../../../../services/player.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CricketWinInstructionsDialog} from "../../../../dialogTemplates/info-dialog/cricket-info-dialog.component";
 
 
 @Component({
@@ -16,14 +18,16 @@ export class InputButtonRowCricketComponent {
 
   readonly availableButtonValuesUnitl17: number[] = [15, 16, 17]
   readonly availableButtonValuesUnitl20: number[] = [18, 19, 20]
+  public readonly border = "border border-5 border-warning"
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
-  isMatBadgeHidden: MatBadge['hidden'] = true;
 
 
   constructor(public cricketService: CricketService,
-              public currentPlayerService: CurrentPlayerService
+              public currentPlayerService: CurrentPlayerService,
+              private readonly playerService: PlayerService,
+              private dialog: MatDialog,
   ) {
   }
 
@@ -39,26 +43,44 @@ export class InputButtonRowCricketComponent {
   }
 
   scoreBull() {
-    this.cricketService.score({value: 25, multiplier: 1})
+    this.cricketService.scoreCricketWithMultiplier({value: 25, multiplier: 1})
   }
 
   scoreBullsEye() {
-    this.cricketService.score({value: 25, multiplier: 2})
+    this.cricketService.scoreCricketWithMultiplier({value: 25, multiplier: 2})
   }
 
   scoreMiss() {
-    this.cricketService.score({value: 0, multiplier: 1})
+    this.cricketService.scoreCricketWithMultiplier({value: 0, multiplier: 1})
   }
 
-  scoreWithMultiplier(value: number, singelToggel: MatButtonToggle) {
-    this.isMatBadgeHidden = false;
-
-    const multiplier = +this.multiplierControl.value;
-    this.cricketService.score({value, multiplier});
+  scoreHit(value: number, singelToggel: MatButtonToggle) {
+    let multiplier = +this.multiplierControl.value;
+    this.cricketService.scoreCricketWithMultiplier({value, multiplier});
     singelToggel._buttonElement.nativeElement.click();
   }
 
   getBadgeCountValue(primaryNumber: number) {
     return this.currentPlayerService._currentPlayer.value.cricketMap.get(primaryNumber) ?? "0";
+  }
+
+  isClosed(value: number) {
+    return this.getBadgeCountValue(value) === 3 && this.playerService._players.every((player) =>
+      player.cricketMap.get(value) === 3
+    )
+  }
+
+  /**
+   * nicht alle anderen Spieler haben das Feld geschlossen
+   * @param value
+   */
+  isScorable(value: number) {
+    const allOtherplayers = this.playerService._players.filter((player) => this.currentPlayerService._currentPlayer.value !== player)
+    return allOtherplayers.some((player) =>
+      player.cricketMap.get(value) !== 3)
+  }
+
+  openWinInstructions() {
+    this.dialog.open(CricketWinInstructionsDialog);
   }
 }
