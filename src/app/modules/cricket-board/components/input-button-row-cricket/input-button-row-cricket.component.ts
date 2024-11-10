@@ -75,9 +75,14 @@ export class InputButtonRowCricketComponent {
    * @param value
    */
   isScorable(value: number) {
-    const allOtherplayers = this.playerService._players.filter((player) => this.currentPlayerService._currentPlayer.value !== player)
-    return allOtherplayers.some((player) =>
-      player.cricketMap.get(value) !== 3)
+    if (this.playerService._players.length === 1) {
+      return true;
+    } else {
+      const allOtherplayers = this.playerService._players.filter((player) => this.currentPlayerService._currentPlayer.value !== player)
+      return allOtherplayers.some((player) =>
+        player.cricketMap.get(value) !== 3)
+    }
+
   }
 
   openWinInstructions() {

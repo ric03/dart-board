@@ -44,7 +44,7 @@
               [color]="'accent'"
       >{{ getBadgeCountValue(25) }}
       </button>
-      <button [disabled]="isClosed(25)" class="ms-2 mt-2 circ-hexa {{this.isScorable(25)? '' : border}}" mat-fab
+      <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
               color="accent"
               matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
               (click)="scoreBull()"
@@ -78,7 +78,7 @@
               [color]="'accent'"
       >{{ getBadgeCountValue(25) }}
       </button>
-      <button [disabled]="isClosed(25)" class="ms-2 mt-2 circ-spike  {{this.isScorable(25)? '' : border}}" mat-fab
+      <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
               color="warn"
               matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
               (click)="scoreBullsEye()"
