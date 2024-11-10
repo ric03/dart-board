@@ -65,6 +65,9 @@ export class InputButtonRowCricketComponent {
   }
 
   isClosed(value: number) {
+    if (this.playerService._players.length === 1) {
+      return false;
+    }
     return this.getBadgeCountValue(value) === 3 && this.playerService._players.every((player) =>
       player.cricketMap.get(value) === 3
     )
