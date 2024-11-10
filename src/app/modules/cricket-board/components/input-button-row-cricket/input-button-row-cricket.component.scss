@@ -87,6 +87,28 @@ $ri: calc(50% - #{$b});
   @return $list, $xo $yo
 }
 
+@function double($ua, $i) {
+  $a0: $i*$ua;
+  $a1: $a0 + .25*$ua;
+  $a2: $a0 + .5*$ua;
+  $a3: $a1 + .5*$ua;
+  $a4: $a0 + $ua;
+  $list: ();
+
+  $xo: 50% + $ro*cos($a1);
+  $yo: 50% + $ro*sin($a1);
+
+  @return $list,
+  $xo $yo,
+  calc(50% + #{$ri} * #{cos($a2)}) calc(50% + #{$ri} * #{sin($a2)}),
+  calc(50% + #{$ri} * #{cos($a0)}) calc(50% + #{$ri} * #{sin($a0)}),
+  $xo $yo,
+  50% + $ro*cos($a2) 50% + $ro*sin($a2),
+  50% + $ro*cos($a4) 50% + $ro*sin($a4),
+  calc(50% + #{$ri} * #{cos($a3)}) calc(50% + #{$ri} * #{sin($a3)}),
+  50% + $ro*cos($a2) 50% + $ro*sin($a2),
+  $xo $yo
+}
 
 @function hexagon($ua, $i) {
   $a0: $i*$ua;
