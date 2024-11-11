@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-center">
     <button
       mat-flat-button color="primary"
-      matRipple matRippleColor="orange" [matRippleRadius]="42"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
       [matBadge]="bullBadgeCount" [matBadgeHidden]="matBadgeHiddenBull"
       matBadgeColor="accent"
       (click)="scoreBull()">
@@ -11,7 +11,7 @@
     </button>
     <button
       class="ms-3" mat-flat-button color="accent"
-      matRipple matRippleColor="orange" [matRippleRadius]="42"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
       [matBadge]="bullsEyeBadgeCount" [matBadgeHidden]="matBadgeHiddenBullsEye"
       matBadgeColor="accent"
       (click)="scoreBullsEye()">
@@ -19,7 +19,7 @@
     </button>
     <button
       class="ms-3" mat-flat-button color="warn"
-      matRipple matRippleColor="orange" [matRippleRadius]="42"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
       [matBadge]="missBadgeCount" [matBadgeHidden]="matBadgeHiddenMiss"
       matBadgeColor="accent"
       (click)="scoreMiss()">
@@ -37,9 +37,9 @@
 
   <div class="d-flex flex-wrap py-3 px-3">
     <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let inputButton of twentyButtons">
-      <button matRipple matRippleColor="orange" [matRippleUnbounded]="true"
+      <button matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
               [matRippleCentered]="true"
-              [matRippleRadius]="42" mat-fab [color]="buttonColor"
+              [matRippleRadius]="rippelRadius" mat-fab [color]="buttonColor"
               [matBadge]="inputButton.badgeValue" [matBadgeHidden]="inputButton.badge"
               matBadgeColor="accent"
               (click)="scoreWithMultiplier(inputButton, singelToggel)">{{ inputButton.zahl }}

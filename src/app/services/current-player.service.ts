@@ -146,9 +146,8 @@ export class CurrentPlayerService {
 
   private accumulateCricketPoints(_throw: Throw) {
     if (this.checkForClosedHit(_throw)) {
-      console.log("accumulateCricketPoints: ", _throw)
-      this._remainingPointsToDisplay += _throw.value * _throw.multiplier;
-      this._accumulatedPoints += _throw.value * _throw.multiplier;
+      this._accumulatedPoints = _throw.value * _throw.multiplier;
+      this._remainingPointsToDisplay += this._accumulatedPoints;
     }
   }
 
@@ -178,8 +177,6 @@ export class CurrentPlayerService {
   }
 
   applyCricketPoints() {
-    console.log("apply Cricket points: " + this._accumulatedPoints);
-
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
     this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     this.savePointsForStatistics();
@@ -207,7 +204,6 @@ export class CurrentPlayerService {
   }
 
   evaluateCricketPoints(_throw: Throw) {
-    console.log("storeMultiplier: ", this._currentPlayer.value.cricketMap)
     let map = this._currentPlayer.value.cricketMap;
     if (_throw.value > 0) { // kein Miss also Treffer
 

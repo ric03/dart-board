@@ -2,12 +2,12 @@
 
   <div class="d-flex justify-content-between mt-3 mb-3">
     <button mat-fab class="ms-3 question-scale"
-            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
             (click)="openWinInstructions()"
     ><span class="mt-2 material-symbols-outlined">question_mark</span>
     </button>
     <button mat-fab color="warn" class="ms-3 miss-scale fs-6"
-            matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+            matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
             (click)="scoreMiss()"
     >
       Nüscht! F**k!
@@ -33,7 +33,7 @@
         </button>
         <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2 {{this.isScorable(btnValue)? '' : border}}" mat-fab
                 [color]="buttonColor"
-                matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+                matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
                 (click)="scoreHit(btnValue, singelToggel)"
         >{{ btnValue }}
         </button>
@@ -46,7 +46,7 @@
       </button>
       <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
               color="accent"
-              matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+              matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
               (click)="scoreBull()"
       >
         <span class="mt-2 material-symbols-outlined">trip_origin</span>
@@ -65,7 +65,7 @@
         </button>
         <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2  {{this.isScorable(btnValue)? '' : border}}" mat-fab
                 [color]="buttonColor"
-                matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+                matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
                 (click)="scoreHit(btnValue, singelToggel)"
         >{{ btnValue }}
         </button>
@@ -80,7 +80,7 @@
       </button>
       <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
               color="warn"
-              matRipple matRippleColor="orange" [matRippleUnbounded]="true" [matRippleRadius]="42"
+              matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
               (click)="scoreBullsEye()"
       >
         <span class="mt-2 material-symbols-outlined">target</span>

@@ -30,6 +30,8 @@ export class InputButtonRowComponent {
   bullsEyeBadgeCount: string | number | undefined | null;
   matBadgeHiddenMiss: boolean = true;
   missBadgeCount: string | number | undefined | null;
+  rippelRadius: number = 25;
+  rippleColor: string = "orange";
 
   constructor(public dartService: DartService, private currentPlayerService: CurrentPlayerService
   ) {

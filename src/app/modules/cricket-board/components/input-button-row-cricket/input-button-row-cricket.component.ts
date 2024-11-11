@@ -22,6 +22,8 @@ export class InputButtonRowCricketComponent {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
+  rippelRadius: number = 25
+  rippleColor: string = "orange";
 
 
   constructor(public cricketService: CricketService,
