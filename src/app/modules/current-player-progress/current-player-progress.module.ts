@@ -7,6 +7,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
 import {ScoreBoardModule} from "../score-board/score-board.module";
+import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
 
 
 @NgModule({
@@ -21,6 +22,8 @@ import {ScoreBoardModule} from "../score-board/score-board.module";
     MatStepperModule,
     MatInputModule,
     ScoreBoardModule,
+    MatFabButton,
+    MatMiniFabButton,
 
   ],
   exports: [

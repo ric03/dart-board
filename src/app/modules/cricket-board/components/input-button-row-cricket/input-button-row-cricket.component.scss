@@ -5,11 +5,6 @@
   width: calc(100% / 6);
 }
 
-.no-pointer {
-  pointer-events: none;
-  cursor: none;
-}
-
 .miss-scale {
   transform: scale(1.4);
   font-size: 0.8em !important;

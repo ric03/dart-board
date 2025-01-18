@@ -50,3 +50,7 @@ mat-card {
   border: 5px solid orange;
 }
 
+.no-pointer {
+  pointer-events: none;
+  cursor: none;
+}
