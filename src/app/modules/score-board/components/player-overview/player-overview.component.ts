@@ -11,8 +11,8 @@ import {CurrentPlayerService} from "../../../../services/current-player.service"
   styleUrls: ['./player-overview.component.scss']
 })
 export class PlayerOverviewComponent implements OnInit {
-  miniMode = "";
-  playersToDisplay = 2;
+  miniMode = ""
+  playersToDisplay = 1;
 
   constructor(public playerService: PlayerService,
               private dialog: MatDialog,
@@ -49,7 +49,7 @@ export class PlayerOverviewComponent implements OnInit {
     if (innerWidth > 1190) {
       this.playersToDisplay = 4
     } else {
-      this.playersToDisplay = 2
+      this.playersToDisplay = 1
     }
 
   }

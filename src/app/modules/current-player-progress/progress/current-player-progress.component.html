@@ -1,5 +1,5 @@
 <div class="m-1 border border-lightrounded">
-  <div class="d-flex flex-row">
+  <div class="d-flex flex-row justify-content-between">
     <div class="m-2 w-50 justify-content-center">
       <mat-card class="matcardpointer justify-content-center maxHight"
                 (click)="currentPlayerService.showHistory()">
@@ -45,7 +45,7 @@
         <p class="fs-6 text-nowrap">⟳ {{ roundCountService.roundCount }} / {{ roundCountService.MAX_ROUND_COUNT }}</p>
       </div>
     </div>
-    <div class="m-2 w-50">
+    <div class="m-2 w-25 justify-content-end">
       <app-scoreboard-overview></app-scoreboard-overview>
     </div>
   </div>
