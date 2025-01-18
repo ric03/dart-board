@@ -1,28 +1,2 @@
-<mat-toolbar class="d-flex justify-content-between">
-  <button mat-icon-button color="accent" class="font-size-20" [matMenuTriggerFor]="menueItmes">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #menueItmes="matMenu">
-    <button mat-menu-item routerLink="">
-      <mat-icon>arrow_back</mat-icon>
-      Main Menu
-    </button>
-    <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">
-      <mat-icon>install_mobile</mat-icon>
-      Install App
-    </button>
-    <button mat-menu-item (click)="toggleTabFullScreenMode()">
-      <mat-icon>fullscreen</mat-icon>
-      Fullscreen
-    </button>
-    <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
-  </mat-menu>
-  <div class="d-flex">
-    <code>DartBoard </code>
-    <div [ngStyle]="{'font-size': 50+'%','color': '#3d6065'}" class="d-flex justify-content-xxl-end">
-      <mat-icon>linear_scale</mat-icon>
-      version: {{ appVersion }}
-    </div>
-  </div>
-</mat-toolbar>
+<app-app-toolbar></app-app-toolbar>
 <router-outlet></router-outlet>

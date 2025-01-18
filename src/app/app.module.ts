@@ -22,6 +22,7 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatIcon} from "@angular/material/icon";
 import {RedirectWarningService} from "./services/redirect-warning.service";
+import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {RedirectWarningService} from "./services/redirect-warning.service";
       registrationStrategy: 'registerWhenStable:30000'
     }),
     MatIcon,
+    AppToolbarComponent,
   ],
   providers: [
     RedirectWarningService,
