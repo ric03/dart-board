@@ -1,15 +1,42 @@
 <div class="d-flex flex-column">
-  @if (this.currentPlayerService._currentPlayer.value.history.length > 0) {
+  @if (this.cricketService._gameType === '') {
+    @if (this.currentPlayerService._currentPlayer.value.history.length > 0) {
+      <h3>
+        {{ getCurrentPlayerHistory().hits }} =  {{ getCurrentPlayerHistory().sum }}
+      </h3>
+    }
+    <p><strong>NEXT Player: {{ this.nextPlayer.name }}</strong></p>
+    <div class="d-flex flex-row justify-content-between">
+      <p class="p-1">...closes in {{ this.timeLeft }}s</p>
+      <button mat-raised-button color="accent" (click)="this.snackBarRef.dismiss()">OK</button>
+    </div>
+  } @else {
+    <p><strong>NEXT Player: {{ this.nextPlayer.name }}</strong></p>
     <h3>
-      {{ getCurrentPlayerHistory().hits }} =  {{ getCurrentPlayerHistory().sum }}
+      Points: {{ this.nextPlayer.remainingPoints }}
     </h3>
+    <div class="d-flex flex-column">
+      @for (key of this.nextPlayer.cricketMap.keys(); track this.nextPlayer.cricketMap.get(key)) {
+        @if (this.nextPlayer.cricketMap.get(key) == 3 && key != 25) {
+          <b> {{ key }} Hits:{{ this.nextPlayer.cricketMap.get(key) }} </b>
+        }
+        @if (key == 25) {
+          @if (this.nextPlayer.cricketMap.get(key) == 3) {
+            <b> Bull Hits:{{ this.nextPlayer.cricketMap.get(key) }} </b>
+          } @else {
+            <code> Bull Hits:{{ this.nextPlayer.cricketMap.get(key) }} </code>
+          }
+        } @else {
+          <code> {{ key }} Hits:{{ this.nextPlayer.cricketMap.get(key) }} </code>
+        }
+      }
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <p class="p-1">...closes in {{ this.timeLeft }}s</p>
+      <button mat-raised-button color="accent" (click)="this.snackBarRef.dismiss()">OK</button>
+    </div>
   }
-  <p><strong>NEXT Player: {{ this.nextPlayer }}</strong></p>
-  <div class="d-flex flex-row justify-content-between">
-    <p class="p-1">...closes in {{ this.timeLeft }}s</p>
-    <button mat-raised-button color="accent" (click)="this.snackBarRef.dismiss()">OK</button>
-    <!--    <button mat-raised-button color="warn" (click)="this.currentPlayerService.revert()">-->
-    <!--      REVERT-->
-    <!--    </button>-->
-  </div>
+  <!--  <button mat-raised-button color="warn" (click)="this.currentPlayerService.revert()">-->
+  <!--    REVERT-->
+  <!--  </button>-->
 </div>

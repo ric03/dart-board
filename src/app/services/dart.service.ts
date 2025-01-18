@@ -41,6 +41,10 @@ export class DartService {
     this._gameType = gameType;
   }
 
+  getGameType(): GameType {
+    return this._gameType;
+  }
+
   initPlayers(playerNames: string[]) {
     this.roundCountService.reset();
     this.playerNames = playerNames;

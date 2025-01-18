@@ -6,6 +6,8 @@ import {CommonModule} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {HistoryEntry} from "../../models/player/player.model";
+import {GameType} from "../../models/enum/GameType";
+import {CricketService} from "../../services/cricket.service";
 
 @Component({
   selector: 'app-switch-player-snack',
@@ -16,9 +18,11 @@ import {HistoryEntry} from "../../models/player/player.model";
 export class SwitchPlayerSnackComponent implements OnInit {
 
   public timeLeft: number = 5;
-  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer.value).name;
+  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer.value);
   snackBarRef = inject(MatSnackBar);
   currentPlayerService = inject(CurrentPlayerService);
+  cricketService = inject(CricketService);
+
 
   ngOnInit(): void {
     this.startTimer();
@@ -46,4 +50,6 @@ export class SwitchPlayerSnackComponent implements OnInit {
     return {hits: [0], sum: 0};
 
   }
+
+  protected readonly GameType = GameType;
 }
