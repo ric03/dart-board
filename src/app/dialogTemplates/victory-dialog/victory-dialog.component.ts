@@ -19,8 +19,8 @@ export interface VictoryDialogData {
       <p>Do you want to play again?</p>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close="" routerLink="/">Yes, let's play darts!</button>
-      <button mat-button mat-dialog-close="">No, stay here and look around.</button>
+      <button mat-button mat-dialog-close="" routerLink="/">back to main menu</button>
+      <button mat-button mat-dialog-close="" (click)="restartCurrentGame()">restart</button>
     </mat-dialog-actions>
   `,
   standalone: true,
@@ -39,5 +39,9 @@ export class VictoryDialog {
   constructor(public currentPlayerService: CurrentPlayerService,
               @Inject(MAT_DIALOG_DATA) public data: VictoryDialogData,
   ) {
+  }
+
+  restartCurrentGame() {
+    window.location.reload();
   }
 }
