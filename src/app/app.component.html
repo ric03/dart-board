@@ -1,15 +1,28 @@
-<mat-toolbar class="justify-content-between">
-  <button mat-button color="accent" class="font-size-20" [matMenuTriggerFor]="menueItmes">Dart Board</button>
-  <mat-menu #menueItmes="matMenu">
-    <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
-    <button mat-menu-item routerLink="">Game-Selection</button>
-  </mat-menu>
-  <button mat-icon-button (click)="localInstall()" [hidden]="installBtnHidden">
-    <mat-icon>install_mobile</mat-icon>
+<mat-toolbar class="d-flex justify-content-between">
+  <button mat-icon-button color="accent" class="font-size-20" [matMenuTriggerFor]="menueItmes">
+    <mat-icon>menu</mat-icon>
   </button>
-  <div [ngStyle]="{'font-size': 80+'%','color': '#3d6065'}" class="p-3 d-flex justify-content-xxl-end">
-    <mat-icon>linear_scale</mat-icon>
-    <span class="ms-1">appversion: {{ appVersion }}</span>
+  <mat-menu #menueItmes="matMenu">
+    <button mat-menu-item routerLink="">
+      <mat-icon>arrow_back</mat-icon>
+      Main Menu
+    </button>
+    <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">
+      <mat-icon>install_mobile</mat-icon>
+      Install App
+    </button>
+    <button mat-menu-item (click)="toggleTabFullScreenMode()">
+      <mat-icon>fullscreen</mat-icon>
+      Fullscreen
+    </button>
+    <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
+  </mat-menu>
+  <div class="d-flex">
+    <code>DartBoard </code>
+    <div [ngStyle]="{'font-size': 50+'%','color': '#3d6065'}" class="d-flex justify-content-xxl-end">
+      <mat-icon>linear_scale</mat-icon>
+      version: {{ appVersion }}
+    </div>
   </div>
 </mat-toolbar>
 <router-outlet></router-outlet>

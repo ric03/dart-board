@@ -46,6 +46,13 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  @HostListener('document:visibilitychange', ['$event'])
+  visibilitychange() {
+    this.initDisplayAlwaysOnMode().then(() => {
+      console.info('wake lock requested');
+    })
+  }
+
   ngOnInit(): void {
     this.installBtnHidden = false;
     this.initDisplayAlwaysOnMode().then(() => {
@@ -106,4 +113,15 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleTabFullScreenMode() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        this.initDisplayAlwaysOnMode().then(() => {
+          console.log('full screen and display always on mode requested');
+        })
+      });
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
 }
