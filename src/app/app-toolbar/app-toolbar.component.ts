@@ -6,7 +6,12 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatIcon} from "@angular/material/icon";
 import {NgStyle} from "@angular/common";
-import {MatIconButton} from "@angular/material/button";
+import {MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
+import {MatRipple} from "@angular/material/core";
+import {CricketWinInstructionsDialog} from "../dialogTemplates/info-dialog/cricket-info-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CricketService} from "../services/cricket.service";
+import {DartService} from "../services/dart.service";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -19,7 +24,10 @@ import {MatIconButton} from "@angular/material/button";
     MatIconButton,
     MatMenuItem,
     RouterLink,
-    MatMenuTrigger
+    MatMenuTrigger,
+    MatFabButton,
+    MatRipple,
+    MatMiniFabButton
   ],
   templateUrl: './app-toolbar.component.html',
   styleUrl: './app-toolbar.component.scss'
@@ -32,6 +40,14 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   private wakeLock: WakeLockSentinel | null = null;
   private router: Router = inject(Router);
   appVersion: string = environment.appVersion;
+  rippelRadius: number = 25
+  rippleColor: string = "orange";
+  cricketService = inject(CricketService);
+  dartService = inject(DartService);
+
+
+  constructor(private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.installBtnHidden = false;
@@ -103,4 +119,13 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
       console.log(`${err.name}, ${err.message}`);
     }
   }
+
+  openGameInstructions() {
+    if (this.cricketService._gameType !== '') {
+      this.dialog.open(CricketWinInstructionsDialog);
+    } else {
+      window.alert("not implemented yet");
+    }
+  }
+
 }

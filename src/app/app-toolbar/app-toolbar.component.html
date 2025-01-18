@@ -17,11 +17,18 @@
     </button>
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
+  @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
+    <button mat-mini-fab class="ms-3 question-scale"
+            matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+            (click)="openGameInstructions()"
+    ><span class="mt-2 material-symbols-outlined">question_mark</span>
+    </button>
+  }
   <div class="d-flex">
     <code>DartBoard </code>
     <div [ngStyle]="{'font-size': 50+'%','color': '#3d6065'}" class="d-flex justify-content-xxl-end">
       <mat-icon>linear_scale</mat-icon>
-      version: {{ appVersion }}
+      v: {{ appVersion }}
     </div>
   </div>
 </mat-toolbar>

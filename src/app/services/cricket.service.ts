@@ -5,6 +5,7 @@ import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
 import {RoundCountService} from "./round-count.service";
 import {MatDialog} from "@angular/material/dialog";
+import {GameType} from "../models/enum/GameType";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class CricketService {
    */
   playerNames: string[] = [];
   roundCount: number = 0;
-  public _gameType: string = '';
+  public _gameType: GameType | string = '';
   public _hideAll: boolean = false;
 
 

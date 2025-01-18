@@ -5,8 +5,6 @@ import {ThemePalette} from "@angular/material/core";
 import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
-import {MatDialog} from "@angular/material/dialog";
-import {CricketWinInstructionsDialog} from "../../../../dialogTemplates/info-dialog/cricket-info-dialog.component";
 
 
 @Component({
@@ -29,7 +27,6 @@ export class InputButtonRowCricketComponent {
   constructor(public cricketService: CricketService,
               public currentPlayerService: CurrentPlayerService,
               private readonly playerService: PlayerService,
-              private dialog: MatDialog,
   ) {
   }
 
@@ -88,9 +85,5 @@ export class InputButtonRowCricketComponent {
         player.cricketMap.get(value) !== 3)
     }
 
-  }
-
-  openWinInstructions() {
-    this.dialog.open(CricketWinInstructionsDialog);
   }
 }
