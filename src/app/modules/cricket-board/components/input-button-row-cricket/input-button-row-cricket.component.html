@@ -1,20 +1,29 @@
 <div [hidden]="this.cricketService._hideAll" class="container-sm">
 
-  <div class="d-flex justify-content-end mt-3 mb-3">
-    <button mat-fab color="warn" class="ms-3 miss-scale fs-6"
-            matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
-            (click)="scoreMiss()"
-    >
-      Nüscht! F**k!
-    </button>
-  </div>
+  <div class="">
+    <div class="row">
+      <div class="col-8">
 
-  <div class="d-flex justify-content-center mt-2">
-    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
-      <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
-      <mat-button-toggle value="2">Double</mat-button-toggle>
-      <mat-button-toggle value="3">Triple</mat-button-toggle>
-    </mat-button-toggle-group>
+        <div class="d-flex justify-content-end">
+          <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
+            <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
+            <mat-button-toggle value="2">Double</mat-button-toggle>
+            <mat-button-toggle value="3">Triple</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+      </div>
+      <div class="col-4">
+        <div class="d-flex justify-content-end">
+          <button mat-fab color="warn" class="mt-2 miss-scale mb-2 fs-6"
+                  matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+                  (click)="scoreMiss()"
+          >
+            Nüscht! F**k!
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="d-flex flex-row flex-wrap justify-content-evenly">
@@ -22,7 +31,7 @@
          *ngFor="let btnValue of availableButtonValuesUnitl17"
     >
       <div class="d-flex flex-column">
-        <button [disabled]="isClosed(btnValue)" mat-raised-button class="ms-1 justify-content-center no-pointer"
+        <button [disabled]="isClosed(btnValue)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
                 [color]="'accent'"
         >{{ getBadgeCountValue(btnValue) }}
         </button>
@@ -35,7 +44,7 @@
       </div>
     </div>
     <div class="d-flex flex-column mt-2">
-      <button [disabled]="isClosed(25)" mat-raised-button class="ms-1 justify-content-center no-pointer"
+      <button [disabled]="isClosed(25)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
               [color]="'accent'"
       >{{ getBadgeCountValue(25) }}
       </button>
@@ -54,7 +63,7 @@
          *ngFor="let btnValue of availableButtonValuesUnitl20"
     >
       <div class="d-flex flex-column">
-        <button [disabled]="isClosed(btnValue)" mat-raised-button class="ms-1 justify-content-center no-pointer"
+        <button [disabled]="isClosed(btnValue)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
                 [color]="'accent'"
         >{{ getBadgeCountValue(btnValue) }}
         </button>
@@ -69,7 +78,7 @@
     </div>
     <div class="d-flex flex-column mt-2">
       <button [disabled]="isClosed(25)" mat-raised-button
-              class="ms-1 justify-content-center no-pointer"
+              class="ms-1 justify-content-center no-pointer fs-3"
               [color]="'accent'"
       >{{ getBadgeCountValue(25) }}
       </button>
