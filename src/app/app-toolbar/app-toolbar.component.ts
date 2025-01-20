@@ -6,7 +6,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatIcon} from "@angular/material/icon";
 import {NgStyle} from "@angular/common";
-import {MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
+import {MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatRipple} from "@angular/material/core";
 import {CricketWinInstructionsDialog} from "../dialogTemplates/info-dialog/cricket-info-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -25,7 +25,6 @@ import {DartService} from "../services/dart.service";
     MatMenuItem,
     RouterLink,
     MatMenuTrigger,
-    MatFabButton,
     MatRipple,
     MatMiniFabButton
   ],
@@ -80,6 +79,13 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * TODO: correct impl
+   * Triggers the installation process for a Progressive Web App (PWA) using the deferred installation prompt.
+   * If the deferred prompt is available, it prompts the user to install the app and handles the user response.
+   *
+   * @return {void} This method does not return any value.
+   */
   localInstall() {
     if (this.deferredPrompt) {
       this.deferredPrompt.prompt();

@@ -5,6 +5,7 @@ import {RoundCountService} from "../../../services/round-count.service";
 @Component({
   selector: 'app-current-player-progress',
   templateUrl: './current-player-progress.component.html',
+  styleUrls: ['./current-player-progress.component.scss']
 })
 export class CurrentPlayerProgressComponent {
 

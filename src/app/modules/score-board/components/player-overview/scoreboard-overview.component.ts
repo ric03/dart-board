@@ -7,10 +7,10 @@ import {CurrentPlayerService} from "../../../../services/current-player.service"
 
 @Component({
   selector: 'app-scoreboard-overview',
-  templateUrl: './player-overview.component.html',
-  styleUrls: ['./player-overview.component.scss']
+  templateUrl: './scoreboard-overview.component.html',
+  styleUrls: ['./scoreboard-overview.component.scss']
 })
-export class PlayerOverviewComponent implements OnInit {
+export class ScoreboardOverviewComponent implements OnInit {
   miniMode = ""
   playersToDisplay = 1;
 
@@ -41,6 +41,13 @@ export class PlayerOverviewComponent implements OnInit {
   }
 
   setCardClass(innerWidth: number) {
+    if (innerWidth < 400 && this.playerService._players.length > 1) {
+      this.miniMode = "2"
+      this.playersToDisplay = 0
+    } else {
+      this.miniMode = ""
+    }
+
     if (innerWidth < 679 && this.playerService._players.length > 1) {
       this.miniMode = "2"
     } else {

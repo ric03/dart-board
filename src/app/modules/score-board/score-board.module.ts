@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {PlayerOverviewComponent} from './components/player-overview/player-overview.component';
+import {ScoreboardOverviewComponent} from './components/player-overview/scoreboard-overview.component';
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
@@ -9,7 +9,7 @@ import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
-    PlayerOverviewComponent,
+    ScoreboardOverviewComponent,
   ],
   imports: [
     CommonModule,
@@ -19,7 +19,7 @@ import {MatIcon} from "@angular/material/icon";
     MatIcon,
   ],
   exports: [
-    PlayerOverviewComponent,
+    ScoreboardOverviewComponent,
   ]
 })
 export class ScoreBoardModule {

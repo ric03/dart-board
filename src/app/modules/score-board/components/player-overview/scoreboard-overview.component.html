@@ -1,0 +1,22 @@
+<div class="d-flex flex-row flex-no-wrap">
+  <div *ngFor="let player of playerService._players ;let i=index">
+    @if (i > 0) {
+      <div *ngIf="i<=playersToDisplay">
+        <mat-card class="minHight{{miniMode}} justify-content-center"
+                  (click)="this.currentPlayerService.showHistory(player)">
+          <mat-card-title>{{ player.remainingPoints }}</mat-card-title>
+          {{ player.name }}
+          <mat-card-subtitle>last: {{ player.lastScore }}</mat-card-subtitle>
+        </mat-card>
+      </div>
+    }
+  </div>
+  <div>
+    <mat-card (click)="showAllPlayers()" class="minHight{{miniMode}}">
+      <mat-card-subtitle>All <br>Players</mat-card-subtitle>
+      <mat-card-title>
+        <mat-icon>touch_app</mat-icon>
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
