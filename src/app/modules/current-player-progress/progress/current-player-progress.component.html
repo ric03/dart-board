@@ -1,6 +1,6 @@
 <div class="m-1 px-1 py-1 border border-lightrounded">
   <div class="d-flex flex-row">
-    <div class="m-2 w-100 justify-content-center min-w-50">
+    <div class="m-2 justify-content-center min-w-50">
       <mat-card class="matcardpointer justify-content-center maxHight"
                 (click)="currentPlayerService.showHistory()">
         <mat-card-title class="flex-column">
@@ -20,8 +20,8 @@
         </mat-card-title>
       </mat-card>
     </div>
-    <div class="d-flex flex-column max-w-50">
-      <div class="d-flex flex-row flex-wrap justify-content-evenly pt-2">
+    <div class="d-flex flex-column justify-content-between w-50">
+      <div class="d-flex flex-row flex-wrap justify-content-evenly pt-2 w-100">
         <button
           [color]="(currentPlayerService._remainingThrows >= 3) ? getProgressColor() : 'gray'"
           mat-mini-fab

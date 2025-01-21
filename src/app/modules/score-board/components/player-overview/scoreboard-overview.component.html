@@ -1,4 +1,4 @@
-<div class="d-flex flex-row flex-no-wrap">
+<div class="d-flex flex-row flex-no-wrap justify-content-between">
   <div *ngFor="let player of playerService._players ;let i=index">
     @if (i > 0) {
       <div *ngIf="i<=playersToDisplay">
@@ -12,7 +12,7 @@
     }
   </div>
   <div>
-    <mat-card (click)="showAllPlayers()" class="minHight{{miniMode}}">
+    <mat-card (click)="showAllPlayers()" class="minHight{{miniMode}} ms-1">
       <mat-card-subtitle>All <br>Players</mat-card-subtitle>
       <mat-card-title>
         <mat-icon>touch_app</mat-icon>
