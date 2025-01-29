@@ -12,6 +12,7 @@ import {CricketWinInstructionsDialog} from "../dialogTemplates/info-dialog/crick
 import {MatDialog} from "@angular/material/dialog";
 import {CricketService} from "../services/cricket.service";
 import {DartService} from "../services/dart.service";
+import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-dialog.component";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -130,7 +131,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     if (this.cricketService._gameType !== '') {
       this.dialog.open(CricketWinInstructionsDialog);
     } else {
-      window.alert("not implemented yet");
+      this.dialog.open(DartInfoDialogComponent);
     }
   }
 

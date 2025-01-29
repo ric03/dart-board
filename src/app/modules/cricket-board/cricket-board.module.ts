@@ -17,6 +17,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatLabel} from "@angular/material/form-field";
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     GameSelectionModule,
     CurrentPlayerProgressModule,
     ScoreBoardModule,
+    MatLabel,
 
 
   ]
