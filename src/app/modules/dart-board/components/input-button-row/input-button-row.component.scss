@@ -2,6 +2,26 @@
   width: 20%;
 }
 
+.multiplier-btn-scale {
+  button {
+    transform: scale(1.4);
+    margin: 1%;
+  }
+}
+
+
+.btn-scale {
+  button {
+    transform: scale(1.4);
+    margin: 4%;
+  }
+}
+
+.toggle-btn-scale {
+  transform: scale(1.2);
+  margin: 3%;
+}
+
 /*
  * Customize the color of the mat-buttons
  *

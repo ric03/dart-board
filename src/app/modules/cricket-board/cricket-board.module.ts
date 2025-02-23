@@ -18,6 +18,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatLabel} from "@angular/material/form-field";
+import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive";
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import {MatLabel} from "@angular/material/form-field";
     CurrentPlayerProgressModule,
     ScoreBoardModule,
     MatLabel,
+    ShapeMorphDirective,
 
 
   ]

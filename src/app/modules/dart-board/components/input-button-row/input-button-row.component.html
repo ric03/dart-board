@@ -1,49 +1,55 @@
 <div [hidden]="this.dartService._hideAll" class="container-fluid">
 
-  <div class="d-flex justify-content-center">
-    <button
-      mat-flat-button color="primary"
-      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="bullBadgeCount" [matBadgeHidden]="matBadgeHiddenBull"
-      matBadgeColor="accent"
-      (click)="scoreBull()">
-      Bull
-    </button>
-    <button
-      class="ms-3" mat-flat-button color="accent"
-      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="bullsEyeBadgeCount" [matBadgeHidden]="matBadgeHiddenBullsEye"
-      matBadgeColor="accent"
-      (click)="scoreBullsEye()">
-      BullsEye
-    </button>
-    <button
-      class="ms-3" mat-flat-button color="warn"
-      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="missBadgeCount" [matBadgeHidden]="matBadgeHiddenMiss"
-      matBadgeColor="accent"
-      (click)="scoreMiss()">
-      Miss
-    </button>
-  </div>
-
-  <div class="d-flex justify-content-center mt-3">
-    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)">
+  <div class="d-flex justify-content-center mt-3 toggle-btn-scale">
+    <mat-button-toggle-group value="1" [formControl]="multiplierControl" (change)="changeButtonColor($event)"
+                             [hideSingleSelectionIndicator]="true">
       <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
       <mat-button-toggle value="2">Double</mat-button-toggle>
       <mat-button-toggle value="3">Triple</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
-  <div class="d-flex flex-wrap py-3 px-3">
-    <div class="w-20-percent mt-3 d-flex justify-content-center" *ngFor="let inputButton of twentyButtons">
+  <div class="d-flex justify-content-center multiplier-btn-scale pb-3">
+    <button
+      class="m-auto"
+      mat-flat-button color="primary"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
+      [matBadge]="bullBadgeCount" [matBadgeHidden]="matBadgeHiddenBull"
+      matBadgeColor="accent"
+      (click)="scoreBull()"
+      appShapeMorph>
+      Bull
+    </button>
+    <button
+      class="m-auto" mat-flat-button color="accent"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
+      [matBadge]="bullsEyeBadgeCount" [matBadgeHidden]="matBadgeHiddenBullsEye"
+      matBadgeColor="accent"
+      (click)="scoreBullsEye()"
+      appShapeMorph>
+      BullsEye
+    </button>
+    <button
+      class="m-auto" mat-flat-button color="warn"
+      matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
+      [matBadge]="missBadgeCount" [matBadgeHidden]="matBadgeHiddenMiss"
+      matBadgeColor="accent"
+      (click)="scoreMiss()"
+      appShapeMorph>
+      Miss
+    </button>
+  </div>
+
+  <div class="d-flex flex-wrap py-2 px-2">
+    <div class="w-20-percent mt-3 d-flex justify-content-center btn-scale" *ngFor="let inputButton of twentyButtons">
       <button matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
               [matRippleCentered]="true"
               [matRippleRadius]="rippelRadius" mat-fab [color]="buttonColor"
               [matBadge]="inputButton.badgeValue" [matBadgeHidden]="inputButton.badge"
               matBadgeColor="accent"
-              (click)="scoreWithMultiplier(inputButton, singelToggel)">{{ inputButton.zahl }}
-
+              (click)="scoreWithMultiplier(inputButton, singelToggel)"
+              appShapeMorph>
+        {{ inputButton.zahl }}
       </button>
     </div>
   </div>

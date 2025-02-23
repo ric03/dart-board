@@ -13,6 +13,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatBadgeModule} from "@angular/material/badge";
+import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {MatBadgeModule} from "@angular/material/badge";
     GameSelectionModule,
     ScoreBoardModule,
     CurrentPlayerProgressModule,
+    ShapeMorphDirective,
   ]
 })
 export class DartBoardModule {
