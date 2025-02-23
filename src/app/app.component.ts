@@ -1,5 +1,4 @@
 import {Component, HostListener} from '@angular/core';
-import * as console from "node:console";
 
 @Component({
   selector: 'app-root',
