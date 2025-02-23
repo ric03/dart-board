@@ -4,7 +4,7 @@ import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-t
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 import {CurrentPlayerService} from "../../../../services/current-player.service";
-import {distinctUntilChanged} from "rxjs";
+import {BadgeHandleService} from "../../../../services/badge-handle.service";
 
 
 export interface InputButton {
@@ -22,27 +22,16 @@ export class InputButtonRowComponent {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
-  twentyButtons: InputButton[] = [];
-  tempBadgeValue: number = 1
-  matBadgeHiddenBull: boolean = true;
-  matBadgeHiddenBullsEye: boolean = true;
-  bullBadgeCount: string | number | undefined | null;
-  bullsEyeBadgeCount: string | number | undefined | null;
-  matBadgeHiddenMiss: boolean = true;
-  missBadgeCount: string | number | undefined | null;
   rippelRadius: number = 25;
   rippleColor: string = "orange";
 
-  constructor(public dartService: DartService, private currentPlayerService: CurrentPlayerService
+  constructor(public dartService: DartService, private currentPlayerService: CurrentPlayerService,
+              protected badgeHandleService: BadgeHandleService
   ) {
-
     for (let i = 0; i < 20; i++) {
-      this.twentyButtons.push({zahl: i + 1, badge: true});
+      this.badgeHandleService.twentyButtons.push({zahl: i + 1, badge: true});
     }
-    currentPlayerService._last3History.pipe(distinctUntilChanged())
-      .subscribe(() => {
-        this.resetBadges()
-      })
+
   }
 
   changeButtonColor({value}: MatButtonToggleChange) {
@@ -58,22 +47,22 @@ export class InputButtonRowComponent {
 
   scoreBull() {
     this.dartService.score({value: 25, multiplier: 1});
-    this.matBadgeHiddenBull = false;
-    this.bullBadgeCount = this.getBadgeCountValue();
+    this.badgeHandleService.matBadgeHiddenBull = false;
+    this.badgeHandleService.bullBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
   }
 
   scoreBullsEye() {
     this.dartService.score({value: 25, multiplier: 2});
-    this.matBadgeHiddenBullsEye = false;
-    this.bullsEyeBadgeCount = this.getBadgeCountValue();
+    this.badgeHandleService.matBadgeHiddenBullsEye = false;
+    this.badgeHandleService.bullsEyeBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
   }
 
   scoreMiss() {
     this.dartService.score({value: 0, multiplier: 1});
-    this.matBadgeHiddenMiss = false;
-    this.missBadgeCount = this.getBadgeCountValue();
+    this.badgeHandleService.matBadgeHiddenMiss = false;
+    this.badgeHandleService.missBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
   }
 
@@ -89,21 +78,10 @@ export class InputButtonRowComponent {
       inputButton.badgeValue = this.getBadgeCountValue();
       inputButton.badge = false;
     }
-    this.tempBadgeValue = this.tempBadgeValue + 1
+    this.badgeHandleService.tempBadgeValue = this.badgeHandleService.tempBadgeValue + 1
   }
 
   getBadgeCountValue() {
-    return this.tempBadgeValue;
-  }
-
-  public resetBadges() {
-    this.tempBadgeValue = 1
-    this.matBadgeHiddenBull = true;
-    this.matBadgeHiddenBullsEye = true;
-    this.matBadgeHiddenMiss = true;
-    this.twentyButtons.forEach(input => {
-      input.badge = true
-      input.badgeValue = undefined;
-    });
+    return this.badgeHandleService.tempBadgeValue;
   }
 }

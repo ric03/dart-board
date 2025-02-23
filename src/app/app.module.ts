@@ -21,7 +21,6 @@ import {MatMenuModule} from "@angular/material/menu";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatIcon} from "@angular/material/icon";
-import {RedirectWarningService} from "./services/redirect-warning.service";
 import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
 
 @NgModule({
@@ -59,11 +58,9 @@ import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
     AppToolbarComponent,
   ],
   providers: [
-    RedirectWarningService,
     {
       provide: APP_INITIALIZER,
       useFactory: noop,
-      deps: [RedirectWarningService],
       multi: true
     },
     provideAnimationsAsync()

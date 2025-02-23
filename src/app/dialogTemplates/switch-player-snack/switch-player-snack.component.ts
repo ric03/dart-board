@@ -5,8 +5,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {CommonModule} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
-import {HistoryEntry} from "../../models/player/player.model";
-import {GameType} from "../../models/enum/GameType";
 import {CricketService} from "../../services/cricket.service";
 
 @Component({
@@ -38,18 +36,4 @@ export class SwitchPlayerSnackComponent implements OnInit {
       }
     }, 1000);
   }
-
-
-  getCurrentPlayerHistory(): HistoryEntry {
-    if (this.currentPlayerService._currentPlayer.value.history.length > 0) {
-      return this.currentPlayerService._currentPlayer.value.history[
-        this.currentPlayerService._currentPlayer.value.history.length > 0 ?
-          this.currentPlayerService._currentPlayer.value.history.length - 1 :
-          this.currentPlayerService._currentPlayer.value.history.length];
-    }
-    return {hits: [0], sum: 0};
-
-  }
-
-  protected readonly GameType = GameType;
 }

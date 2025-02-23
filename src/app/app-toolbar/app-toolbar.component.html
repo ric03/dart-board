@@ -15,6 +15,10 @@
       <mat-icon>fullscreen</mat-icon>
       Fullscreen
     </button>
+    <button mat-menu-item (click)="undoLastAction()">
+      <mat-icon>undo</mat-icon>
+      UndoLast
+    </button>
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
   @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {

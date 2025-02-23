@@ -13,6 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CricketService} from "../services/cricket.service";
 import {DartService} from "../services/dart.service";
 import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-dialog.component";
+import {CurrentPlayerService} from "../services/current-player.service";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -46,7 +47,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   dartService = inject(DartService);
 
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private readonly currentPlayerService: CurrentPlayerService) {
   }
 
   ngOnInit(): void {
@@ -135,4 +136,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  undoLastAction() {
+    this.currentPlayerService.undoLastPlayerActions();
+  }
 }

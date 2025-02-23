@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {GameType} from '../models/enum/GameType';
 import {CricketService} from './cricket.service';
 import {DartService} from "./dart.service";
+import {CurrentPlayerService} from "./current-player.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class GameInitializationResolver {
 
   constructor(private dartService: DartService,
               private cricketService: CricketService,
+              private currentplayerService: CurrentPlayerService
   ) {
   }
 
@@ -26,6 +28,7 @@ export class GameInitializationResolver {
       this.dartService.setGameType(gameType);
       this.dartService.initPlayers(playerNames);
     }
+    this.currentplayerService.currentGameMode = gameType;
     return of(true);
 
   }

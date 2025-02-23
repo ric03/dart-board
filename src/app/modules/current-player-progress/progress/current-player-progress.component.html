@@ -11,7 +11,7 @@
           <div> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
           </div>
           ➶
-          <div *ngFor="let hit of currentPlayerService.getLastThreeThrows(), let i = index"
+          <div *ngFor="let hit of currentPlayerService._last3History, let i = index"
                class="d-inline-flex">
             <mat-card class="pb-0 pt-0 mt-0 mb-0 me-1 pe-1 ps-1 ms-1">
               {{ hit }}

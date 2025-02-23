@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CurrentPlayerService, MAX_REMAINING_THROWS} from "../../../services/current-player.service";
+import {CurrentPlayerService} from "../../../services/current-player.service";
 import {RoundCountService} from "../../../services/round-count.service";
 
 @Component({
@@ -9,15 +9,9 @@ import {RoundCountService} from "../../../services/round-count.service";
 })
 export class CurrentPlayerProgressComponent {
 
-  readonly maxRemainingThrows = MAX_REMAINING_THROWS
-
   constructor(public currentPlayerService: CurrentPlayerService,
               public roundCountService: RoundCountService,
   ) {
-  }
-
-  getThrowCount(): number {
-    return this.currentPlayerService._remainingThrows / MAX_REMAINING_THROWS * 100;
   }
 
   getProgressColor() {
@@ -31,20 +25,6 @@ export class CurrentPlayerProgressComponent {
         return 'warn';
       default:
         return undefined;
-    }
-  }
-
-  getProgressTextColor() {
-    const remainingThrows = this.currentPlayerService._remainingThrows;
-    switch (remainingThrows) {
-      case 3:
-        return 'lightblue';
-      case 2:
-        return 'purple';
-      case 1:
-        return 'red';
-      default:
-        return 'lightblue';
     }
   }
 }

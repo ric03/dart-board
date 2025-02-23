@@ -14,7 +14,7 @@
       class="m-auto"
       mat-flat-button color="primary"
       matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="bullBadgeCount" [matBadgeHidden]="matBadgeHiddenBull"
+      [matBadge]="this.badgeHandleService.bullBadgeCount" [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenBull"
       matBadgeColor="accent"
       (click)="scoreBull()"
       appShapeMorph>
@@ -23,7 +23,8 @@
     <button
       class="m-auto" mat-flat-button color="accent"
       matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="bullsEyeBadgeCount" [matBadgeHidden]="matBadgeHiddenBullsEye"
+      [matBadge]="this.badgeHandleService.bullsEyeBadgeCount"
+      [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenBullsEye"
       matBadgeColor="accent"
       (click)="scoreBullsEye()"
       appShapeMorph>
@@ -32,7 +33,7 @@
     <button
       class="m-auto" mat-flat-button color="warn"
       matRipple [matRippleColor]="rippleColor" [matRippleRadius]="rippelRadius"
-      [matBadge]="missBadgeCount" [matBadgeHidden]="matBadgeHiddenMiss"
+      [matBadge]="this.badgeHandleService.missBadgeCount" [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenMiss"
       matBadgeColor="accent"
       (click)="scoreMiss()"
       appShapeMorph>
@@ -41,7 +42,8 @@
   </div>
 
   <div class="d-flex flex-wrap py-2 px-2">
-    <div class="w-20-percent mt-3 d-flex justify-content-center btn-scale" *ngFor="let inputButton of twentyButtons">
+    <div class="w-20-percent mt-3 d-flex justify-content-center btn-scale"
+         *ngFor="let inputButton of this.badgeHandleService.twentyButtons">
       <button matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
               [matRippleCentered]="true"
               [matRippleRadius]="rippelRadius" mat-fab [color]="buttonColor"

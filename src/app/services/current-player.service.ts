@@ -7,6 +7,7 @@ import {HistoryDialog, HistoryDialogData} from "../dialogTemplates/history-dialo
 import {RoundCountService} from "./round-count.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {BadgeHandleService} from "./badge-handle.service";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -17,9 +18,13 @@ export const MAX_REMAINING_THROWS = 3;
 })
 export class CurrentPlayerService {
   private roundCountService = inject(RoundCountService);
-  private isToResetRound: boolean = false
+  private isToResetRound: boolean = false;
+  currentGameMode = ""
 
-  constructor(private playerService: PlayerService, private snackbar: MatSnackBar, private dialog: MatDialog) {
+  constructor(private playerService: PlayerService,
+              private snackbar: MatSnackBar,
+              private dialog: MatDialog,
+              private badgeHandleService: BadgeHandleService) {
   }
 
   public _remainingThrows = MAX_REMAINING_THROWS;
@@ -27,12 +32,11 @@ export class CurrentPlayerService {
   public _remainingPointsToDisplay = 0;
   public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
-  public _last3History: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  public _last3History: number[] = [];
   public _history: HistoryEntry[] = [];
 
   init(player: Player) {
     this._currentPlayer.next(player);
-    this._last3History.next(this.getLastThreeThrows());
     this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
     this._averagePoints = player.average;
     this.reset()
@@ -59,7 +63,7 @@ export class CurrentPlayerService {
         }
         this.getAllButtonsToDisable(false);
         this._currentPlayer.next(player);
-        this._last3History.next(this.getLastThreeThrows());
+        this._last3History = [];
         this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
         this._averagePoints = player.average;
         this._history = this._currentPlayer.value.history;
@@ -96,7 +100,7 @@ export class CurrentPlayerService {
   private savePointsForStatistics() {
     let playerHistory: HistoryEntry = {sum: 0, hits: []};
     playerHistory.sum = this._accumulatedPoints;
-    playerHistory.hits.push(...this._currentPlayer.value.last3History);
+    playerHistory.hits.push(...this._last3History);
 
     this._currentPlayer.value.history.push(playerHistory);
   }
@@ -105,6 +109,7 @@ export class CurrentPlayerService {
     this.resetAccumulatedPoints();
     this.resetThrows();
     this._currentPlayer.value.last3History = [];
+    this.badgeHandleService.resetBadges()
   }
 
   private resetAccumulatedPoints() {
@@ -118,7 +123,7 @@ export class CurrentPlayerService {
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
       this._remainingPointsToDisplay -= points;
-      this._last3History.value.push(points);
+      this._last3History.push(points);
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
     } else {
@@ -239,11 +244,6 @@ export class CurrentPlayerService {
     this._currentPlayer.value.cricketMap = new Map([...this._currentPlayer.value.cricketMap].sort());
   }
 
-
-  getLastThreeThrows() {
-    return this._currentPlayer.value.last3History.slice(-3).reverse();
-  }
-
   getHistory() {
     return this._currentPlayer.value.history.slice(-3).reverse();
   }
@@ -265,5 +265,55 @@ export class CurrentPlayerService {
       this.dialog.open(HistoryDialog, {data});
     }
 
+  }
+
+  undoLastPlayerActions() {
+    // Reset all throws since last player switch
+    this._last3History = [];
+    this._accumulatedPoints = 0;
+    this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
+
+
+    if (this.currentGameMode === 'Cricket') {
+      // Hole die letzten 3 Würfe aus der Historie
+      const lastThreeThrows = this._currentPlayer.value.last3History.slice(-3);
+
+      // Für jeden Wurf die Änderungen rückgängig machen
+      lastThreeThrows.forEach(throwValue => {
+        const baseValue = throwValue > 25 ? 25 : throwValue; // Handle Bullseye
+        const multiplier = throwValue > 25 ? 2 : 1;
+
+        if (this._currentPlayer.value.cricketMap.has(baseValue)) {
+          // Aktuelle Treffer für diesen Wert
+          const currentHits = this._currentPlayer.value.cricketMap.get(baseValue) || 0;
+
+          // Reduziere die Treffer, aber nicht unter 0
+          const newHits = Math.max(0, currentHits - multiplier);
+          this._currentPlayer.value.cricketMap.set(baseValue, newHits);
+
+          // Wenn Punkte erzielt wurden, diese auch zurücknehmen
+          if (currentHits >= 3) {
+            this._currentPlayer.value.remainingPoints -= (baseValue * multiplier);
+          }
+        }
+      });
+
+      // Historie und andere Werte zurücksetzen
+      this._currentPlayer.value.last3History =
+        this._currentPlayer.value.last3History.slice(0, -3);
+      this._last3History = [];
+      this._accumulatedPoints = 0;
+      this.sortMap();
+    }
+
+    // Reset throws to maximum
+    this._remainingThrows = MAX_REMAINING_THROWS;
+
+    // Reset badges
+    this.badgeHandleService.resetBadges();
+  }
+
+  getLast3HistorySum(): number {
+    return this._last3History.reduce((sum, current) => sum + current, 0);
   }
 }
