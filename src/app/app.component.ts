@@ -1,4 +1,5 @@
 import {Component, HostListener} from '@angular/core';
+import * as console from "node:console";
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ export class AppComponent {
 
   title = 'dart-board';
   private deferredPrompt: any;
+
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   public beforeInstallHandler(event: any) {
@@ -21,5 +23,4 @@ export class AppComponent {
     console.log(`'beforeinstallprompt' event was fired.`);
 
   }
-
 }
