@@ -7,6 +7,14 @@
     transform: scale(1.4);
     margin: 1%;
   }
+
+  @media screen and (orientation: portrait) {
+    button {
+      padding-top: 5px;
+      transform: scale(1.0);
+      margin: 0.5%;
+    }
+  }
 }
 
 
@@ -15,11 +23,27 @@
     transform: scale(1.4);
     margin: 4%;
   }
+
+  @media screen and (orientation: portrait) {
+    button {
+      padding-top: 3px;
+      transform: scale(1.0);
+      margin: 0.5%;
+    }
+  }
 }
 
 .toggle-btn-scale {
   transform: scale(1.2);
   margin: 3%;
+
+  @media screen and (orientation: portrait) {
+    button {
+      padding-top: 3px;
+      transform: scale(0.6);
+      margin: 0.5%;
+    }
+  }
 }
 
 /*

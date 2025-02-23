@@ -7,6 +7,10 @@
 
 .toggle-group-scale {
   transform: scale(1.5);
+
+  @media screen and (orientation: portrait) {
+    transform: scale(1.0);
+  }
 }
 
 .input-btn-scale {
@@ -15,11 +19,23 @@
     margin: 45%;
   }
 
+  @media screen and (orientation: portrait) {
+    button {
+      padding-top: 3px;
+      transform: scale(1.0);
+      margin: 0.5%;
+    }
+  }
+
 }
 
 .miss-scale {
   transform: scale(1.8);
   font-size: 0.8em !important;
+
+  @media screen and (orientation: portrait) {
+    transform: scale(1.0);
+  }
 }
 
 .maxBtnWidth {
