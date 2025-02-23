@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {PlayerService} from './player.service';
 import {DEFAULT_PLAYER, HistoryEntry, Player, Throw} from "../models/player/player.model";
 import {SwitchPlayerSnackComponent} from "../dialogTemplates/switch-player-snack/switch-player-snack.component";
@@ -29,7 +29,7 @@ export class CurrentPlayerService {
 
   public _remainingThrows = MAX_REMAINING_THROWS;
   public _accumulatedPoints = 0;
-  public _remainingPointsToDisplay = 0;
+  public _remainingPointsToDisplay = signal(0);
   public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _last3History: number[] = [];
@@ -37,7 +37,7 @@ export class CurrentPlayerService {
 
   init(player: Player) {
     this._currentPlayer.next(player);
-    this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
+    this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this._averagePoints = player.average;
     this.reset()
   }
@@ -64,7 +64,7 @@ export class CurrentPlayerService {
         this.getAllButtonsToDisable(false);
         this._currentPlayer.next(player);
         this._last3History = [];
-        this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
+        this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
         this._averagePoints = player.average;
         this._history = this._currentPlayer.value.history;
         this.reset();
@@ -122,7 +122,8 @@ export class CurrentPlayerService {
 
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
-      this._remainingPointsToDisplay -= points;
+      // Nur zum Anzeigen der aktuellen Punktzahl
+      this._remainingPointsToDisplay.update(value => value - points);
       this._last3History.push(points);
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
@@ -135,6 +136,7 @@ export class CurrentPlayerService {
   scoreCricket(_throw: Throw) {
     if (this.hasThrowsRemaining()) {
       this.evaluateCricketPoints(_throw);
+      this._remainingPointsToDisplay.update(value => value = this._currentPlayer.value.remainingPoints);
       this.decrementRemainingThrows();
     } else {
       throw new Error('Unable to reduce throws below 0');
@@ -152,7 +154,6 @@ export class CurrentPlayerService {
   private accumulateCricketPoints(_throw: Throw) {
     if (this.checkForClosedHit(_throw)) {
       this._accumulatedPoints = _throw.value * _throw.multiplier;
-      this._remainingPointsToDisplay += this._accumulatedPoints;
     }
   }
 
@@ -176,7 +177,9 @@ export class CurrentPlayerService {
 
   applyPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
+    // Hier werden die Punkte tatsächlich vom Spieler abgezogen
     this._currentPlayer.value.remainingPoints -= this._accumulatedPoints;
+    this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this.savePointsForStatistics();
     this.calcAverage();
   }
@@ -271,10 +274,10 @@ export class CurrentPlayerService {
     // Reset all throws since last player switch
     this._last3History = [];
     this._accumulatedPoints = 0;
-    this._remainingPointsToDisplay = this._currentPlayer.value.remainingPoints;
-
 
     if (this.currentGameMode === 'Cricket') {
+
+
       // Hole die letzten 3 Würfe aus der Historie
       const lastThreeThrows = this._currentPlayer.value.last3History.slice(-3);
 
@@ -304,6 +307,10 @@ export class CurrentPlayerService {
       this._last3History = [];
       this._accumulatedPoints = 0;
       this.sortMap();
+      this._currentPlayer.value.remainingPoints = Math.max(0, this._currentPlayer.value.remainingPoints)
+      this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
+    } else {
+      this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     }
 
     // Reset throws to maximum

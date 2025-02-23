@@ -15,7 +15,9 @@ export class DartBoardComponent implements OnDestroy, OnInit {
     this.fullscreenService.toggleTabFullScreenModeGame()
   }
 
+
   ngOnDestroy(): void {
     this.dartservice._gameType = '';
   }
+
 }

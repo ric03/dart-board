@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
-import {CurrentPlayerService} from "../../../../services/current-player.service";
 import {BadgeHandleService} from "../../../../services/badge-handle.service";
 
 
@@ -18,20 +17,22 @@ export interface InputButton {
   templateUrl: './input-button-row.component.html',
   styleUrls: ['./input-button-row.component.scss'],
 })
-export class InputButtonRowComponent {
+export class InputButtonRowComponent implements OnInit {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
   rippelRadius: number = 25;
   rippleColor: string = "orange";
+  public dartService: DartService = inject(DartService)
+  protected badgeHandleService: BadgeHandleService = inject(BadgeHandleService)
 
-  constructor(public dartService: DartService, private currentPlayerService: CurrentPlayerService,
-              protected badgeHandleService: BadgeHandleService
-  ) {
+  ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
-      this.badgeHandleService.twentyButtons.push({zahl: i + 1, badge: true});
-    }
+      if (this.badgeHandleService.twentyButtons.length <= 19) {
+        this.badgeHandleService.twentyButtons.push({zahl: i + 1, badge: true});
+      }
 
+    }
   }
 
   changeButtonColor({value}: MatButtonToggleChange) {

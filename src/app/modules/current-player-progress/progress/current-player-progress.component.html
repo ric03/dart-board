@@ -6,7 +6,7 @@
         <mat-card-title class="flex-column">
           <div> {{ currentPlayerService._currentPlayer.value.name }}
           </div>
-          <h2> {{ this.currentPlayerService._remainingPointsToDisplay }}
+          <h2> {{ this.currentPlayerService._remainingPointsToDisplay() }}
           </h2>
           <div> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
           </div>
