@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, isDevMode, NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserModule} from '@angular/platform-browser';
@@ -49,7 +49,7 @@ import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
     MatMenuModule,
     MatToolbarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: true,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
