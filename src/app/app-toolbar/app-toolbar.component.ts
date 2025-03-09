@@ -113,4 +113,15 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   undoLastAction() {
     this.currentPlayerService.undoLastPlayerActions();
   }
+
+  setNextPlayerAsFirst() {
+    // Rotate the first player to the end of the array
+    if (this.dartService.playerNames.length > 1) {
+      const firstPlayer = this.dartService.playerNames.shift();
+      if (firstPlayer) {
+        this.dartService.playerNames.push(firstPlayer);
+      }
+    }
+    this.dartService.initPlayers(this.dartService.playerNames);
+  }
 }

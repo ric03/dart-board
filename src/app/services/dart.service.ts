@@ -13,7 +13,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class DartService {
   _gameType: GameType | string = '';
-  private playerNames: string[] = [];
+  playerNames: string[] = [];
   public _hideAll: boolean = false;
 
   static createPlayer(name: string, id: number): Player {

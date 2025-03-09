@@ -23,9 +23,11 @@ export class GameInitializationResolver {
 
     if (gameType === GameType.Cricket) {
       this.cricketService.setGameType(GameType.Cricket);
+      this.dartService.playerNames = playerNames
       this.cricketService.initPlayers(playerNames);
     } else {
       this.dartService.setGameType(gameType);
+      this.dartService.playerNames = playerNames
       this.dartService.initPlayers(playerNames);
     }
     this.currentplayerService.currentGameMode = gameType;

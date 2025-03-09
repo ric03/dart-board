@@ -17,7 +17,11 @@
     </button>
     <button mat-menu-item (click)="undoLastAction()">
       <mat-icon>undo</mat-icon>
-      UndoLast
+      reset last round
+    </button>
+    <button mat-menu-item (click)="setNextPlayerAsFirst()">
+      <mat-icon>swap_vert</mat-icon>
+      change first player
     </button>
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
