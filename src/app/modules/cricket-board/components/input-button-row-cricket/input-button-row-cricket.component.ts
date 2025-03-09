@@ -6,6 +6,7 @@ import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
+import {CircketOverviewService} from "../../../../services/circket-overview.service";
 
 
 @Component({
@@ -24,13 +25,10 @@ export class InputButtonRowCricketComponent {
   rippelRadius: number = 25
   rippleColor: string = "orange";
   protected animationService = inject(ExplosionAnimationService)
-
-
-  constructor(public cricketService: CricketService,
-              public currentPlayerService: CurrentPlayerService,
-              private readonly playerService: PlayerService,
-  ) {
-  }
+  protected readonly cricketOverviewService = inject(CircketOverviewService);
+  public cricketService: CricketService = inject(CricketService);
+  public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
+  private readonly playerService: PlayerService = inject(PlayerService);
 
   changeButtonColor({value}: MatButtonToggleChange) {
     switch (value) {
@@ -103,4 +101,6 @@ export class InputButtonRowCricketComponent {
     }
 
   }
+
+
 }

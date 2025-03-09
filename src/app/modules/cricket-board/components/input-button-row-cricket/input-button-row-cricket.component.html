@@ -1,26 +1,15 @@
 <div [hidden]="this.cricketService._hideAll" class="container">
 
-  <div class="d-flex flex-row pt-5 w-100">
-    <div class="w-75 d-flex justify-content-center ps-sm-5 pe-5 pb-3">
-      <mat-button-toggle-group class="toggle-group-scale align-items-center m-auto" value="1"
-                               [formControl]="multiplierControl"
-                               (change)="changeButtonColor($event)"
-                               [hideSingleSelectionIndicator]="true">
-        <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
-        <mat-button-toggle value="2">Double</mat-button-toggle>
-        <mat-button-toggle value="3">Triple</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
+  <div class="d-flex flex-row pt-2 mt-3 w-100">
+    <mat-button-toggle-group class="toggle-group-scale align-items-center m-auto" value="1"
+                             [formControl]="multiplierControl"
+                             (change)="changeButtonColor($event)"
+                             [hideSingleSelectionIndicator]="true">
+      <mat-button-toggle #singelToggel value="1">Single</mat-button-toggle>
+      <mat-button-toggle value="2">Double</mat-button-toggle>
+      <mat-button-toggle value="3">Triple</mat-button-toggle>
+    </mat-button-toggle-group>
 
-    <div class="w-25 d-flex">
-      <button mat-fab color="warn" class="miss-scale"
-              matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
-              (click)="scoreMiss()"
-              appShapeMorph
-      >
-        Nüscht! F**k!
-      </button>
-    </div>
   </div>
 
   <div class="input-btn-scale">
@@ -42,19 +31,22 @@
           </button>
         </div>
       </div>
-      <div class="d-flex flex-column mt-2">
-        <button [disabled]="isClosed(25)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
-                [color]="'accent'"
-        >{{ getBadgeCountValue(25) }}
-        </button>
-        <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-                color="accent"
-                matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
-                (click)="scoreBull()"
-                appShapeMorph
-        >
-          <span class="mt-2 material-symbols-outlined">trip_origin</span>
-        </button>
+      <div class="d-flex flex-row justify-content-center mt-2"
+      >
+        <div class="d-flex flex-column">
+          <button [disabled]="isClosed(25)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
+                  [color]="'accent'"
+          >{{ getBadgeCountValue(25) }}
+          </button>
+          <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
+                  color="accent"
+                  matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+                  (click)="scoreBull()"
+                  appShapeMorph
+          >
+            <span class="mt-2 material-symbols-outlined">trip_origin</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -77,20 +69,47 @@
         </div>
 
       </div>
-      <div class="d-flex flex-column mt-2">
-        <button [disabled]="isClosed(25)" mat-raised-button
-                class="ms-1 justify-content-center no-pointer fs-3"
-                [color]="'accent'"
-        >{{ getBadgeCountValue(25) }}
-        </button>
-        <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-                color="warn"
-                matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
-                (click)="scoreBullsEye()"
-                appShapeMorph
-        >
-          <span class="mt-2 material-symbols-outlined">target</span>
-        </button>
+      <div class="d-flex flex-row justify-content-center mt-2"
+      >
+        <div class="d-flex flex-column">
+          <button [disabled]="isClosed(25)" mat-raised-button
+                  class="ms-1 justify-content-center no-pointer fs-3"
+                  [color]="'accent'"
+          >{{ getBadgeCountValue(25) }}
+          </button>
+          <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
+                  color="warn"
+                  matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+                  (click)="scoreBullsEye()"
+                  appShapeMorph
+          >
+            <span class="mt-2 material-symbols-outlined">target</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap justify-content-between">
+      <div class="d-flex flex-row justify-content-center mt-2">
+        <div class="d-flex flex-column">
+          <button mat-flat-button color="primary"
+                  matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+                  (click)="cricketOverviewService.showAllPlayerdetails()"
+                  appShapeMorph
+          > playerlist
+          </button>
+        </div>
+      </div>
+      <div class="d-flex flex-row justify-content-center mt-2">
+        <div class="d-flex flex-column">
+          <button mat-fab color="warn" class="miss-scale"
+                  matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+                  (click)="scoreMiss()"
+                  appShapeMorph
+          >
+            Nüscht! F**k!
+          </button>
+        </div>
       </div>
     </div>
   </div>
