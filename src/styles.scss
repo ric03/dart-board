@@ -1,19 +1,14 @@
+// Explosion Animation importieren
+@import 'src/app/shared/animation/explosion-animation.scss';
+
 html, body {
   height: 100%;
 }
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
 
 .cdk-global-overlay-wrapper {
   display: grid !important;
   place-items: center !important;
-}
-
-html, body {
-  height: 100%;
 }
 
 body {

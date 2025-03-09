@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
+import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class InputButtonRowCricketComponent {
   buttonColor: ThemePalette = 'primary';
   rippelRadius: number = 25
   rippleColor: string = "orange";
+  protected animationService = inject(ExplosionAnimationService)
 
 
   constructor(public cricketService: CricketService,
@@ -47,6 +49,7 @@ export class InputButtonRowCricketComponent {
 
   scoreBullsEye() {
     this.cricketService.scoreCricketWithMultiplier({value: 25, multiplier: 2})
+    this.animationService.showExplosion('Bullseye');
   }
 
   scoreMiss() {
@@ -55,6 +58,20 @@ export class InputButtonRowCricketComponent {
 
   scoreHit(value: number, singelToggel: MatButtonToggle) {
     let multiplier = +this.multiplierControl.value;
+
+    if (multiplier === 3) {
+      if (value === 20 && this.currentPlayerService._currentPlayer.value.cricketMap.get(value) === 3) {
+        this.animationService.tripleTwentyCounter++
+        console.log(this.animationService.tripleTwentyCounter)
+        if (this.animationService.tripleTwentyCounter === 3) {
+          this.animationService.showExplosion('180');
+        } else {
+          this.animationService.showExplosion('T' + value.toString());
+        }
+      } else {
+        this.animationService.showExplosion('T' + value.toString());
+      }
+    }
     this.cricketService.scoreCricketWithMultiplier({value, multiplier});
     singelToggel._buttonElement.nativeElement.click();
   }

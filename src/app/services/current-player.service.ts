@@ -8,6 +8,7 @@ import {RoundCountService} from "./round-count.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {BadgeHandleService} from "./badge-handle.service";
+import {ExplosionAnimationService} from "../shared/animation/explosion-animation.service";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -34,6 +35,7 @@ export class CurrentPlayerService {
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _last3History: number[] = [];
   public _history: HistoryEntry[] = [];
+  protected animationService = inject(ExplosionAnimationService)
 
   init(player: Player) {
     this._currentPlayer.next(player);
@@ -62,6 +64,7 @@ export class CurrentPlayerService {
           this.roundCountService.incrementRoundCount();
         }
         this.getAllButtonsToDisable(false);
+        this.animationService.tripleTwentyCounter = 0;
         this._currentPlayer.next(player);
         this._last3History = [];
         this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);

@@ -1,0 +1,220 @@
+.explosion-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.explosion {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  height: 75%;
+  opacity: 0;
+  transform: scale(0);
+  animation: explode 1.5s ease-out forwards;
+}
+
+.explosion-text {
+  position: relative;
+  color: white;
+  font-size: 15rem;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 0, 0.8);
+  z-index: 10001;
+  animation: textPulse 1.5s ease-out forwards;
+}
+
+.explosion-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 215, 0, 1) 50%, rgba(255, 69, 0, 1) 100%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px 2px rgba(255, 200, 0, 0.8);
+}
+
+.explosion-trail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 200, 0.8);
+  transform: translate(-50%, -50%);
+}
+
+// Generiere 40 Partikel für die Hauptexplosion
+@for $i from 1 through 200 {
+  .explosion-particle:nth-child(#{$i}) {
+    $angle: random(360) * 1deg;
+    $distance: random(100) + 50;
+    $size: random(33) + 4;
+    $duration: (random(15) + 8) / 10;
+    $delay: random(10) / 100;
+
+    width: #{$size}px;
+    height: #{$size}px;
+    animation: particle-#{$i} #{$duration}s ease-out #{$delay}s forwards;
+
+    @keyframes particle-#{$i} {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(
+            calc(-50% + #{$distance * cos($angle)}px),
+            calc(-50% + #{$distance * sin($angle)}px)
+        ) scale(0.2);
+        opacity: 0;
+      }
+    }
+  }
+}
+
+// Generiere 20 Trails für den Raketeneffekt
+@for $i from 1 through 40 {
+  .explosion-trail:nth-child(#{$i}) {
+    $angle: random(360) * 1deg;
+    $distance: random(200) + 100;
+    $size: random(10) + 2;
+    $duration: (random(10) + 5) / 10;
+    $delay: random(5) / 100;
+
+    width: #{$size}px;
+    height: #{$size}px;
+    opacity: 0.7;
+    animation: trail-#{$i} #{$duration}s ease-out #{$delay}s forwards;
+
+    @keyframes trail-#{$i} {
+      0% {
+        transform: translate(-50%, -50%);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translate(
+            calc(-50% + #{$distance * cos($angle)}px),
+            calc(-50% + #{$distance * sin($angle)}px)
+        );
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(0.1);
+    opacity: 0.2;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes textPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  20% {
+    transform: scale(1.3);
+    opacity: 1;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 0, 0.8);
+  }
+  40% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+// Farbvarianten
+.explosion-red {
+  .explosion-particle {
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 100, 100, 1) 50%, rgba(255, 0, 0, 1) 100%);
+    box-shadow: 0 0 10px 2px rgba(255, 50, 50, 0.8);
+  }
+
+  .explosion-trail {
+    background-color: rgba(255, 200, 200, 0.8);
+  }
+
+  .explosion-text {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 50, 50, 0.8);
+  }
+}
+
+.explosion-green {
+  .explosion-particle {
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(144, 238, 144, 1) 50%, rgba(0, 128, 0, 1) 100%);
+    box-shadow: 0 0 10px 2px rgba(50, 200, 50, 0.8);
+  }
+
+  .explosion-trail {
+    background-color: rgba(200, 255, 200, 0.8);
+  }
+
+  .explosion-text {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(50, 200, 50, 0.8);
+  }
+}
+
+.explosion-blue {
+  .explosion-particle {
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(135, 206, 250, 1) 50%, rgba(0, 0, 255, 1) 100%);
+    box-shadow: 0 0 10px 2px rgba(50, 50, 255, 0.8);
+  }
+
+  .explosion-trail {
+    background-color: rgba(200, 200, 255, 0.8);
+  }
+
+  .explosion-text {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(50, 50, 255, 0.8);
+  }
+}

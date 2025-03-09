@@ -4,6 +4,7 @@ import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-t
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 import {BadgeHandleService} from "../../../../services/badge-handle.service";
+import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
 
 
 export interface InputButton {
@@ -25,6 +26,7 @@ export class InputButtonRowComponent implements OnInit {
   rippleColor: string = "orange";
   public dartService: DartService = inject(DartService)
   protected badgeHandleService: BadgeHandleService = inject(BadgeHandleService)
+  protected animationService = inject(ExplosionAnimationService)
 
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
@@ -55,6 +57,7 @@ export class InputButtonRowComponent implements OnInit {
 
   scoreBullsEye() {
     this.dartService.score({value: 25, multiplier: 2});
+    this.animationService.showExplosion('Bullseye');
     this.badgeHandleService.matBadgeHiddenBullsEye = false;
     this.badgeHandleService.bullsEyeBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
@@ -71,6 +74,19 @@ export class InputButtonRowComponent implements OnInit {
     this.setBadgeCount(inputButton);
     const multiplier: number = +this.multiplierControl.value;
     this.dartService.score({value: inputButton.zahl, multiplier: multiplier});
+    if (multiplier === 3) {
+      if (inputButton.zahl === 20) {
+        this.animationService.tripleTwentyCounter++
+        if (this.animationService.tripleTwentyCounter === 3) {
+          this.animationService.showExplosion('180');
+        } else {
+          this.animationService.showExplosion('T' + inputButton.zahl.toString());
+        }
+      } else {
+        this.animationService.showExplosion('T' + inputButton.zahl.toString());
+      }
+    }
+
     singelToggel._buttonElement.nativeElement.click();
   }
 
