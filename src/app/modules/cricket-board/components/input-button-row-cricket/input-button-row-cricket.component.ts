@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, inject, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, HostListener, inject, ViewChild} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
@@ -29,11 +29,28 @@ export class InputButtonRowCricketComponent implements AfterContentChecked {
   public cricketService: CricketService = inject(CricketService);
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
   private readonly playerService: PlayerService = inject(PlayerService);
-  public screenOrientation: OrientationType = window.screen.orientation.type;
+  public screenOrientation: string = window.screen.orientation.type;
 
   @ViewChild('toggleGroup') toogleGroup?: MatButtonToggleGroup;
   @ViewChild('singelToggel') singleToggle?: MatButtonToggle;
   @ViewChild('singelToggel2') singleToggle2?: MatButtonToggle;
+
+  // Überwache Orientierungsänderungen
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange() {
+    this.updateOrientation();
+  }
+
+  // Überwache auch Größenänderungen für Browser, die orientationchange nicht unterstützen
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.updateOrientation();
+  }
+
+  ngAfterContentChecked(): void {
+    this.updateOrientation();
+  }
+
 
   changeButtonColor({value}: MatButtonToggleChange) {
     switch (value) {
@@ -107,7 +124,14 @@ export class InputButtonRowCricketComponent implements AfterContentChecked {
 
   }
 
-  ngAfterContentChecked(): void {
-    this.screenOrientation = window.screen.orientation.type
+  private updateOrientation() {
+    // Bestimme die aktuelle Orientierung
+    if (window.screen && window.screen.orientation) {
+      this.screenOrientation = window.screen.orientation.type;
+    } else {
+      // Fallback für ältere Browser
+      this.screenOrientation = window.innerHeight > window.innerWidth ? 'portrait' : 'landscape-primary';
+    }
   }
+
 }
