@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, HostListener, inject, ViewChild} from '@angular/core';
+import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
 import {MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
@@ -14,7 +14,7 @@ import {CircketOverviewService} from "../../../../services/circket-overview.serv
   templateUrl: './input-button-row-cricket.component.html',
   styleUrls: ['./input-button-row-cricket.component.scss'],
 })
-export class InputButtonRowCricketComponent implements AfterContentChecked {
+export class InputButtonRowCricketComponent implements OnInit {
 
   readonly availableButtonValuesUnitl17: number[] = [15, 16, 17]
   readonly availableButtonValuesUnitl20: number[] = [18, 19, 20]
@@ -29,7 +29,7 @@ export class InputButtonRowCricketComponent implements AfterContentChecked {
   public cricketService: CricketService = inject(CricketService);
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
   private readonly playerService: PlayerService = inject(PlayerService);
-  public screenOrientation: string = window.screen.orientation.type;
+  public screenOrientation: OrientationType = window.screen.orientation.type;
 
   @ViewChild('toggleGroup') toogleGroup?: MatButtonToggleGroup;
   @ViewChild('singelToggel') singleToggle?: MatButtonToggle;
@@ -47,8 +47,8 @@ export class InputButtonRowCricketComponent implements AfterContentChecked {
     this.updateOrientation();
   }
 
-  ngAfterContentChecked(): void {
-    this.updateOrientation();
+  ngOnInit(): void {
+    this.updateOrientation()
   }
 
 
@@ -126,11 +126,10 @@ export class InputButtonRowCricketComponent implements AfterContentChecked {
 
   private updateOrientation() {
     // Bestimme die aktuelle Orientierung
-    if (window.screen && window.screen.orientation) {
-      this.screenOrientation = window.screen.orientation.type;
+    if (window) {
+      this.screenOrientation = (window.innerHeight > window.innerWidth ? 'portrait-primary' : 'landscape-primary') as OrientationType;
     } else {
-      // Fallback für ältere Browser
-      this.screenOrientation = window.innerHeight > window.innerWidth ? 'portrait' : 'landscape-primary';
+      this.screenOrientation = ' portrait-primary' as OrientationType
     }
   }
 
