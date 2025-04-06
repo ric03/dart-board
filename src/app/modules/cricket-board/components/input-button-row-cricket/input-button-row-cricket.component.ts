@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {AfterContentChecked, Component, inject, ViewChild} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
-import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
+import {MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
@@ -14,7 +14,7 @@ import {CircketOverviewService} from "../../../../services/circket-overview.serv
   templateUrl: './input-button-row-cricket.component.html',
   styleUrls: ['./input-button-row-cricket.component.scss'],
 })
-export class InputButtonRowCricketComponent {
+export class InputButtonRowCricketComponent implements AfterContentChecked {
 
   readonly availableButtonValuesUnitl17: number[] = [15, 16, 17]
   readonly availableButtonValuesUnitl20: number[] = [18, 19, 20]
@@ -29,6 +29,11 @@ export class InputButtonRowCricketComponent {
   public cricketService: CricketService = inject(CricketService);
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
   private readonly playerService: PlayerService = inject(PlayerService);
+  public screenOrientation: OrientationType = window.screen.orientation.type;
+
+  @ViewChild('toggleGroup') toogleGroup?: MatButtonToggleGroup;
+  @ViewChild('singelToggel') singleToggle?: MatButtonToggle;
+  @ViewChild('singelToggel2') singleToggle2?: MatButtonToggle;
 
   changeButtonColor({value}: MatButtonToggleChange) {
     switch (value) {
@@ -36,7 +41,7 @@ export class InputButtonRowCricketComponent {
       case '1': this.buttonColor = 'primary'; break;
       case '2': this.buttonColor = 'accent'; break;
       case '3': this.buttonColor = 'warn'; break;
-      default: throw new Error('Unknown value');
+      default: this.buttonColor = 'primary'; break;
       // @formatter:on
     }
   }
@@ -54,7 +59,7 @@ export class InputButtonRowCricketComponent {
     this.cricketService.scoreCricketWithMultiplier({value: 0, multiplier: 1})
   }
 
-  scoreHit(value: number, singelToggel: MatButtonToggle) {
+  scoreHit(value: number) {
     let multiplier = +this.multiplierControl.value;
 
     if (multiplier === 3) {
@@ -71,7 +76,7 @@ export class InputButtonRowCricketComponent {
       }
     }
     this.cricketService.scoreCricketWithMultiplier({value, multiplier});
-    singelToggel._buttonElement.nativeElement.click();
+    (this.singleToggle ?? this.singleToggle2)!._buttonElement.nativeElement.click();
   }
 
   getBadgeCountValue(primaryNumber: number) {
@@ -102,5 +107,7 @@ export class InputButtonRowCricketComponent {
 
   }
 
-
+  ngAfterContentChecked(): void {
+    this.screenOrientation = window.screen.orientation.type
+  }
 }
