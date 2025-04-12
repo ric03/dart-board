@@ -104,7 +104,8 @@ export class InputButtonRowCricketComponent implements OnInit {
     if (this.playerService._players.length === 1) {
       return false;
     }
-    return this.getBadgeCountValue(value) === 3 && this.playerService._players.every((player) =>
+    const currentPlayerValue = this.currentPlayerService._currentPlayer.value.cricketMap.get(value);
+    return currentPlayerValue === 3 && this.playerService._players.every((player) =>
       player.cricketMap.get(value) === 3
     )
   }

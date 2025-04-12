@@ -37,6 +37,7 @@ export class CricketService {
       cricketMap: new Map(),
       average: 0,
       last3History: [],
+      throws: [],
     };
   }
 

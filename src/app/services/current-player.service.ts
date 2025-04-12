@@ -242,6 +242,7 @@ export class CurrentPlayerService {
       }
     }
     this.sortMap();
+    this._currentPlayer.value.throws?.push(_throw)
     this._currentPlayer.value.last3History.push(_throw.value * _throw.multiplier);
 
   }
@@ -275,38 +276,35 @@ export class CurrentPlayerService {
 
   undoLastPlayerActions() {
     // Reset all throws since last player switch
+    const actionsToReset = this._last3History
     this._last3History = [];
     this._accumulatedPoints = 0;
 
     if (this.currentGameMode === 'Cricket') {
 
 
-      // Hole die letzten 3 Würfe aus der Historie
-      const lastThreeThrows = this._currentPlayer.value.last3History.slice(-3);
+      console.log("lastX actions length: ", actionsToReset.length)
+
+      // ermittle die letzten X Würfe des aktuellen Spielers before reset
+      const lastXThrows = this.playerService.getPlayer(this._currentPlayer.value).throws!.splice(0, this.playerService.getPlayer(this._currentPlayer.value).throws!.length - actionsToReset.length)
+
 
       // Für jeden Wurf die Änderungen rückgängig machen
-      lastThreeThrows.forEach(throwValue => {
-        const baseValue = throwValue > 25 ? 25 : throwValue; // Handle Bullseye
-        const multiplier = throwValue > 25 ? 2 : 1;
-
-        if (this._currentPlayer.value.cricketMap.has(baseValue)) {
+      lastXThrows.forEach(throwValue => {
+        if (this._currentPlayer.value.cricketMap.has(throwValue.value)) {
           // Aktuelle Treffer für diesen Wert
-          const currentHits = this._currentPlayer.value.cricketMap.get(baseValue) || 0;
-
-          // Reduziere die Treffer, aber nicht unter 0
-          const newHits = Math.max(0, currentHits - multiplier);
-          this._currentPlayer.value.cricketMap.set(baseValue, newHits);
-
+          const currentHits = this._currentPlayer.value.cricketMap.get(throwValue.value) || 0;
           // Wenn Punkte erzielt wurden, diese auch zurücknehmen
           if (currentHits >= 3) {
-            this._currentPlayer.value.remainingPoints -= (baseValue * multiplier);
+            this._currentPlayer.value.remainingPoints -= (throwValue.value * throwValue.multiplier);
           }
         }
+        this._currentPlayer.value.cricketMap.set(throwValue.value, throwValue.multiplier)
       });
 
       // Historie und andere Werte zurücksetzen
       this._currentPlayer.value.last3History =
-        this._currentPlayer.value.last3History.slice(0, -3);
+        this._currentPlayer.value.last3History.slice(0, -actionsToReset.length);
       this._last3History = [];
       this._accumulatedPoints = 0;
       this.sortMap();

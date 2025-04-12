@@ -7,7 +7,7 @@ export interface HistoryEntry {
 export interface Player {
   id: number,
   name: string,
-  throws?: Throw[][],
+  throws?: Throw[],
 
   remainingPoints: number,
   lastScore: number,
