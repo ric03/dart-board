@@ -22,13 +22,25 @@ export class ShapeMorphDirective {
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
   }
 
+
+  vibrateOnClick(): void {
+    // Prüfe, ob die Vibration API im Browser verfügbar ist
+    if ('vibrate' in navigator) {
+      // Löse eine einfache Vibration von 200 Millisekunden aus
+      navigator.vibrate(200);
+    } else {
+      console.log('Vibration API wird in diesem Browser nicht unterstützt.');
+    }
+  }
+
   @HostListener('click')
   onClick() {
+
+    this.vibrateOnClick()
+
     // Zuerst zum Quadrat ändern
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', '20%');
     this.renderer.setStyle(this.el.nativeElement, 'background-color', this.rippleColor);
-
-    console.log(this.el.nativeElement['border-radius'])
 
     // Nach 1s wieder zum Kreis zurück
     setTimeout(() => {
