@@ -19,7 +19,7 @@
       <mat-icon>undo</mat-icon>
       reset last round
     </button>
-    <button mat-menu-item (click)="setNextPlayerAsFirst()">
+    <button mat-menu-item (click)="setNextPlayerAsFirst()" [disabled]="!canChangeFirstPlayer">
       <mat-icon>swap_vert</mat-icon>
       change first player
     </button>

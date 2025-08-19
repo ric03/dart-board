@@ -46,6 +46,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   dartService = inject(DartService);
   protected readonly fullscreenService = inject(ToggleFullscreenService);
   protected readonly currentPlayerService = inject(CurrentPlayerService);
+  protected readonly customRipple = customRipple;
 
 
   constructor(private dialog: MatDialog) {
@@ -136,7 +137,15 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     this.currentPlayerService.undoLastPlayerActions();
   }
 
+  get canChangeFirstPlayer(): boolean {
+    return this.currentPlayerService._last3History.length === 0
+  }
+
   setNextPlayerAsFirst() {
+    if (!this.canChangeFirstPlayer) {
+      console.warn('Spielerreihenfolge kann nicht mehr geändert werden: Es wurden bereits Punkte erzielt.');
+      return;
+    }
     // Rotate the first player to the end of the array
     if (this.dartService.playerNames.length > 1) {
       const firstPlayer = this.dartService.playerNames.shift();
@@ -147,5 +156,5 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     this.dartService.initPlayers(this.dartService.playerNames);
   }
 
-  protected readonly customRipple = customRipple;
+
 }
