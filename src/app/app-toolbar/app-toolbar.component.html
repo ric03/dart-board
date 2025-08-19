@@ -7,10 +7,10 @@
       <mat-icon>arrow_back</mat-icon>
       Main Menu
     </button>
-    <!--    <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">-->
-    <!--      <mat-icon>install_mobile</mat-icon>-->
-    <!--      Install App-->
-    <!--    </button>-->
+    <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">
+      <mat-icon>install_mobile</mat-icon>
+      Install App
+    </button>
     <button mat-menu-item (click)="fullscreenService.toggleTabFullScreenModeMenue()">
       <mat-icon>fullscreen</mat-icon>
       Fullscreen
@@ -27,7 +27,8 @@
   </mat-menu>
   @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
     <button mat-mini-fab class="ms-3 question-scale"
-            matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+            matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+            [matRippleRadius]="customRipple.rippleRadius"
             (click)="openGameInstructions()"
     ><span class="mt-2 material-symbols-outlined">question_mark</span>
     </button>

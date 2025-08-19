@@ -5,6 +5,7 @@ import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 import {BadgeHandleService} from "../../../../services/badge-handle.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
+import {customRipple} from "../../../../shared/util";
 
 
 export interface InputButton {
@@ -22,8 +23,6 @@ export class InputButtonRowComponent implements OnInit {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
-  rippelRadius: number = 25;
-  rippleColor: string = "orange";
   public dartService: DartService = inject(DartService)
   protected badgeHandleService: BadgeHandleService = inject(BadgeHandleService)
   protected animationService = inject(ExplosionAnimationService)
@@ -101,4 +100,6 @@ export class InputButtonRowComponent implements OnInit {
   getBadgeCountValue() {
     return this.badgeHandleService.tempBadgeValue;
   }
+
+  protected readonly customRipple = customRipple;
 }

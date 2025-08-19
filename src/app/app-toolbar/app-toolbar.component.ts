@@ -15,6 +15,7 @@ import {DartService} from "../services/dart.service";
 import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-dialog.component";
 import {CurrentPlayerService} from "../services/current-player.service";
 import {ToggleFullscreenService} from "../services/toggle-fullscreen.service";
+import {customRipple} from "../shared/util";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -41,8 +42,6 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   installBtnHidden: boolean = true
   private router: Router = inject(Router);
   appVersion: string = environment.appVersion;
-  rippelRadius: number = 25
-  rippleColor: string = "orange";
   cricketService = inject(CricketService);
   dartService = inject(DartService);
   protected readonly fullscreenService = inject(ToggleFullscreenService);
@@ -53,7 +52,24 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.installBtnHidden = false;
+    // Hide install button by default; show it only when the deferred prompt is available
+    this.installBtnHidden = true;
+
+    // Listen for the beforeinstallprompt event to enable the install UI
+    window.addEventListener('beforeinstallprompt', (event: any) => {
+      event.preventDefault();
+      this.deferredPrompt = event;
+      this.installBtnHidden = false;
+      console.info('beforeinstallprompt captured; install UI enabled');
+    });
+
+    // Hide install button once the app is installed
+    window.addEventListener('appinstalled', () => {
+      console.info('PWA was installed');
+      this.deferredPrompt = null;
+      this.installBtnHidden = true;
+    });
+
     this.fullscreenService.initDisplayAlwaysOnMode().then(() => {
       console.info('wake lock requested');
     });
@@ -78,27 +94,33 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
 
 
   /**
-   * TODO: correct impl
-   * Triggers the installation process for a Progressive Web App (PWA) using the deferred installation prompt.
-   * If the deferred prompt is available, it prompts the user to install the app and handles the user response.
-   *
-   * @return {void} This method does not return any value.
+   * Löst den lokalen PWA-Installationsdialog aus, sofern verfügbar.
+   * Der Dialog steht nur bereit, nachdem das "beforeinstallprompt"-Event abgefangen wurde.
    */
-  localInstall() {
-    if (this.deferredPrompt) {
-      this.deferredPrompt.prompt();
-      this.installBtnHidden = true
-      this.deferredPrompt.userChoice
-        .then((choiceResult: any) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the A2HS prompt');
-          } else {
-            console.log('User dismissed the A2HS prompt');
-          }
-          this.deferredPrompt = null;
-        });
+  async localInstall() {
+    if (!this.deferredPrompt) {
+      console.warn('Installationsaufforderung ist nicht verfügbar. Eventuell unterstützt der Browser dies nicht oder die Seite erfüllt die PWA-Kriterien noch nicht.');
+      return;
     }
 
+    // Zeige den Install-Dialog an
+    this.deferredPrompt.prompt();
+
+    try {
+      const choiceResult: any = await this.deferredPrompt.userChoice;
+      this.installBtnHidden = true;
+
+      if (choiceResult?.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+    } catch (err) {
+      console.error('Fehler während des Installationsdialogs:', err);
+    } finally {
+      // Das Event kann nur einmal verwendet werden
+      this.deferredPrompt = null;
+    }
   }
 
 
@@ -124,4 +146,6 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     }
     this.dartService.initPlayers(this.dartService.playerNames);
   }
+
+  protected readonly customRipple = customRipple;
 }

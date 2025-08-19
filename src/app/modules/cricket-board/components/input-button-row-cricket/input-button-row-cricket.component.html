@@ -29,8 +29,8 @@
             </button>
             <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2 {{this.isScorable(btnValue)? '' : border}}" mat-fab
                     [color]="buttonColor"
-                    matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="rippelRadius"
+                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+                    [matRippleRadius]="customRipple.rippleRadius"
                     (click)="scoreHit(btnValue)"
                     appShapeMorph
             >{{ btnValue }}
@@ -46,8 +46,8 @@
             </button>
             <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
                     color="accent"
-                    matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="rippelRadius"
+                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+                    [matRippleRadius]="customRipple.rippleRadius"
                     (click)="scoreBull()"
                     appShapeMorph
             >
@@ -70,8 +70,8 @@
             <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2  {{this.isScorable(btnValue)? '' : border}}"
                     mat-fab
                     [color]="buttonColor"
-                    matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="rippelRadius"
+                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+                    [matRippleRadius]="customRipple.rippleRadius"
                     (click)="scoreHit(btnValue)"
                     appShapeMorph
             >{{ btnValue }}
@@ -89,8 +89,8 @@
             </button>
             <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
                     color="warn"
-                    matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="rippelRadius"
+                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+                    [matRippleRadius]="customRipple.rippleRadius"
                     (click)="scoreBullsEye()"
                     appShapeMorph
             >
@@ -119,7 +119,8 @@
   <div class="d-flex flex-row justify-content-center mt-2">
     <div class="d-flex flex-column">
       <button mat-flat-button color="primary"
-              matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+              matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+              [matRippleRadius]="customRipple.rippleRadius"
               (click)="cricketOverviewService.showAllPlayerdetails()"
               appShapeMorph
       > show all players
@@ -129,7 +130,8 @@
   <div class="d-flex flex-row justify-content-center mt-2">
     <div class="d-flex flex-column">
       <button mat-fab color="warn" class="miss-scale"
-              matRipple [matRippleColor]="rippleColor" [matRippleUnbounded]="true" [matRippleRadius]="rippelRadius"
+              matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+              [matRippleRadius]="customRipple.rippleRadius"
               (click)="scoreMiss()"
               appShapeMorph
       >

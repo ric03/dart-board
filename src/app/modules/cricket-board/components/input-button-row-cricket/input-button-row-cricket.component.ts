@@ -7,6 +7,7 @@ import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
 import {CircketOverviewService} from "../../../../services/circket-overview.service";
+import {customRipple} from "../../../../shared/util";
 
 
 @Component({
@@ -22,8 +23,7 @@ export class InputButtonRowCricketComponent implements OnInit {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
-  rippelRadius: number = 25
-  rippleColor: string = "orange";
+
   protected animationService = inject(ExplosionAnimationService)
   protected readonly cricketOverviewService = inject(CircketOverviewService);
   public cricketService: CricketService = inject(CricketService);
@@ -134,4 +134,5 @@ export class InputButtonRowCricketComponent implements OnInit {
     }
   }
 
+  protected readonly customRipple = customRipple;
 }
