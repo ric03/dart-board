@@ -23,6 +23,18 @@ export class ShapeMorphDirective {
   }
 
 
+  /**
+   * Führt bei einem Klick eine kurze Geräte-Vibration aus (sofern vom Browser/Endgerät unterstützt).
+   *
+   * Funktionsweise:
+   * - Prüft zunächst, ob die Vibration API (Navigator.vibrate) verfügbar ist.
+   * - Wenn ja, wird eine einfache Vibration von 200 Millisekunden ausgelöst.
+   * - Wenn nein, wird eine Hinweis-Nachricht in der Konsole ausgegeben.
+   *
+   * Hinweise:
+   * - Die Vibration API wird primär auf mobilen Endgeräten unterstützt.
+   * - Auf Desktop-Browsern ist sie häufig nicht verfügbar oder deaktiviert.
+   */
   vibrateOnClick(): void {
     // Prüfe, ob die Vibration API im Browser verfügbar ist
     if ('vibrate' in navigator) {
