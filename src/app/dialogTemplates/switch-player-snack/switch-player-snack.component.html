@@ -15,7 +15,7 @@
     <h5>
       Points: {{ this.nextPlayer.remainingPoints }}
     </h5>
-    <div class="d-flex flex-column" *ngFor="let key of this.nextPlayer.cricketMap.keys()">
+    <div class="d-flex flex-column" *ngFor="let key of this.cricketKeys">
       @if (key === 25) {
         @if (this.nextPlayer.cricketMap.get(key) === 3) {
           <b> Bull Hits:{{ this.nextPlayer.cricketMap.get(key) }} </b>

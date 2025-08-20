@@ -17,6 +17,15 @@ export class PlayerService {
     this._players = playerNames.map(DartService.createPlayer);
   }
 
+  updatePlayer(updated: Player): void {
+    const idx = this._players.findIndex(p => p.id === updated.id);
+    if (idx !== -1) {
+      const newArr = this._players.slice();
+      newArr[idx] = updated;
+      this._players = newArr;
+    }
+  }
+
   setupCricketPlayers(playerNames: string[]) {
     if (playerNames.length == 0) {
       throw new Error('Provided array must not be empty');

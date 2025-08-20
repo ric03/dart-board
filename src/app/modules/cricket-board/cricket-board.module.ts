@@ -8,7 +8,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatRippleModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {GameSelectionModule} from '../game-selection/game-selection.module';
-import {CricketOverviewTableComponent} from './components/cricket-overview-table/cricket-overview-table.component';
 import {CurrentPlayerProgressModule} from '../current-player-progress/current-player-progress.module';
 import {ScoreBoardModule} from "../score-board/score-board.module";
 import {MatButtonModule} from "@angular/material/button";
@@ -25,7 +24,6 @@ import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive"
   declarations: [
     CricketBoardComponent,
     InputButtonRowCricketComponent,
-    CricketOverviewTableComponent,
   ],
   imports: [
     CommonModule,

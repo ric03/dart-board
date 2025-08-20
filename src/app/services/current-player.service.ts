@@ -34,6 +34,7 @@ export class CurrentPlayerService {
   public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _last3History: number[] = [];
+  public _lastCricketHistory: Map<number, number> = new Map();
   public _history: HistoryEntry[] = [];
   protected animationService = inject(ExplosionAnimationService)
 
@@ -41,6 +42,7 @@ export class CurrentPlayerService {
     this._currentPlayer.next(player);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this._averagePoints = player.average;
+    this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
     this.reset()
   }
 
@@ -67,6 +69,7 @@ export class CurrentPlayerService {
         this.animationService.tripleTwentyCounter = 0;
         this._currentPlayer.next(player);
         this._last3History = [];
+        this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
         this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
         this._averagePoints = player.average;
         this._history = this._currentPlayer.value.history;
@@ -83,13 +86,6 @@ export class CurrentPlayerService {
         btn.disabled = disabled;
       }
     }
-  }
-
-  //TODO: implement revert
-  revert() {
-    console.log('revert');
-    this.isToResetRound = true;
-
   }
 
   private resetRound() {
@@ -251,10 +247,6 @@ export class CurrentPlayerService {
     this._currentPlayer.value.cricketMap = new Map([...this._currentPlayer.value.cricketMap].sort());
   }
 
-  getHistory() {
-    return this._currentPlayer.value.history.slice(-3).reverse();
-  }
-
   checkForClosedHit(_throw: Throw) {
     if (this.playerService._players.length < 2) {
       return true;
@@ -276,40 +268,31 @@ export class CurrentPlayerService {
 
   undoLastPlayerActions() {
     // Reset all throws since last player switch
-    const actionsToReset = this._last3History
     this._last3History = [];
     this._accumulatedPoints = 0;
 
     if (this.currentGameMode === 'Cricket') {
+      // Restore cricket marks using a cloned snapshot and emit a new player to trigger UI updates
+      const restoredMap = new Map(this._lastCricketHistory ?? new Map<number, number>());
+      const updatedPlayer: Player = {
+        ...this._currentPlayer.value,
+        cricketMap: restoredMap,
+        last3History: [],
+        throws: []
+      };
+      this._currentPlayer.next(updatedPlayer);
 
-
-      console.log("lastX actions length: ", actionsToReset.length)
-
-      // ermittle die letzten X Würfe des aktuellen Spielers before reset
-      const lastXThrows = this.playerService.getPlayer(this._currentPlayer.value).throws!.splice(0, this.playerService.getPlayer(this._currentPlayer.value).throws!.length - actionsToReset.length)
-
-
-      // Für jeden Wurf die Änderungen rückgängig machen
-      lastXThrows.forEach(throwValue => {
-        if (this._currentPlayer.value.cricketMap.has(throwValue.value)) {
-          // Aktuelle Treffer für diesen Wert
-          const currentHits = this._currentPlayer.value.cricketMap.get(throwValue.value) || 0;
-          // Wenn Punkte erzielt wurden, diese auch zurücknehmen
-          if (currentHits >= 3) {
-            this._currentPlayer.value.remainingPoints -= (throwValue.value * throwValue.multiplier);
-          }
-        }
-        this._currentPlayer.value.cricketMap.set(throwValue.value, throwValue.multiplier)
-      });
-
-      // Historie und andere Werte zurücksetzen
-      this._currentPlayer.value.last3History =
-        this._currentPlayer.value.last3History.slice(0, -actionsToReset.length);
+      // Reset internal trackers
       this._last3History = [];
       this._accumulatedPoints = 0;
+
+      // Keep map sorted and ensure displayed points are consistent
       this.sortMap();
-      this._currentPlayer.value.remainingPoints = Math.max(0, this._currentPlayer.value.remainingPoints)
-      this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
+      updatedPlayer.remainingPoints = Math.max(0, updatedPlayer.remainingPoints);
+      this._remainingPointsToDisplay.set(updatedPlayer.remainingPoints);
+
+      // Also update the players array so components bound to playerService._players reflect the change
+      this.playerService.updatePlayer(this._currentPlayer.value);
     } else {
       this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     }

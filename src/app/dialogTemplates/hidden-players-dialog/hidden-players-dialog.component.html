@@ -1,0 +1,48 @@
+<mat-dialog-content>
+  <h1 mat-dialog-title>All Players</h1>
+  @if (GameType.Cricket) {
+    <div class="container">
+      <div class="d-flex flex-column bd-highlight mb-3">
+        <div class="mt-3">
+          @for (player of playerService._players; track $index) {
+            <mat-card class="m-1">
+              <mat-card-subtitle>last: {{ player.lastScore }}</mat-card-subtitle>
+              <mat-card-title>{{ player.remainingPoints }}</mat-card-title>
+              {{ player.name }}
+              <!--More Content vertical-->
+              <div class="d-flex flex-wrap">
+                @for (cricketHit of player.cricketMap.entries(); track $index) {
+                  <mat-card class="m-1">
+                    <mat-card-title>{{ cricketHit[0] }}</mat-card-title>
+                    hits: {{ cricketHit[1] }}
+                  </mat-card>
+                }
+              </div>
+            </mat-card>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div *ngFor="let player of this.playerService._players">
+      <mat-card class="mb-1">
+        <mat-card-subtitle>{{ player.name }}</mat-card-subtitle>
+        <mat-card-title>{{ player.remainingPoints }}
+        </mat-card-title>
+        <br>
+        last∑ {{ player.lastScore }}<br>
+        @if (player.history.length > 0) {
+          <mat-card class="mb-1" *ngFor="let plyerhis of player.history">
+            last➶
+            {{ plyerhis.hits }} = {{ plyerhis.sum }}<br>
+          </mat-card>
+        }
+        <br>
+        ⌀ {{ player.average }}<br>
+      </mat-card>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close="">OK</button>
+</mat-dialog-actions>

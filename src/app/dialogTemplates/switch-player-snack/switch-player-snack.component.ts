@@ -6,6 +6,7 @@ import {CommonModule} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {CricketService} from "../../services/cricket.service";
+import {Player} from "../../models/player/player.model";
 
 @Component({
   selector: 'app-switch-player-snack',
@@ -15,15 +16,20 @@ import {CricketService} from "../../services/cricket.service";
 })
 export class SwitchPlayerSnackComponent implements OnInit {
 
-  public timeLeft: number = 5;
-  public nextPlayer = inject(PlayerService).getNextPlayer(inject(CurrentPlayerService)._currentPlayer.value);
+  playerservice = inject(PlayerService)
   snackBarRef = inject(MatSnackBar);
   currentPlayerService = inject(CurrentPlayerService);
   cricketService = inject(CricketService);
 
+  public timeLeft: number = 3;
+  public nextPlayer: Player = this.playerservice.getNextPlayer(this.currentPlayerService._currentPlayer.value);
+  public cricketKeys: number[] = [];
+
 
   ngOnInit(): void {
     this.startTimer();
+    // Convert Map iterator to a stable array to avoid ExpressionChangedAfterItHasBeenCheckedError
+    this.cricketKeys = Array.from(this.nextPlayer.cricketMap.keys());
   }
 
 

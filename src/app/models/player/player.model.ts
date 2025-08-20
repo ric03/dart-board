@@ -1,7 +1,7 @@
 export interface HistoryEntry {
   sum: number,
   hits: number[],
-
+  cricketHits?: Throw[],
 }
 
 export interface Player {

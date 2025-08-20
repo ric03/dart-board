@@ -6,7 +6,6 @@ import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
-import {CircketOverviewService} from "../../../../services/circket-overview.service";
 import {customRipple} from "../../../../shared/util";
 
 
@@ -16,6 +15,7 @@ import {customRipple} from "../../../../shared/util";
   styleUrls: ['./input-button-row-cricket.component.scss'],
 })
 export class InputButtonRowCricketComponent implements OnInit {
+  protected readonly customRipple = customRipple;
 
   readonly availableButtonValuesUnitl17: number[] = [15, 16, 17]
   readonly availableButtonValuesUnitl20: number[] = [18, 19, 20]
@@ -25,10 +25,9 @@ export class InputButtonRowCricketComponent implements OnInit {
   buttonColor: ThemePalette = 'primary';
 
   protected animationService = inject(ExplosionAnimationService)
-  protected readonly cricketOverviewService = inject(CircketOverviewService);
   public cricketService: CricketService = inject(CricketService);
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
-  private readonly playerService: PlayerService = inject(PlayerService);
+  protected playerService: PlayerService = inject(PlayerService);
   public screenOrientation: OrientationType = window.screen.orientation.type;
 
   @ViewChild('toggleGroup') toogleGroup?: MatButtonToggleGroup;
@@ -134,5 +133,4 @@ export class InputButtonRowCricketComponent implements OnInit {
     }
   }
 
-  protected readonly customRipple = customRipple;
 }
