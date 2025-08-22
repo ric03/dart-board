@@ -10,7 +10,10 @@ export function isValidGameType(gameType: string | null): boolean {
 }
 
 // noinspection JSMethodCanBeStatic
-export function isValidPlayerCount(playerCount: number): boolean {
+export function isValidPlayerCount(playerCount: number, gameType: string | null): boolean {
+  if (gameType === GameType.Elimination) {
+    return playerCount >= 2;
+  }
   return playerCount > 0
 }
 
@@ -24,7 +27,7 @@ export const queryParamValidationGuard: CanActivateFn = (
   const router = inject(Router)
   const snackbar = inject(MatSnackBar)
 
-  if (isValidGameType(gameType) && isValidPlayerCount(playerCount)) {
+  if (isValidGameType(gameType) && isValidPlayerCount(playerCount, gameType)) {
     return true
   } else {
     /**
@@ -32,7 +35,7 @@ export const queryParamValidationGuard: CanActivateFn = (
      * For more info, please refer to https://github.com/angular/angular/issues/16211
      */
     router.navigate([])
-    snackbar.open(`Sorry, something went wrong. Please try again.`, 'OK', {duration: 3000});
+    snackbar.open(`Sorry, something went wrong. Please try again.`, 'OK', {duration: 3000, verticalPosition: 'top'});
     return false
   }
 }

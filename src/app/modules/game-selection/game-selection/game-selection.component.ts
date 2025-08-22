@@ -59,7 +59,7 @@ export class GameSelectionComponent implements OnInit {
     const playerNames = this.formGroup.controls.playerNames.value;
     const gameType = this.formGroup.value.gameType;
 
-    if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501) {
+    if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501 || gameType == GameType.Elimination) {
       this.router.navigate(['dartboard'], {queryParams: {gameType, playerNames}});
     } else {
       this.router.navigate(['cricketboard'], {queryParams: {gameType, playerNames}});

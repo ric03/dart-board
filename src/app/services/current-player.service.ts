@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {BadgeHandleService} from "./badge-handle.service";
 import {ExplosionAnimationService} from "../shared/animation/explosion-animation.service";
+import {GameType} from "../models/enum/GameType";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -122,7 +123,11 @@ export class CurrentPlayerService {
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
       // Nur zum Anzeigen der aktuellen Punktzahl
-      this._remainingPointsToDisplay.update(value => value - points);
+      if (this.currentGameMode === GameType.Elimination) {
+        this._remainingPointsToDisplay.update(value => value + points);
+      } else {
+        this._remainingPointsToDisplay.update(value => value - points);
+      }
       this._last3History.push(points);
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
@@ -176,8 +181,13 @@ export class CurrentPlayerService {
 
   applyPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
-    // Hier werden die Punkte tatsächlich vom Spieler abgezogen
-    this._currentPlayer.value.remainingPoints -= this._accumulatedPoints;
+    if (this.currentGameMode === GameType.Elimination) {
+      // Punkte hinzufügen (Elimination)
+      this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
+    } else {
+      // Hier werden die Punkte tatsächlich vom Spieler abgezogen (501)
+      this._currentPlayer.value.remainingPoints -= this._accumulatedPoints;
+    }
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this.savePointsForStatistics();
     this.calcAverage();
