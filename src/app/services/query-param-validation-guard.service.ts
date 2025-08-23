@@ -11,7 +11,7 @@ export function isValidGameType(gameType: string | null): boolean {
 
 // noinspection JSMethodCanBeStatic
 export function isValidPlayerCount(playerCount: number, gameType: string | null): boolean {
-  if (gameType === GameType.Elimination) {
+  if (gameType === GameType.Elimination || gameType === GameType.Elimination301) {
     return playerCount >= 2;
   }
   return playerCount > 0

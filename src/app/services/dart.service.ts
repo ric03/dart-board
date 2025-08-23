@@ -47,7 +47,7 @@ export class DartService {
     this.playerService.setupDartPlayers(playerNames);
 
     // Initialize starting points based on game type
-    if (this._gameType === GameType.Elimination) {
+    if (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301) {
       // Elimination starts at 0 points and counts upwards
       this.playerService._players.forEach(p => p.remainingPoints = 0);
     } else {
@@ -68,7 +68,7 @@ export class DartService {
       return;
     }
 
-    if (this._gameType === GameType.Elimination) {
+    if (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301) {
       this.scoreElimination(points);
       return;
     }
@@ -103,6 +103,9 @@ export class DartService {
     // Add points for current throw to the display/accumulator
     this.currentPlayerService.scoreDart(points);
 
+    // Determine target based on elimination mode
+    const target = (this._gameType === GameType.Elimination301) ? 301 : 501;
+
     // Potential total points after this throw (not yet applied to player)
     const current = this.currentPlayerService._currentPlayer.value;
     const potentialTotal = current.remainingPoints + this.currentPlayerService._accumulatedPoints;
@@ -116,19 +119,18 @@ export class DartService {
         }
       });
 
-    // Check immediate win at 501 or more
-    if (potentialTotal == 501) {
+    // Check immediate win at target or overshoot
+    if (potentialTotal == target) {
       this.currentPlayerService.applyPoints();
       this.handleVictory();
       return;
     }
-    if (potentialTotal > 501) {
+    if (potentialTotal > target) {
       this.displayOvershotNotification().afterDismissed().subscribe(() => {
         this.switchPlayer();
       })
       return;
     }
-
 
     // End of turn handling
     if (this.currentPlayerService.hasNoThrowsRemaining()) {
@@ -186,7 +188,8 @@ export class DartService {
 
   private handleVictoryByReachingRoundLimit() {
     const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    const comparator = (this._gameType === GameType.Elimination) ? Math.max : Math.min;
+    const isEliminationMode = (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301);
+    const comparator = isEliminationMode ? Math.max : Math.min;
     const target = comparator(...arrOfPoints);
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == target);
     this.currentPlayerService._currentPlayer.next(winner[0]); // TODO consider a draw

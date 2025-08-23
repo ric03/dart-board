@@ -123,7 +123,7 @@ export class CurrentPlayerService {
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
       // Nur zum Anzeigen der aktuellen Punktzahl
-      if (this.currentGameMode === GameType.Elimination) {
+      if (this.currentGameMode === GameType.Elimination || this.currentGameMode === GameType.Elimination301) {
         this._remainingPointsToDisplay.update(value => value + points);
       } else {
         this._remainingPointsToDisplay.update(value => value - points);
@@ -181,7 +181,7 @@ export class CurrentPlayerService {
 
   applyPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
-    if (this.currentGameMode === GameType.Elimination) {
+    if (this.currentGameMode === GameType.Elimination || this.currentGameMode === GameType.Elimination301) {
       // Punkte hinzufügen (Elimination)
       this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     } else {
