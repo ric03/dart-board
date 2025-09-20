@@ -9,6 +9,18 @@ export class AppComponent {
   title = 'dart-board';
   private deferredPrompt: any;
 
+  // Warn user about data loss on reload when not in fullscreen
+  @HostListener('window:beforeunload', ['$event'])
+  public beforeUnloadHandler(event: BeforeUnloadEvent) {
+    // Standard: set returnValue to show confirmation dialog
+    if (navigator.userActivation.hasBeenActive) {
+      // Recommended
+      event.preventDefault();
+      // Included for legacy support, e.g. Chrome/Edge < 119
+      event.returnValue = true;
+    }
+    return
+  }
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   public beforeInstallHandler(event: any) {
