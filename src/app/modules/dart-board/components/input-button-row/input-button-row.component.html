@@ -16,7 +16,7 @@
       matRipple [matRippleColor]="customRipple.rippleColor" [matRippleRadius]="customRipple.rippleRadius"
       [matBadge]="this.badgeHandleService.bullBadgeCount" [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenBull"
       matBadgeColor="accent"
-      (click)="scoreBull()"
+      (shapeMorphClick)="scoreBull()"
       appShapeMorph>
       Bull
     </button>
@@ -26,7 +26,7 @@
       [matBadge]="this.badgeHandleService.bullsEyeBadgeCount"
       [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenBullsEye"
       matBadgeColor="accent"
-      (click)="scoreBullsEye()"
+      (shapeMorphClick)="scoreBullsEye()"
       appShapeMorph>
       BullsEye
     </button>
@@ -35,7 +35,7 @@
       matRipple [matRippleColor]="customRipple.rippleColor" [matRippleRadius]="customRipple.rippleRadius"
       [matBadge]="this.badgeHandleService.missBadgeCount" [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenMiss"
       matBadgeColor="accent"
-      (click)="scoreMiss()"
+      (shapeMorphClick)="scoreMiss()"
       appShapeMorph>
       Miss
     </button>
@@ -49,7 +49,7 @@
               [matRippleRadius]="customRipple.rippleRadius" mat-fab [color]="buttonColor"
               [matBadge]="inputButton.badgeValue" [matBadgeHidden]="inputButton.badge"
               matBadgeColor="accent"
-              (click)="scoreWithMultiplier(inputButton, singelToggel)"
+              (shapeMorphClick)="scoreWithMultiplier(inputButton, singelToggel)"
               appShapeMorph>
         {{ inputButton.zahl }}
       </button>

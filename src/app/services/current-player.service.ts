@@ -53,7 +53,13 @@ export class CurrentPlayerService {
 
   private showPlayerSwitchSnackbar(player: Player, isNewRound: boolean) {
 
-    const snack = this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {duration: 5000})
+    const snack = this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {
+      duration: 5000,
+      panelClass: ['app-shape-morph-snack'],
+      horizontalPosition: "center",
+      verticalPosition: "top"
+
+    })
     snack.afterOpened().subscribe(() => {
       this.getAllButtonsToDisable(true);
     })

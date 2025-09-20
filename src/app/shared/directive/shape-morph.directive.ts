@@ -1,4 +1,6 @@
-import {Directive, ElementRef, HostListener, Renderer2} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2} from '@angular/core';
+import {MatSnackBar, MatSnackBarRef} from "@angular/material/snack-bar";
+import {ShapeMorphHoldSnackComponent} from './shape-morph-hold-snack.component';
 
 @Directive({
   selector: '[appShapeMorph]',
@@ -6,19 +8,37 @@ import {Directive, ElementRef, HostListener, Renderer2} from '@angular/core';
 })
 export class ShapeMorphDirective {
   rippleColor: string = "orange"; // Default Ripple Farbe
-  private originalBackgroundColor: string
+  private originalBackgroundColor: string;
   private originalBorder: string;
 
+  // Long-press handling
+  private pressTimer: any = null;
+  private pressStartTime: number = 0;
+  private holdDuration = 1500; // ms
+  private clickCount = 0;
+  private clickResetTimer: any = null;
+  private suppressNextNativeClick = false;
+  private holdSucceeded = false;
+  private awaitingRelease = false;
+
+  @Output() shapeMorphClick = new EventEmitter<void>();
 
   constructor(
     private el: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private snackBar: MatSnackBar
   ) {
     // Speichere die ursprüngliche Hintergrundfarbe
     this.originalBackgroundColor = window.getComputedStyle(this.el.nativeElement).backgroundColor;
     this.originalBorder = window.getComputedStyle(this.el.nativeElement).borderRadius;
 
     this.renderer.setStyle(this.el.nativeElement, 'transition', 'all 0.5s ease-in-out');
+    this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
+    const pos = window.getComputedStyle(this.el.nativeElement).position;
+    if (!pos || pos === 'static') {
+      this.renderer.setStyle(this.el.nativeElement, 'position', 'relative');
+    }
+    // Keep host border radius; avoid overflow hidden to prevent clipping badges
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
   }
 
@@ -45,20 +65,165 @@ export class ShapeMorphDirective {
     }
   }
 
-  @HostListener('click')
-  onClick() {
+  private startProgressFill() {
+    // Start visual feedback: morph the button during holdDuration and show top snackbar with progress
+    this.openTopProgressSnack();
+  }
 
-    this.vibrateOnClick()
+  private resetProgressFill() {
+    this.closeTopProgressSnack();
+  }
 
+  // Snack handling for hold progress
+  private holdSnackRef: MatSnackBarRef<ShapeMorphHoldSnackComponent> | null = null;
+
+  private openTopProgressSnack() {
+    if (this.holdSnackRef) return;
+    this.holdSnackRef = this.snackBar.openFromComponent(ShapeMorphHoldSnackComponent, {
+      duration: this.holdDuration,
+      panelClass: ['app-shape-morph-snack'],
+      data: {duration: this.holdDuration},
+      verticalPosition: "top",
+      horizontalPosition: "center"
+    });
+    // When snack closes (progress reaches 100 or canceled), clear ref
+    this.holdSnackRef.afterDismissed().subscribe(() => {
+      if (this.holdSnackRef?.instance.progress == 100) {
+        this.perfromButtonShapeMorph();
+      }
+      this.holdSnackRef = null;
+    });
+  }
+
+  private closeTopProgressSnack() {
+    if (this.holdSnackRef) {
+      this.holdSnackRef.dismiss();
+      this.holdSnackRef = null;
+    }
+  }
+
+  private openHintIfNeeded() {
+    // no change
+    this.clickCount++;
+    if (this.clickResetTimer) {
+      clearTimeout(this.clickResetTimer);
+    }
+    // Reset nach 2 Sekunden ohne weiteren Klick
+    this.clickResetTimer = setTimeout(() => {
+      this.clickCount = 0;
+    }, 2000);
+
+    if (this.clickCount >= 3) {
+      this.clickCount = 0;
+      this.snackBar.open(`Bitte gedrückt halten (${this.holdDuration / 1000} Sekunden), um auszulösen.`, 'OK', {
+        duration: 3000,
+        panelClass: ['app-shape-morph-snack']
+      });
+    }
+  }
+
+  // Desktop: Maus gedrückt
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(ev: MouseEvent) {
+    if (ev.button !== 0) return; // nur linker Button
+    this.beginPress();
+  }
+
+  @HostListener('mouseup')
+  onMouseUp() {
+    this.endPress(true);
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.endPress(false);
+  }
+
+  // Touch: Finger runter / hoch
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(ev: TouchEvent) {
+    this.beginPress();
+  }
+
+  @HostListener('touchend')
+  onTouchEnd() {
+    this.endPress(true);
+  }
+
+  @HostListener('touchcancel')
+  onTouchCancel() {
+    this.endPress(false);
+  }
+
+  // Interzeptiere normalen Click und zeige Hinweis-Logik
+  @HostListener('click', ['$event'])
+  onClick(ev: any) {
+    // WICHTIG: Click-Events der Buttons IMMER unterbrechen.
+    // Nur unser synthetischer Click nach erfolgreichem Long-Press darf passieren.
+    // if (ev && ev.syntheticLongPress) {
+    //   return; // diesen lassen wir durch
+    // }
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    // auch eventuelle "nächste native clicks" gar nicht erst speziell behandeln, da wir sowieso alles blocken
+    this.vibrateOnClick();
+    this.openHintIfNeeded();
+  }
+
+  private beginPress() {
+    // any running
+    if (this.pressTimer) return;
+    this.vibrateOnClick();
+    this.pressStartTime = Date.now();
+    this.startProgressFill();
+    this.awaitingRelease = true;
+    this.holdSucceeded = false;
+
+    this.pressTimer = setTimeout(() => {
+      // Haltezeit erreicht: trigger morph completion hook here if needed
+      this.holdSucceeded = true;
+      this.vibrateOnClick();
+    }, this.holdDuration);
+  }
+
+  private endPress(success: boolean) {
+    if (this.pressTimer) {
+      clearTimeout(this.pressTimer);
+      this.pressTimer = null;
+    }
+    this.resetProgressFill();
+
+
+    // true bei mouseup/touchend
+    if (success && this.holdSucceeded) {
+      // Aktion erst beim Loslassen ausführen
+      this.shapeMorphClick.emit();
+      this.suppressNextNativeClick = true;
+      setTimeout(() => {
+        const event = new MouseEvent('click', {bubbles: true, cancelable: true});
+        (event as any).syntheticLongPress = true;
+        this.el.nativeElement.dispatchEvent(event);
+      }, 0);
+      this.vibrateOnClick()
+    }
+
+    // Reset States
+    this.holdSucceeded = false;
+    this.awaitingRelease = false;
+  }
+
+  private perfromButtonShapeMorph() {
+    // Use holdDuration for transition timing
+    this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius ${this.holdDuration}ms linear, background-color ${this.holdDuration}ms linear`);
+    // perform animation over holdDuration, not instant
     // Zuerst zum Quadrat ändern
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', '20%');
     this.renderer.setStyle(this.el.nativeElement, 'background-color', this.rippleColor);
 
-    // Nach 1s wieder zum Kreis zurück
+    // Nach holdDuration wieder zurück
     setTimeout(() => {
       this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
       this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
-    }, 1000);
+    }, this.holdDuration);
   }
-
 }

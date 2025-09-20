@@ -6,11 +6,6 @@ html, body {
 }
 
 
-.cdk-global-overlay-wrapper {
-  display: grid !important;
-  place-items: center !important;
-}
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -48,4 +43,30 @@ mat-card {
 .no-pointer {
   pointer-events: none;
   cursor: none;
+}
+
+.app-shape-morph-snack {
+
+  .mdc-snackbar__surface {
+    background-color: orange !important;
+    color: #000 !important;
+  }
+
+  .mdc-snackbar__label, .mdc-button__label {
+    color: #000 !important;
+  }
+
+  .mdc-button {
+    background-color: #6c757d !important;
+  }
+
+  /* Ensure the shape-morph snack is top-centered */
+  .mat-mdc-snack-bar-container.app-shape-morph-snack {
+    margin: 0 auto !important; /* center horizontally */
+  }
+
+  /* Make sure top position class takes effect */
+  .mat-mdc-snack-bar-top.app-shape-morph-snack {
+    top: auto !important;
+  }
 }

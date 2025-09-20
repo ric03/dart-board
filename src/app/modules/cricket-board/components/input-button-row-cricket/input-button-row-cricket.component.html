@@ -31,7 +31,7 @@
                     [color]="buttonColor"
                     matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleRadius]="customRipple.rippleRadius"
-                    (click)="scoreHit(btnValue)"
+                    (shapeMorphClick)="scoreHit(btnValue)"
                     appShapeMorph
             >{{ btnValue }}
             </button>
@@ -48,7 +48,7 @@
                     color="accent"
                     matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleRadius]="customRipple.rippleRadius"
-                    (click)="scoreBull()"
+                    (shapeMorphClick)="scoreBull()"
                     appShapeMorph
             >
               <span class="mt-2 material-symbols-outlined">trip_origin</span>
@@ -72,7 +72,7 @@
                     [color]="buttonColor"
                     matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleRadius]="customRipple.rippleRadius"
-                    (click)="scoreHit(btnValue)"
+                    (shapeMorphClick)="scoreHit(btnValue)"
                     appShapeMorph
             >{{ btnValue }}
             </button>
@@ -91,7 +91,7 @@
                     color="warn"
                     matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleRadius]="customRipple.rippleRadius"
-                    (click)="scoreBullsEye()"
+                    (shapeMorphClick)="scoreBullsEye()"
                     appShapeMorph
             >
               <span class="mt-2 material-symbols-outlined">target</span>
