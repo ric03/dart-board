@@ -22,6 +22,7 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatIcon} from "@angular/material/icon";
 import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
+import {FloatingFullscreenButtonComponent} from './shared/components/floating-fullscreen-button/floating-fullscreen-button.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
     }),
     MatIcon,
     AppToolbarComponent,
+    FloatingFullscreenButtonComponent,
   ],
   providers: [
     {
