@@ -14,7 +14,7 @@ interface HoldSnackData {
   template: `
     <div class="d-flex align-items-center w-100" style="min-width: 240px">
       <div class="me-3">Gedrückt
-        halten… {{ (this.elapsed / 1000).toFixed(1) <= "1.5" ? (this.elapsed / 1000).toFixed(1) : "1.5" }}
+        halten… {{ (this.elapsed / 1000).toFixed(1) <= "1.0" ? (this.elapsed / 1000).toFixed(1) : "1.0" }}
         s
       </div>
       <mat-progress-bar [value]="progress" mode="determinate" color="accent"></mat-progress-bar>

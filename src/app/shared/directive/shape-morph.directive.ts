@@ -14,7 +14,7 @@ export class ShapeMorphDirective {
   // Long-press handling
   private pressTimer: any = null;
   private pressStartTime: number = 0;
-  private holdDuration = 1500; // ms
+  private holdDuration = 1000; // ms
   private clickCount = 0;
   private clickResetTimer: any = null;
   private suppressNextNativeClick = false;

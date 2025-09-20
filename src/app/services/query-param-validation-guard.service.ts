@@ -30,12 +30,17 @@ export const queryParamValidationGuard: CanActivateFn = (
   if (isValidGameType(gameType) && isValidPlayerCount(playerCount, gameType)) {
     return true
   } else {
+    let msg = "Sorry, something went wrong. Please try again."
+    if (playerCount <= 2 && (gameType == GameType.Elimination301 || gameType == GameType.Elimination501)) {
+      msg = 'Please try again, u need 2 player'
+    }
+
     /**
      * We have to manually redirect to root ('/'), otherwise we get a blank screen
      * For more info, please refer to https://github.com/angular/angular/issues/16211
      */
     router.navigate([])
-    snackbar.open(`Sorry, something went wrong. Please try again.`, 'OK', {duration: 3000, verticalPosition: 'top'});
+    snackbar.open(msg, 'OK', {duration: 3000, verticalPosition: 'top', panelClass: ['app-shape-morph-snack'],});
     return false
   }
 }

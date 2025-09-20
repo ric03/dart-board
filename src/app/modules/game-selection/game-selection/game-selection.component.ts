@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormArray} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
@@ -11,6 +11,9 @@ export class GameSelectionComponent implements OnInit {
 
   // Create a reference, to make the enum accessible in the html-template
   gameType = GameType;
+
+  private fb = inject(FormBuilder)
+  private router = inject(Router);
 
   formGroup: FormGroup<{
     gameType: FormControl<any>,
@@ -26,12 +29,6 @@ export class GameSelectionComponent implements OnInit {
   private readonly defaultFormState = {
     gameType: GameType.Simple501,
     playerNames: ['first', 'second']
-  }
-
-  constructor(private fb: FormBuilder,
-              private router: Router,
-  ) {
-
   }
 
   ngOnInit(): void {

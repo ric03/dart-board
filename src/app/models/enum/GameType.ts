@@ -4,4 +4,5 @@ export enum GameType {
   Cricket = 'Cricket',
   Elimination = 'Elimination',
   Elimination301 = 'Elimination-301',
+  Elimination501 = 'Elimination-501',
 }
