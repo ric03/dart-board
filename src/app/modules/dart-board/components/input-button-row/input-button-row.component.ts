@@ -89,6 +89,7 @@ export class InputButtonRowComponent implements OnInit {
   }
 
   scoreWithMultiplier(inputButton: InputButton) {
+    this.resetToggleState();
     this.setBadgeCount(inputButton);
     const multiplier: number = +this.multiplierControl.value;
     this.dartService.score({value: inputButton.zahl, multiplier: multiplier});
@@ -104,7 +105,9 @@ export class InputButtonRowComponent implements OnInit {
         this.animationService.showExplosion('T' + inputButton.zahl.toString());
       }
     }
+  }
 
+  private resetToggleState() {
     (this.singleToggle ?? this.singleToggle2)!._buttonElement.nativeElement.click();
   }
 

@@ -76,6 +76,7 @@ export class InputButtonRowCricketComponent implements OnInit {
   }
 
   scoreHit(value: number) {
+    this.resetToogleState();
     let multiplier = +this.multiplierControl.value;
 
     if (multiplier === 3) {
@@ -92,6 +93,10 @@ export class InputButtonRowCricketComponent implements OnInit {
       }
     }
     this.cricketService.scoreCricketWithMultiplier({value, multiplier});
+
+  }
+
+  private resetToogleState() {
     (this.singleToggle ?? this.singleToggle2)!._buttonElement.nativeElement.click();
   }
 
