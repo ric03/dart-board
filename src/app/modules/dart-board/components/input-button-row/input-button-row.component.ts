@@ -1,6 +1,6 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnInit, ViewChild} from '@angular/core';
 import {UntypedFormControl} from "@angular/forms";
-import {MatButtonToggle, MatButtonToggleChange} from "@angular/material/button-toggle";
+import {MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 import {BadgeHandleService} from "../../../../services/badge-handle.service";
@@ -23,17 +23,36 @@ export class InputButtonRowComponent implements OnInit {
 
   readonly multiplierControl: UntypedFormControl = new UntypedFormControl('1');
   buttonColor: ThemePalette = 'primary';
+
   public dartService: DartService = inject(DartService)
   protected badgeHandleService: BadgeHandleService = inject(BadgeHandleService)
   protected animationService = inject(ExplosionAnimationService)
+  public screenOrientation: OrientationType = window.screen.orientation.type;
+  protected readonly customRipple = customRipple;
+
+  @ViewChild('toggleGroup') toogleGroup?: MatButtonToggleGroup;
+  @ViewChild('singelToggel') singleToggle?: MatButtonToggle;
+  @ViewChild('singelToggel2') singleToggle2?: MatButtonToggle;
+
+  // Überwache Orientierungsänderungen
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange() {
+    this.updateOrientation();
+  }
+
+  // Überwache auch Größenänderungen für Browser, die orientationchange nicht unterstützen
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.updateOrientation();
+  }
 
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {
       if (this.badgeHandleService.twentyButtons.length <= 19) {
         this.badgeHandleService.twentyButtons.push({zahl: i + 1, badge: true});
       }
-
     }
+    this.updateOrientation()
   }
 
   changeButtonColor({value}: MatButtonToggleChange) {
@@ -69,7 +88,7 @@ export class InputButtonRowComponent implements OnInit {
     this.setBadgeCount();
   }
 
-  scoreWithMultiplier(inputButton: InputButton, singelToggel: MatButtonToggle) {
+  scoreWithMultiplier(inputButton: InputButton) {
     this.setBadgeCount(inputButton);
     const multiplier: number = +this.multiplierControl.value;
     this.dartService.score({value: inputButton.zahl, multiplier: multiplier});
@@ -86,7 +105,7 @@ export class InputButtonRowComponent implements OnInit {
       }
     }
 
-    singelToggel._buttonElement.nativeElement.click();
+    (this.singleToggle ?? this.singleToggle2)!._buttonElement.nativeElement.click();
   }
 
   private setBadgeCount(inputButton?: InputButton) {
@@ -101,5 +120,12 @@ export class InputButtonRowComponent implements OnInit {
     return this.badgeHandleService.tempBadgeValue;
   }
 
-  protected readonly customRipple = customRipple;
+  private updateOrientation() {
+    // Bestimme die aktuelle Orientierung
+    if (window) {
+      this.screenOrientation = (window.innerHeight > window.innerWidth ? 'portrait-primary' : 'landscape-primary') as OrientationType;
+    } else {
+      this.screenOrientation = ' portrait-primary' as OrientationType
+    }
+  }
 }

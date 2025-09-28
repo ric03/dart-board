@@ -1,5 +1,26 @@
+@use '@angular/material' as mat;
 // Explosion Animation importieren
 @import 'src/app/shared/animation/explosion-animation.scss';
+
+
+.toggle1-color {
+  @include mat.button-toggle-overrides((
+    selected-state-background-color: #80d8ff88,
+  ));
+}
+
+.toggle2-color {
+  @include mat.button-toggle-overrides((
+    selected-state-background-color: #9c27b088,
+  ));
+}
+
+.toggle3-color {
+  @include mat.button-toggle-overrides((
+    selected-state-background-color: #f4433688,
+  ));
+}
+
 
 html, body {
   height: 100%;
@@ -70,3 +91,12 @@ mat-card {
     top: auto !important;
   }
 }
+
+.toggle-group-scale {
+  transform: scale(1.5);
+
+  @media screen and (orientation: portrait) {
+    transform: scale(1.0);
+  }
+}
+

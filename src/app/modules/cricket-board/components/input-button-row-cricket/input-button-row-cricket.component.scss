@@ -1,36 +1,8 @@
-@use '@angular/material' as mat;
-
-.toggle1-color {
-  @include mat.button-toggle-overrides((
-    selected-state-background-color: #80d8ff88,
-  ));
-}
-
-.toggle2-color {
-  @include mat.button-toggle-overrides((
-    selected-state-background-color: #9c27b088,
-  ));
-}
-
-.toggle3-color {
-  @include mat.button-toggle-overrides((
-    selected-state-background-color: #f4433688,
-  ));
-}
-
 /**
  * We want to display six buttons in a single row
  */
 .w-16-percent {
   width: calc(100% / 6);
-}
-
-.toggle-group-scale {
-  transform: scale(1.5);
-
-  @media screen and (orientation: portrait) {
-    transform: scale(1.0);
-  }
 }
 
 .input-btn-scale {
