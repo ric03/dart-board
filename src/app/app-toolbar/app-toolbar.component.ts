@@ -16,7 +16,9 @@ import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-
 import {CurrentPlayerService} from "../services/current-player.service";
 import {ToggleFullscreenService} from "../services/toggle-fullscreen.service";
 import {customRipple} from "../shared/util";
-import {GameType} from "../models/enum/GameType";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {DrunkToggleService} from "../services/drunk-toggle.service";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -31,7 +33,9 @@ import {GameType} from "../models/enum/GameType";
     RouterLink,
     MatMenuTrigger,
     MatRipple,
-    MatMiniFabButton
+    MatMiniFabButton,
+    MatSlideToggle,
+    MatTooltip
   ],
   templateUrl: './app-toolbar.component.html',
   styleUrl: './app-toolbar.component.scss'
@@ -42,7 +46,8 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
 
   installBtnHidden: boolean = true
   private router: Router = inject(Router);
-  appVersion: string = environment.appVersion;
+  appVersion: string = environment.appVersion
+  drunkModeService = inject(DrunkToggleService);
   cricketService = inject(CricketService);
   dartService = inject(DartService);
   protected readonly fullscreenService = inject(ToggleFullscreenService);
@@ -178,4 +183,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   }
 
 
+  setDrunkMode(checked: boolean) {
+    this.drunkModeService.isDrunkModeOn.next(checked)
+  }
 }

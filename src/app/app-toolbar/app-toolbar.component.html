@@ -23,16 +23,26 @@
       <mat-icon>swap_vert</mat-icon>
       change first player
     </button>
+    <p mat-menu-item>
+      <mat-slide-toggle #drunktoggle [checked]="this.drunkModeService.isDrunkModeOn.value"
+                        (change)="setDrunkMode(drunktoggle.checked)">drunk?
+      </mat-slide-toggle>
+    </p>
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
-  @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
-    <button mat-mini-fab class="ms-3 question-scale"
-            matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-            [matRippleRadius]="customRipple.rippleRadius"
-            (click)="openGameInstructions()"
-    ><span class="mt-2 material-symbols-outlined">question_mark</span>
-    </button>
-  }
+  <div>
+    @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
+      <button mat-mini-fab class="ms-3 question-scale"
+              matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+              [matRippleRadius]="customRipple.rippleRadius"
+              (click)="openGameInstructions()"
+      ><span class="mt-2 material-symbols-outlined">question_mark</span>
+      </button>
+    }
+    @if (drunkModeService.isDrunkModeOn.value) {
+      <mat-icon [matTooltip]="'Bist du betrunken,musst du gerückt halten ^^'" color="accent">local_bar</mat-icon>
+    }
+  </div>
   <div class="d-flex">
     <code>DartBoard </code>
     <div [ngStyle]="{'font-size': 50+'%','color': '#3d6065'}" class="d-flex justify-content-xxl-end">

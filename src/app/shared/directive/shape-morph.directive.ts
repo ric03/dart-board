@@ -1,6 +1,7 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, inject, Output, Renderer2} from '@angular/core';
 import {MatSnackBar, MatSnackBarRef} from "@angular/material/snack-bar";
 import {ShapeMorphHoldSnackComponent} from './shape-morph-hold-snack.component';
+import {DrunkToggleService} from "../../services/drunk-toggle.service";
 
 @Directive({
   selector: '[appShapeMorph]',
@@ -23,6 +24,8 @@ export class ShapeMorphDirective {
 
   @Output() shapeMorphClick = new EventEmitter<void>();
 
+  private readonly drunkToggleService = inject(DrunkToggleService)
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
@@ -40,6 +43,14 @@ export class ShapeMorphDirective {
     }
     // Keep host border radius; avoid overflow hidden to prevent clipping badges
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
+    this.drunkToggleService.isDrunkModeOn.subscribe(value => {
+      console.info("Drunkmode:", value)
+      if (value) {
+        this.holdDuration = 1000;
+      } else {
+        this.holdDuration = 0;
+      }
+    })
   }
 
 
@@ -78,21 +89,25 @@ export class ShapeMorphDirective {
   private holdSnackRef: MatSnackBarRef<ShapeMorphHoldSnackComponent> | null = null;
 
   private openTopProgressSnack() {
-    if (this.holdSnackRef) return;
-    this.holdSnackRef = this.snackBar.openFromComponent(ShapeMorphHoldSnackComponent, {
-      duration: this.holdDuration,
-      panelClass: ['app-shape-morph-snack'],
-      data: {duration: this.holdDuration},
-      verticalPosition: "top",
-      horizontalPosition: "center"
-    });
-    // When snack closes (progress reaches 100 or canceled), clear ref
-    this.holdSnackRef.afterDismissed().subscribe(() => {
-      if (this.holdSnackRef?.instance.progress == 100) {
-        this.perfromButtonShapeMorph();
-      }
-      this.holdSnackRef = null;
-    });
+    if (this.holdDuration > 0) {
+      if (this.holdSnackRef) return;
+      this.holdSnackRef = this.snackBar.openFromComponent(ShapeMorphHoldSnackComponent, {
+        duration: this.holdDuration,
+        panelClass: ['app-shape-morph-snack'],
+        data: {duration: this.holdDuration},
+        verticalPosition: "top",
+        horizontalPosition: "center"
+      });
+      // When snack closes (progress reaches 100 or canceled), clear ref
+      this.holdSnackRef.afterDismissed().subscribe(() => {
+        if (this.holdSnackRef?.instance.progress == 100) {
+          this.perfromButtonShapeMorph();
+        }
+        this.holdSnackRef = null;
+      });
+    } else {
+      this.perfromButtonShapeMorph();
+    }
   }
 
   private closeTopProgressSnack() {
@@ -115,7 +130,7 @@ export class ShapeMorphDirective {
 
     if (this.clickCount >= 3) {
       this.clickCount = 0;
-      this.snackBar.open(`Bitte gedrückt halten (${this.holdDuration / 1000} Sekunden), um auszulösen.`, 'OK', {
+      this.snackBar.open(`Bitte gedrückt halten, um auszulösen.`, 'OK', {
         duration: 3000,
         panelClass: ['app-shape-morph-snack']
       });
@@ -158,16 +173,24 @@ export class ShapeMorphDirective {
   // Interzeptiere normalen Click und zeige Hinweis-Logik
   @HostListener('click', ['$event'])
   onClick(ev: any) {
-    // WICHTIG: Click-Events der Buttons IMMER unterbrechen.
-    // Nur unser synthetischer Click nach erfolgreichem Long-Press darf passieren.
-    // if (ev && ev.syntheticLongPress) {
-    //   return; // diesen lassen wir durch
-    // }
+    if (this.isMissBtn(ev.target as HTMLButtonElement)) {
+      this.holdDuration === 0 ? this.holdDuration = 0 : this.holdDuration = 300
+    }
     ev.preventDefault();
     ev.stopImmediatePropagation();
-    // auch eventuelle "nächste native clicks" gar nicht erst speziell behandeln, da wir sowieso alles blocken
+    if (this.holdDuration > 0) {
+      this.openHintIfNeeded();
+    }
+
     this.vibrateOnClick();
-    this.openHintIfNeeded();
+
+  }
+
+  private isMissBtn(btnElement: HTMLButtonElement) {
+    const btnBadgeContent = btnElement.getAttribute("ng-reflect-content") ?? ''
+    const btnContent = btnElement.innerText.replace(btnBadgeContent, '')
+    const isNumber = btnContent.match(/\d/g) ? btnContent.match(/\d/g)!.length > 0 : false
+    return !isNumber && btnContent !== 'BullsEye' && btnContent !== 'Bull';
   }
 
   private beginPress() {
@@ -214,7 +237,7 @@ export class ShapeMorphDirective {
 
   private perfromButtonShapeMorph() {
     // Use holdDuration for transition timing
-    this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius ${this.holdDuration}ms linear, background-color ${this.holdDuration}ms linear`);
+    this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius 700ms linear, background-color 700ms linear`);
     // perform animation over holdDuration, not instant
     // Zuerst zum Quadrat ändern
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', '20%');
@@ -224,6 +247,6 @@ export class ShapeMorphDirective {
     setTimeout(() => {
       this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
       this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
-    }, this.holdDuration);
+    }, 700);
   }
 }

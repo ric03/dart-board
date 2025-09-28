@@ -15,23 +15,10 @@
     <h5>
       Points: {{ this.nextPlayer.remainingPoints }}
     </h5>
-    <div class="d-flex flex-column" *ngFor="let key of this.cricketKeys">
-      @if (key === 25) {
-        @if (this.nextPlayer.cricketMap.get(key) === 3) {
-          <b> Bull Hits:{{ this.nextPlayer.cricketMap.get(key) }} </b>
-        } @else {
-          <code> Bull Hits:{{ this.nextPlayer.cricketMap.get(key) }} </code>
-        }
-      } @else {
-        @if (this.nextPlayer.cricketMap.get(key) === 3) {
-          <b> {{ key }} Hits:{{ this.nextPlayer.cricketMap.get(key) }} </b>
-        } @else {
-          <code> {{ key }} Hits:{{ this.nextPlayer.cricketMap.get(key) }} </code>
-        }
-      }
-
+    <div class="d-flex flex-column">
+      <app-cricket-overview [nextPlayer]="nextPlayer"></app-cricket-overview>
     </div>
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-between pt-2">
       <p class="p-1">...closes in {{ this.timeLeft }}s</p>
       <button mat-raised-button color="accent" (click)="this.snackBarRef.dismiss()">OK</button>
     </div>

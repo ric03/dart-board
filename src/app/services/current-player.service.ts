@@ -61,7 +61,7 @@ export class CurrentPlayerService {
 
     })
     snack.afterOpened().subscribe(() => {
-      this.getAllButtonsToDisable(true);
+      console.info("Switching players")
     })
 
     snack.afterDismissed().subscribe(() => {
@@ -72,7 +72,6 @@ export class CurrentPlayerService {
         if (isNewRound) {
           this.roundCountService.incrementRoundCount();
         }
-        this.getAllButtonsToDisable(false);
         this.animationService.tripleTwentyCounter = 0;
         this._currentPlayer.next(player);
         this._last3History = [];
@@ -86,21 +85,12 @@ export class CurrentPlayerService {
 
   }
 
-  private getAllButtonsToDisable(disabled: boolean) {
-    // @ts-ignore
-    for (const btn of document.getElementsByTagName("button")) {
-      if (btn.innerText !== 'OK' && btn.innerText !== 'REVERT') {
-        btn.disabled = disabled;
-      }
-    }
-  }
 
   private resetRound() {
     this.resetAccumulatedPoints();
     this.resetThrows();
     this.roundCountService.decrementRoundCount();
     this._currentPlayer.value.last3History = [];
-    this.getAllButtonsToDisable(false);
   }
 
   private savePointsForStatistics() {
