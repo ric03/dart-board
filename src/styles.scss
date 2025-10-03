@@ -2,6 +2,27 @@
 // Explosion Animation importieren
 @import 'src/app/shared/animation/explosion-animation.scss';
 
+/* Global suppression of long-press callouts and selection on interactive controls */
+button,
+[mat-button],
+[mat-raised-button],
+[mat-fab],
+[mat-mini-fab],
+[mat-stroked-button],
+[mat-flat-button],
+.mat-mdc-button-base,
+[appShapeMorph] {
+  -webkit-touch-callout: none; /* iOS Safari long-press menu */
+  -webkit-user-select: none;   /* iOS Safari text selection */
+  user-select: none;           /* General text selection */
+  touch-action: manipulation;  /* Reduce gesture delays */
+}
+
+/* Do not disable selection for inputs and editable fields */
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
 
 .toggle1-color {
   @include mat.button-toggle-overrides((
