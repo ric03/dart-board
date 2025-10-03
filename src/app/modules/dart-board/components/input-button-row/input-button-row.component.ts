@@ -89,9 +89,9 @@ export class InputButtonRowComponent implements OnInit {
   }
 
   scoreWithMultiplier(inputButton: InputButton) {
+    const multiplier: number = +this.multiplierControl.value;
     this.resetToggleState();
     this.setBadgeCount(inputButton);
-    const multiplier: number = +this.multiplierControl.value;
     this.dartService.score({value: inputButton.zahl, multiplier: multiplier});
     if (multiplier === 3) {
       if (inputButton.zahl === 20) {
