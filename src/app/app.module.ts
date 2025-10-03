@@ -20,6 +20,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {ServiceWorkerModule} from '@angular/service-worker';
+import { environment } from '../environments/environment';
 import {MatIcon} from "@angular/material/icon";
 import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
 import {FloatingFullscreenButtonComponent} from './shared/components/floating-fullscreen-button/floating-fullscreen-button.component';
@@ -50,7 +51,7 @@ import {FloatingFullscreenButtonComponent} from './shared/components/floating-fu
     MatMenuModule,
     MatToolbarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: true,
+      enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'

@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0; url=./" />
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages SPA fallback: redirect to index.html while preserving path
+    (function() {
+      var l = window.location;
+      if (l.pathname && l.pathname !== '/' && !l.pathname.endsWith('/')) {
+        // Try client-side redirect to root, the Angular router will handle it
+        l.replace(l.origin + l.pathname.substring(0, l.pathname.lastIndexOf('/') + 1));
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting to the app...</p>
+</body>
+</html>
