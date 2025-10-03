@@ -20,6 +20,7 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {DrunkToggleService} from "../services/drunk-toggle.service";
 import {MatTooltip} from "@angular/material/tooltip";
 import {SoundToggleService} from "../services/sound-toggle.service";
+import {PwaInstallService} from "../services/pwa-install.service";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -43,10 +44,9 @@ import {SoundToggleService} from "../services/sound-toggle.service";
 })
 export class AppToolbarComponent implements OnInit, OnDestroy {
 
-  private deferredPrompt: any;
-
   installBtnHidden: boolean = true
   private router: Router = inject(Router);
+  pwa = inject(PwaInstallService);
   appVersion: string = environment.appVersion
   drunkModeService = inject(DrunkToggleService);
   soundToggleService = inject(SoundToggleService);
@@ -64,19 +64,9 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     // Hide install button by default; show it only when the deferred prompt is available
     this.installBtnHidden = true;
 
-    // Listen for the beforeinstallprompt event to enable the install UI
-    window.addEventListener('beforeinstallprompt', (event: any) => {
-      event.preventDefault();
-      this.deferredPrompt = event;
-      this.installBtnHidden = false;
-      console.info('beforeinstallprompt captured; install UI enabled');
-    });
-
-    // Hide install button once the app is installed
-    window.addEventListener('appinstalled', () => {
-      console.info('PWA was installed');
-      this.deferredPrompt = null;
-      this.installBtnHidden = true;
+    // Drive visibility from PwaInstallService
+    this.pwa.canInstall$.subscribe((can) => {
+      this.installBtnHidden = !can;
     });
 
     this.fullscreenService.initDisplayAlwaysOnMode().then(() => {
@@ -107,29 +97,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
    * Der Dialog steht nur bereit, nachdem das "beforeinstallprompt"-Event abgefangen wurde.
    */
   async localInstall() {
-    if (!this.deferredPrompt) {
-      console.warn('Installationsaufforderung ist nicht verfügbar. Eventuell unterstützt der Browser dies nicht oder die Seite erfüllt die PWA-Kriterien noch nicht.');
-      return;
-    }
-
-    // Zeige den Install-Dialog an
-    this.deferredPrompt.prompt();
-
-    try {
-      const choiceResult: any = await this.deferredPrompt.userChoice;
-      this.installBtnHidden = true;
-
-      if (choiceResult?.outcome === 'accepted') {
-        console.log('User accepted the A2HS prompt');
-      } else {
-        console.log('User dismissed the A2HS prompt');
-      }
-    } catch (err) {
-      console.error('Fehler während des Installationsdialogs:', err);
-    } finally {
-      // Das Event kann nur einmal verwendet werden
-      this.deferredPrompt = null;
-    }
+    await this.pwa.triggerInstall();
   }
 
 

@@ -1,13 +1,14 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit, inject} from '@angular/core';
+import {PwaInstallService} from './services/pwa-install.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   title = 'dart-board';
-  private deferredPrompt: any;
+  private readonly pwa = inject(PwaInstallService);
 
   // Warn user about data loss on reload when not in fullscreen
   @HostListener('window:beforeunload', ['$event'])
@@ -22,16 +23,8 @@ export class AppComponent {
     return
   }
 
-  @HostListener('window:beforeinstallprompt', ['$event'])
-  public beforeInstallHandler(event: any) {
-    // Prevent the mini-infobar from appearing on mobile
-    event.preventDefault();
-    // Stash the event so it can be triggered later.
-    this.deferredPrompt = event;
-    // Update UI notify the user they can install the PWA
-    // this.showInstallPromotion();
-    // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`'beforeinstallprompt' event was fired.`);
-
+  ngOnInit(): void {
+    // Ask to install if eligible on startup
+    this.pwa.askToInstall();
   }
 }
