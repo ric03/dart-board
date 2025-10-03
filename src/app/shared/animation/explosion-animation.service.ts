@@ -90,5 +90,4 @@ export class ExplosionAnimationService {
       console.log('Fehler beim Abspielen des Sounds:', error);
     }
   }
-
 }

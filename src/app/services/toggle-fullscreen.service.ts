@@ -13,7 +13,10 @@ export class ToggleFullscreenService {
         this.initDisplayAlwaysOnMode().then(() => {
           console.log('full screen and display always on mode requested');
         })
-      });
+      })
+        .catch(reason => {
+          console.warn("Fullscreen error: ", reason)
+        });
     }
   }
 

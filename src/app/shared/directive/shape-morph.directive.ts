@@ -21,6 +21,7 @@ export class ShapeMorphDirective {
   private suppressNextNativeClick = false;
   private holdSucceeded = false;
   private awaitingRelease = false;
+  private defaultHoldDuration = this.holdDuration;
 
   @Output() shapeMorphClick = new EventEmitter<void>();
 
@@ -47,9 +48,14 @@ export class ShapeMorphDirective {
       console.info("Drunkmode:", value)
       if (value) {
         this.holdDuration = 1000;
+        this.renderer.listen(this.el.nativeElement, 'touchstart', (e: TouchEvent) => {
+          // Unterdrückt z. B. Selektion/Callout in manchen Browsern
+          e.preventDefault();
+        })
       } else {
         this.holdDuration = 0;
       }
+      this.defaultHoldDuration = this.holdDuration;
     })
   }
 
@@ -66,11 +72,11 @@ export class ShapeMorphDirective {
    * - Die Vibration API wird primär auf mobilen Endgeräten unterstützt.
    * - Auf Desktop-Browsern ist sie häufig nicht verfügbar oder deaktiviert.
    */
-  vibrateOnClick(): void {
+  vibrateOnClick(vibrateDuration: number): void {
     // Prüfe, ob die Vibration API im Browser verfügbar ist
     if ('vibrate' in navigator) {
       // Löse eine einfache Vibration von 200 Millisekunden aus
-      navigator.vibrate(200);
+      navigator.vibrate(vibrateDuration);
     } else {
       console.log('Vibration API wird in diesem Browser nicht unterstützt.');
     }
@@ -102,11 +108,14 @@ export class ShapeMorphDirective {
       this.holdSnackRef.afterDismissed().subscribe(() => {
         if (this.holdSnackRef?.instance.progress == 100) {
           this.perfromButtonShapeMorph();
+          this.vibrateOnClick(400)
         }
         this.holdSnackRef = null;
+        this.holdDuration = this.defaultHoldDuration;
       });
     } else {
       this.perfromButtonShapeMorph();
+      this.vibrateOnClick(400)
     }
   }
 
@@ -128,13 +137,20 @@ export class ShapeMorphDirective {
       this.clickCount = 0;
     }, 2000);
 
-    if (this.clickCount >= 3) {
+    if (this.clickCount >= 4) {
       this.clickCount = 0;
       this.snackBar.open(`Bitte gedrückt halten, um auszulösen.`, 'OK', {
         duration: 3000,
         panelClass: ['app-shape-morph-snack']
       });
     }
+  }
+
+  // Globally prevent the native context menu (long-press menu on mobile/tablets)
+  @HostListener('contextmenu', ['$event'])
+  onGlobalContextMenu(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   // Desktop: Maus gedrückt
@@ -181,9 +197,6 @@ export class ShapeMorphDirective {
     if (this.holdDuration > 0) {
       this.openHintIfNeeded();
     }
-
-    this.vibrateOnClick();
-
   }
 
   private isMissBtn(btnElement: HTMLButtonElement) {
@@ -196,7 +209,7 @@ export class ShapeMorphDirective {
   private beginPress() {
     // any running
     if (this.pressTimer) return;
-    this.vibrateOnClick();
+    this.vibrateOnClick(200);
     this.pressStartTime = Date.now();
     this.startProgressFill();
     this.awaitingRelease = true;
@@ -205,7 +218,7 @@ export class ShapeMorphDirective {
     this.pressTimer = setTimeout(() => {
       // Haltezeit erreicht: trigger morph completion hook here if needed
       this.holdSucceeded = true;
-      this.vibrateOnClick();
+      this.vibrateOnClick(200);
     }, this.holdDuration);
   }
 
@@ -227,7 +240,8 @@ export class ShapeMorphDirective {
         (event as any).syntheticLongPress = true;
         this.el.nativeElement.dispatchEvent(event);
       }, 0);
-      this.vibrateOnClick()
+      this.vibrateOnClick(400)
+      this.clickCount = 0
     }
 
     // Reset States
@@ -237,7 +251,7 @@ export class ShapeMorphDirective {
 
   private perfromButtonShapeMorph() {
     // Use holdDuration for transition timing
-    this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius 700ms linear, background-color 700ms linear`);
+    this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius 500ms linear, background-color 700ms linear`);
     // perform animation over holdDuration, not instant
     // Zuerst zum Quadrat ändern
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', '20%');

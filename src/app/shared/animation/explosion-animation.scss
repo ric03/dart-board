@@ -9,6 +9,23 @@
   align-items: center;
   pointer-events: none;
   z-index: 9999;
+
+  /* Responsive sizing variables based on the smaller viewport side */
+  /* --unit is our base. 1vmin ≈ 1% of the smaller viewport dimension. */
+  --unit: 1vmin;
+  /* Particle size scales between 6px and 28px, typically ~2.5vmin */
+  --particle-size: clamp(6px, calc(2.5 * var(--unit)), 28px);
+  /* Trail size usually smaller */
+  --trail-size: clamp(4px, calc(1.6 * var(--unit)), 16px);
+  /* Explosion text scales with viewport but kept in sensible bounds */
+  --explosion-text-size: clamp(3rem, calc(10 * var(--unit)), 18rem);
+  /* Max travel distance for particles (outer radius) */
+  --particle-max-distance: clamp(120px, calc(22 * var(--unit)), 380px);
+  /* Max travel distance for trails (longer) */
+  --trail-max-distance: clamp(160px, calc(30 * var(--unit)), 520px);
+  /* Glow sizes */
+  --glow-spread: clamp(4px, calc(0.6 * var(--unit)), 12px);
+  --glow-blur: clamp(6px, calc(1.2 * var(--unit)), 18px);
 }
 
 .explosion {
@@ -16,8 +33,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75%;
-  height: 75%;
+  width: min(90vmin, 90%);
+  height: min(90vmin, 90%);
   opacity: 0;
   transform: scale(0);
   animation: explode 1.5s ease-out forwards;
@@ -26,10 +43,10 @@
 .explosion-text {
   position: relative;
   color: white;
-  font-size: 15rem;
+  font-size: var(--explosion-text-size);
   font-weight: bold;
   text-align: center;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 0, 0.8);
+  text-shadow: 0 0 var(--glow-blur) rgba(255, 255, 255, 0.9), 0 0 calc(var(--glow-blur) * 0.8) rgba(255, 255, 0, 0.8);
   z-index: 10001;
   animation: textPulse 1.5s ease-out forwards;
 }
@@ -38,20 +55,20 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 33px;
-  height: 33px;
+  width: var(--particle-size);
+  height: var(--particle-size);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 215, 0, 1) 50%, rgba(255, 69, 0, 1) 100%);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px 2px rgba(255, 200, 0, 0.8);
+  box-shadow: 0 0 var(--glow-blur) var(--glow-spread) rgba(255, 200, 0, 0.8);
 }
 
 .explosion-trail {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 33px;
-  height: 33px;
+  width: var(--trail-size);
+  height: var(--trail-size);
   border-radius: 50%;
   background-color: rgba(255, 255, 200, 0.8);
   transform: translate(-50%, -50%);
@@ -61,13 +78,15 @@
 @for $i from 1 through 200 {
   .explosion-particle:nth-child(#{$i}) {
     $angle: random(360) * 1deg;
-    $distance: random(100) + 50;
-    $size: random(33) + 4;
+    $distance: random(100) + 50; // 50..150 (px baseline)
+    $size: random(33) + 4;       // 4..37 (px baseline)
     $duration: (random(15) + 8) / 10;
     $delay: random(10) / 100;
 
-    width: #{$size}px;
-    height: #{$size}px;
+    // Scale particle size relative to responsive base
+    $sizeFactor: ($size / 20); // 20px nominal
+    width: calc(var(--particle-size) * #{$sizeFactor});
+    height: calc(var(--particle-size) * #{$sizeFactor});
     animation: particle-#{$i} #{$duration}s ease-out #{$delay}s forwards;
 
     @keyframes particle-#{$i} {
@@ -82,9 +101,11 @@
         opacity: 1;
       }
       100% {
+        // Travel distance scaled to viewport
+        $distFactor: ($distance / 150); // 150px was previous max
         transform: translate(
-            calc(-50% + #{$distance * cos($angle)}px),
-            calc(-50% + #{$distance * sin($angle)}px)
+            calc(-50% + calc(var(--particle-max-distance) * #{$distFactor}) * #{cos($angle)}),
+            calc(-50% + calc(var(--particle-max-distance) * #{$distFactor}) * #{sin($angle)})
         ) scale(0.2);
         opacity: 0;
       }
@@ -96,13 +117,15 @@
 @for $i from 1 through 40 {
   .explosion-trail:nth-child(#{$i}) {
     $angle: random(360) * 1deg;
-    $distance: random(200) + 100;
-    $size: random(10) + 2;
+    $distance: random(200) + 100; // 100..300 baseline
+    $size: random(10) + 2;        // 2..12 baseline
     $duration: (random(10) + 5) / 10;
     $delay: random(5) / 100;
 
-    width: #{$size}px;
-    height: #{$size}px;
+    // Scale trail size relative to responsive base
+    $sizeFactor: ($size / 8); // 8px nominal
+    width: calc(var(--trail-size) * #{$sizeFactor});
+    height: calc(var(--trail-size) * #{$sizeFactor});
     opacity: 0.7;
     animation: trail-#{$i} #{$duration}s ease-out #{$delay}s forwards;
 
@@ -112,9 +135,10 @@
         opacity: 0.7;
       }
       100% {
+        $distFactor: ($distance / 300); // 300px previous max
         transform: translate(
-            calc(-50% + #{$distance * cos($angle)}px),
-            calc(-50% + #{$distance * sin($angle)}px)
+            calc(-50% + calc(var(--trail-max-distance) * #{$distFactor}) * #{cos($angle)}),
+            calc(-50% + calc(var(--trail-max-distance) * #{$distFactor}) * #{sin($angle)})
         );
         opacity: 0;
       }
@@ -154,7 +178,7 @@
   20% {
     transform: scale(1.3);
     opacity: 1;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 0, 0.8);
+    text-shadow: 0 0 var(--glow-blur) rgba(255, 255, 255, 0.9), 0 0 calc(var(--glow-blur) * 0.75) rgba(255, 255, 0, 0.8);
   }
   40% {
     transform: scale(1);
@@ -177,7 +201,7 @@
 .explosion-red {
   .explosion-particle {
     background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 100, 100, 1) 50%, rgba(255, 0, 0, 1) 100%);
-    box-shadow: 0 0 10px 2px rgba(255, 50, 50, 0.8);
+    box-shadow: 0 0 var(--glow-blur) var(--glow-spread) rgba(255, 50, 50, 0.8);
   }
 
   .explosion-trail {
@@ -185,14 +209,14 @@
   }
 
   .explosion-text {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 50, 50, 0.8);
+    text-shadow: 0 0 var(--glow-blur) rgba(255, 255, 255, 0.9), 0 0 calc(var(--glow-blur) * 0.66) rgba(255, 50, 50, 0.8);
   }
 }
 
 .explosion-green {
   .explosion-particle {
     background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(144, 238, 144, 1) 50%, rgba(0, 128, 0, 1) 100%);
-    box-shadow: 0 0 10px 2px rgba(50, 200, 50, 0.8);
+    box-shadow: 0 0 var(--glow-blur) var(--glow-spread) rgba(50, 200, 50, 0.8);
   }
 
   .explosion-trail {
@@ -200,14 +224,14 @@
   }
 
   .explosion-text {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(50, 200, 50, 0.8);
+    text-shadow: 0 0 var(--glow-blur) rgba(255, 255, 255, 0.9), 0 0 calc(var(--glow-blur) * 0.66) rgba(50, 200, 50, 0.8);
   }
 }
 
 .explosion-blue {
   .explosion-particle {
     background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(135, 206, 250, 1) 50%, rgba(0, 0, 255, 1) 100%);
-    box-shadow: 0 0 10px 2px rgba(50, 50, 255, 0.8);
+    box-shadow: 0 0 var(--glow-blur) var(--glow-spread) rgba(50, 50, 255, 0.8);
   }
 
   .explosion-trail {
@@ -215,6 +239,6 @@
   }
 
   .explosion-text {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 10px rgba(50, 50, 255, 0.8);
+    text-shadow: 0 0 var(--glow-blur) rgba(255, 255, 255, 0.9), 0 0 calc(var(--glow-blur) * 0.66) rgba(50, 50, 255, 0.8);
   }
 }

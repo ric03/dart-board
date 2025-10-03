@@ -9,13 +9,6 @@ export class AppComponent {
   title = 'dart-board';
   private deferredPrompt: any;
 
-  // Globally prevent the native context menu (long-press menu on mobile/tablets)
-  @HostListener('document:contextmenu', ['$event'])
-  onGlobalContextMenu(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   // Warn user about data loss on reload when not in fullscreen
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnloadHandler(event: BeforeUnloadEvent) {

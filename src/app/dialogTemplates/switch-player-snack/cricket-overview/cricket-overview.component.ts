@@ -38,9 +38,6 @@ export class CricketOverviewComponent {
   }
 
   isClosed(value: number) {
-    if (this.playerService._players.length === 1) {
-      return false;
-    }
     return this.nextPlayer.cricketMap.get(value) === 3;
   }
 

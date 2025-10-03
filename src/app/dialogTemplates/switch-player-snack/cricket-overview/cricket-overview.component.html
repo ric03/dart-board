@@ -6,11 +6,10 @@
       <div class="d-flex flex-column no-pointer">
         <a mat-raised-button
            class="ms-1 justify-content-center fs-3 {{isClosed(btnValue)? gray : ''}}"
-           [color]="isClosed(btnValue) ? 'warn' :'primary'"
         >{{ getBadgeCountValue(btnValue) }}
         </a>
         <a class="ms-2 mt-2 {{isScorable(btnValue)? '' : border}} {{isClosed(btnValue)? gray : ''}}" mat-fab
-           [color]="isClosed(btnValue) ? 'warn' :'primary'"
+           color="primary"
         >{{ btnValue }}
         </a>
       </div>
@@ -18,12 +17,11 @@
     <div class="d-flex flex-row justify-content-center mt-2"
     >
       <div class="d-flex flex-column no-pointer">
-        <a mat-raised-button class="ms-1 justify-content-center fs-3"
-           [color]="isClosed(25) ? 'warn' :'primary'"
+        <a mat-raised-button class="ms-1 justify-content-center fs-3 {{isClosed(25)? gray : ''}}"
         >{{ getBadgeCountValue(25) }}
         </a>
-        <a class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-           [color]="isClosed(25) ? 'warn' :'primary'"
+        <a class="ms-2 mt-2 {{this.isScorable(25)? '' : border}} {{isClosed(25)? gray : ''}}" mat-fab
+           color="primary"
         >
           <span class="mt-2 material-symbols-outlined">trip_origin</span>
         </a>
@@ -37,13 +35,12 @@
     >
       <div class="d-flex flex-column no-pointer">
         <a mat-raised-button
-           class="ms-1 justify-content-center fs-3"
-           [color]="isClosed(btnValue) ? 'warn' :'primary'"
+           class="ms-1 justify-content-center fs-3 {{isClosed(btnValue)? gray : ''}}"
         >{{ getBadgeCountValue(btnValue) }}
         </a>
-        <a class="ms-2 mt-2  {{this.isScorable(btnValue)? '' : border}}"
+        <a class="ms-2 mt-2  {{this.isScorable(btnValue)? '' : border}}  {{isClosed(btnValue)? gray : ''}}"
+           color="primary"
            mat-fab
-           [color]="isClosed(btnValue) ? 'warn' :'primary'"
         >{{ btnValue }}
         </a>
       </div>
@@ -53,12 +50,11 @@
     >
       <div class="d-flex flex-column no-pointer">
         <a mat-raised-button
-           class="ms-1 justify-content-center fs-3"
-           [color]="isClosed(25) ? 'warn' :'primary'"
+           class="ms-1 justify-content-center fs-3  {{isClosed(25)? gray : ''}}"
         >{{ getBadgeCountValue(25) }}
         </a>
-        <a class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-           [color]="isClosed(25) ? 'warn' :'primary'"
+        <a class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}  {{isClosed(25)? gray : ''}}" mat-fab
+           color="primary"
         >
           <span class="mt-2 material-symbols-outlined">target</span>
         </a>
