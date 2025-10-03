@@ -28,6 +28,11 @@
                         (change)="setDrunkMode(drunktoggle.checked)">drunk?
       </mat-slide-toggle>
     </p>
+    <p mat-menu-item>
+      <mat-slide-toggle #soundtoggle [checked]="this.soundToggleService.isSoundOn.value"
+                        (change)="setSoundMode(soundtoggle.checked)">sound?
+      </mat-slide-toggle>
+    </p>
     <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
   <div>

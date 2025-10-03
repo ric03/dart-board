@@ -19,6 +19,7 @@ import {customRipple} from "../shared/util";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {DrunkToggleService} from "../services/drunk-toggle.service";
 import {MatTooltip} from "@angular/material/tooltip";
+import {SoundToggleService} from "../services/sound-toggle.service";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -48,6 +49,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   private router: Router = inject(Router);
   appVersion: string = environment.appVersion
   drunkModeService = inject(DrunkToggleService);
+  soundToggleService = inject(SoundToggleService);
   cricketService = inject(CricketService);
   dartService = inject(DartService);
   protected readonly fullscreenService = inject(ToggleFullscreenService);
@@ -185,5 +187,9 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
 
   setDrunkMode(checked: boolean) {
     this.drunkModeService.isDrunkModeOn.next(checked)
+  }
+
+  setSoundMode(checked: boolean) {
+    this.soundToggleService.isSoundOn.next(checked);
   }
 }

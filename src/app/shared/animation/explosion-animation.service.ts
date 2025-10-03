@@ -1,4 +1,5 @@
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {Injectable, Renderer2, RendererFactory2, inject} from '@angular/core';
+import {SoundToggleService} from '../../services/sound-toggle.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ export class ExplosionAnimationService {
   private renderer: Renderer2;
   private explosionElement: HTMLElement | null = null;
   tripleTwentyCounter: number = 0;
+  private readonly soundToggle = inject(SoundToggleService);
 
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -80,8 +82,11 @@ export class ExplosionAnimationService {
 
   private playExplosionSound(): void {
     try {
+      const isOn = this.soundToggle.isSoundOn.getValue();
+      if (!isOn) return;
+
       const audio = new Audio();
-      audio.src = 'assets/sounds/firework-explosion.mp3'; // Du musst diese Datei in dein Assets-Verzeichnis legen
+      audio.src = 'assets/sounds/firework-explosion.mp3';
       audio.volume = 0.5;
       audio.play().catch(err => {
         console.log('Audio konnte nicht abgespielt werden:', err);
