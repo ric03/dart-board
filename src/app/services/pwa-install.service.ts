@@ -5,7 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 const SNOOZE_KEY = 'pwa_install_snooze_until';
 const SNOOZE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PwaInstallService {
   private deferredPrompt: any = null;
   public canInstall$ = new BehaviorSubject<boolean>(false);
@@ -59,7 +59,10 @@ export class PwaInstallService {
   askToInstall() {
     if (!this.deferredPrompt || this.isStandalone()) return;
 
-    const ref = this.snackBar.open('App installieren?', 'Ja', { duration: 8000 });
+    const ref = this.snackBar.open('Möchten Sie die Dartboard-App installieren?', 'Ja, gerne.', {
+      duration: 8000,
+      panelClass: ['app-shape-morph-snack']
+    });
 
     ref.onAction().subscribe(() => {
       this.triggerInstall();
