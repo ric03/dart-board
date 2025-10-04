@@ -33,7 +33,13 @@
       <div *ngFor="let playerName of playerNames.controls; let i=index">
         <mat-form-field appearance="fill">
           <mat-label>Player {{ i + 1 }}</mat-label>
-          <input matInput id="playerName-{{ i }}" type="text" [formControlName]="i" value="{{playerName}}">
+          <input #nameInput matInput id="playerName-{{ i }}" type="text"
+                 [formControlName]="i" value="{{playerName}}">
+          @if (nameInput.value === '') {
+            <mat-hint class="text-bg-danger">
+              fill with name please!
+            </mat-hint>
+          }
         </mat-form-field>
         <button mat-mini-fab class="ms-2" type="button" color="warn" (click)="removePlayerName(i)">
           <mat-icon>close</mat-icon>

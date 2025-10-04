@@ -3,10 +3,12 @@
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menueItmes="matMenu">
-    <button mat-menu-item routerLink="">
-      <mat-icon>arrow_back</mat-icon>
-      Main Menu
-    </button>
+    @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
+      <button mat-menu-item routerLink="">
+        <mat-icon>arrow_back</mat-icon>
+        Main Menu
+      </button>
+    }
     <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">
       <mat-icon>install_mobile</mat-icon>
       Install App

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormArray} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
@@ -7,7 +7,8 @@ import {GameType} from '../../../models/enum/GameType';
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
 })
-export class GameSelectionComponent implements OnInit {
+export class GameSelectionComponent implements OnInit, OnChanges {
+
 
   // Create a reference, to make the enum accessible in the html-template
   gameType = GameType;
@@ -37,6 +38,13 @@ export class GameSelectionComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      this.validateGameStart(this.playerNames)
+    }
+  }
+
+
   get playerNames(): UntypedFormArray {
     return this.formGroup.get('playerNames') as UntypedFormArray;
   }
@@ -45,11 +53,11 @@ export class GameSelectionComponent implements OnInit {
     if (this.playerNames.length < 8) {
       this.playerNames.push(this.fb.control(''));
     }
-
   }
 
   removePlayerName(index: number) {
     this.playerNames.removeAt(index);
+
   }
 
   onSubmit() {
@@ -69,15 +77,12 @@ export class GameSelectionComponent implements OnInit {
     // Required to prevent the default reset mechanism.
     // Otherwise, the form would be completely empty.
     event.preventDefault();
-
     this.formGroup.reset(this.defaultFormState)
   }
 
   validateGameStart(playerNames: UntypedFormArray): boolean {
     const isMoreThenOnePlayer = playerNames.controls.length > 0
-    const allPlayersHaveNames = playerNames.controls.some(value => {
-      return value.getRawValue()
-    })
+    const allPlayersHaveNames = !((playerNames.value as Array<any>).some((val: string | null) => val === '' || val === null))
     return isMoreThenOnePlayer && allPlayersHaveNames;
   }
 }
