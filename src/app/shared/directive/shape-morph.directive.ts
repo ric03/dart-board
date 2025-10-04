@@ -22,6 +22,8 @@ export class ShapeMorphDirective {
   private holdSucceeded = false;
   private awaitingRelease = false;
   private defaultHoldDuration = this.holdDuration;
+  // Snack handling for hold progress
+  private holdSnackRef: MatSnackBarRef<ShapeMorphHoldSnackComponent> | null = null;
 
   @Output() shapeMorphClick = new EventEmitter<void>();
 
@@ -91,8 +93,6 @@ export class ShapeMorphDirective {
     this.closeTopProgressSnack();
   }
 
-  // Snack handling for hold progress
-  private holdSnackRef: MatSnackBarRef<ShapeMorphHoldSnackComponent> | null = null;
 
   private openTopProgressSnack() {
     if (this.holdDuration > 0) {
@@ -210,6 +210,7 @@ export class ShapeMorphDirective {
     // any running
     if (this.pressTimer) return;
     this.vibrateOnClick(200);
+    this.changeBtnBgColor()
     this.pressStartTime = Date.now();
     this.startProgressFill();
     this.awaitingRelease = true;
@@ -227,6 +228,7 @@ export class ShapeMorphDirective {
       clearTimeout(this.pressTimer);
       this.pressTimer = null;
     }
+    this.resetBtnBgColor()
     this.resetProgressFill();
 
 
@@ -255,12 +257,20 @@ export class ShapeMorphDirective {
     // perform animation over holdDuration, not instant
     // Zuerst zum Quadrat ändern
     this.renderer.setStyle(this.el.nativeElement, 'border-radius', '20%');
-    this.renderer.setStyle(this.el.nativeElement, 'background-color', this.rippleColor);
+    this.changeBtnBgColor()
 
     // Nach holdDuration wieder zurück
     setTimeout(() => {
       this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
-      this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
+      this.resetBtnBgColor()
     }, 700);
+  }
+
+  private changeBtnBgColor() {
+    this.renderer.setStyle(this.el.nativeElement, 'background-color', this.rippleColor);
+  }
+
+  private resetBtnBgColor() {
+    this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
   }
 }
