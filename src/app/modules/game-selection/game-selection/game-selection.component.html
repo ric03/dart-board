@@ -1,8 +1,9 @@
-<div class="container-sm mt-3">
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" (reset)="onReset($event)">
+<div class="container-fluid mt-3 d-flex justify-content-center">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()"
+        (reset)="onReset($event)">
 
-    <h4>What type of game?</h4>
-    <div class="d-flex flex-row justify-content-between">
+    <h5>select a game</h5>
+    <div>
       <mat-form-field appearance="fill">
         <mat-label class="text">Game Type</mat-label>
         <mat-select formControlName="gameType">
@@ -18,21 +19,33 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="d-flex py-2 px-2">
-        <button mat-raised-button color="accent" type="submit">Start</button>
-        <button mat-raised-button class="ms-2" type="reset">Reset</button>
-      </div>
     </div>
-    <h4>Who is playing?</h4>
+    <div class="d-flex flex-colum justify-content-between">
+      <h5>add player(s)</h5>
+      <button mat-mini-fab color="accent" type="button" (click)="addPlayerName()">
+        <mat-icon>
+          add
+        </mat-icon>
+      </button>
+    </div>
+
     <div formArrayName="playerNames">
       <div *ngFor="let playerName of playerNames.controls; let i=index">
         <mat-form-field appearance="fill">
           <mat-label>Player {{ i + 1 }}</mat-label>
           <input matInput id="playerName-{{ i }}" type="text" [formControlName]="i" value="{{playerName}}">
         </mat-form-field>
-        <button mat-flat-button class="ms-2" type="button" (click)="removePlayerName(i)">Remove</button>
+        <button mat-mini-fab class="ms-2" type="button" color="warn" (click)="removePlayerName(i)">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
-      <button mat-raised-button color="accent" type="button" (click)="addPlayerName()"> + Add Player</button>
+
+    </div>
+    <h5>start game </h5>
+    <div class="d-flex justify-content-start">
+      <button mat-raised-button color="accent" type="submit" [disabled]="!validateGameStart(playerNames)">Start
+      </button>
+      <button mat-raised-button class="ms-2" type="reset">Reset</button>
     </div>
   </form>
 </div>

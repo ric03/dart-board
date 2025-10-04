@@ -72,4 +72,12 @@ export class GameSelectionComponent implements OnInit {
 
     this.formGroup.reset(this.defaultFormState)
   }
+
+  validateGameStart(playerNames: UntypedFormArray): boolean {
+    const isMoreThenOnePlayer = playerNames.controls.length > 0
+    const allPlayersHaveNames = playerNames.controls.some(value => {
+      return value.getRawValue()
+    })
+    return isMoreThenOnePlayer && allPlayersHaveNames;
+  }
 }

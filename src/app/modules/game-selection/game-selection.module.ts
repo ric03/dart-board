@@ -6,6 +6,7 @@ import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatOption, MatSelect, MatSelectModule} from "@angular/material/select";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {MatInput, MatInputModule} from "@angular/material/input";
     MatOption,
     MatButton,
     MatInput,
+    MatIcon,
   ],
   exports: [
     GameSelectionComponent,
