@@ -252,6 +252,7 @@ export class ShapeMorphDirective {
   }
 
   private perfromButtonShapeMorph() {
+    console.warn("morph")
     // Use holdDuration for transition timing
     this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius 500ms linear, background-color 700ms linear`);
     // perform animation over holdDuration, not instant
@@ -262,8 +263,8 @@ export class ShapeMorphDirective {
     // Nach holdDuration wieder zurück
     setTimeout(() => {
       this.renderer.setStyle(this.el.nativeElement, 'border-radius', this.originalBorder);
-      this.resetBtnBgColor()
     }, 700);
+    this.resetBtnBgColor()
   }
 
   private changeBtnBgColor() {
@@ -271,6 +272,8 @@ export class ShapeMorphDirective {
   }
 
   private resetBtnBgColor() {
-    this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
+    setTimeout(() => {
+      this.renderer.setStyle(this.el.nativeElement, 'background-color', this.originalBackgroundColor);
+    }, 700);
   }
 }
