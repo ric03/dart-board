@@ -8,22 +8,18 @@
         <mat-icon>arrow_back</mat-icon>
         Main Menu
       </button>
+      <button mat-menu-item (click)="undoLastAction()">
+        <mat-icon>undo</mat-icon>
+        reset last round
+      </button>
+      <button mat-menu-item (click)="setNextPlayerAsFirst()" [disabled]="!canChangeFirstPlayer">
+        <mat-icon>swap_vert</mat-icon>
+        change first player
+      </button>
     }
-    <button mat-menu-item (click)="localInstall()" [hidden]="installBtnHidden">
-      <mat-icon>install_mobile</mat-icon>
-      Install App
-    </button>
     <button mat-menu-item (click)="fullscreenService.toggleTabFullScreenModeMenue()">
       <mat-icon>fullscreen</mat-icon>
       Fullscreen
-    </button>
-    <button mat-menu-item (click)="undoLastAction()">
-      <mat-icon>undo</mat-icon>
-      reset last round
-    </button>
-    <button mat-menu-item (click)="setNextPlayerAsFirst()" [disabled]="!canChangeFirstPlayer">
-      <mat-icon>swap_vert</mat-icon>
-      change first player
     </button>
     <p mat-menu-item>
       <mat-slide-toggle #drunktoggle [checked]="this.drunkModeService.isDrunkModeOn.value"
