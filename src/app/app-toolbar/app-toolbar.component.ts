@@ -17,6 +17,7 @@ import {CurrentPlayerService} from "../services/current-player.service";
 import {ToggleFullscreenService} from "../services/toggle-fullscreen.service";
 import {customRipple} from "../shared/util";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {GameType} from "../models/enum/GameType";
 import {DrunkToggleService} from "../services/drunk-toggle.service";
 import {MatTooltip} from "@angular/material/tooltip";
 import {SoundToggleService} from "../services/sound-toggle.service";
@@ -152,6 +153,19 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  getCurrentGameModeName(): string {
+    const isCricket = this.cricketService._gameType !== '';
+    if (isCricket) {
+      return 'Cricket';
+    }
+    const dartMode = this.dartService._gameType;
+    if (dartMode === GameType.Simple501) return '501';
+    if (dartMode === GameType.DoubleOut501) return '501 (DO)';
+    if (dartMode === GameType.Elimination301) return 'Elimination';
+    if (dartMode === GameType.Highscore) return 'Highscore';
+    return '';
+  }
 
   setDrunkMode(checked: boolean) {
     this.drunkModeService.isDrunkModeOn.next(checked)

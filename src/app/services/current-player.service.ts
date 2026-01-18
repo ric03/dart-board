@@ -10,6 +10,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {BadgeHandleService} from "./badge-handle.service";
 import {ExplosionAnimationService} from "../shared/animation/explosion-animation.service";
 import {GameType} from "../models/enum/GameType";
+import {GameStoreService} from "./game-store.service";
+import {Game} from "../models/game/game.model";
 
 
 export const MAX_REMAINING_THROWS = 3;
@@ -20,6 +22,7 @@ export const MAX_REMAINING_THROWS = 3;
 })
 export class CurrentPlayerService {
   private roundCountService = inject(RoundCountService);
+  private gameStore = inject(GameStoreService);
   private isToResetRound: boolean = false;
   currentGameMode = ""
 
@@ -35,6 +38,8 @@ export class CurrentPlayerService {
   public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _last3History: number[] = [];
+  public _lastTurnSum = 0;
+  public _lastTurnHits: number[] = [];
   public _lastCricketHistory: Map<number, number> = new Map();
   public _history: HistoryEntry[] = [];
   protected animationService = inject(ExplosionAnimationService)
@@ -44,53 +49,66 @@ export class CurrentPlayerService {
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this._averagePoints = player.average;
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
-    this.reset()
+    this.reset();
+
+    // Initialen Snapshot im Store speichern
+    this.gameStore.initGame(this.currentGameMode as GameType, this.playerService._players);
+  }
+
+  getCurrentGameState(): Game {
+    return {
+      gameType: this.currentGameMode as GameType,
+      players: this.playerService._players,
+      currentPlayerIndex: this.playerService._players.indexOf(this._currentPlayer.value),
+      roundCount: this.roundCountService.roundCount,
+      remainingThrows: this._remainingThrows,
+      accumulatedPoints: this._accumulatedPoints
+    };
+  }
+
+  captureState() {
+    this.gameStore.saveSnapshot(this.getCurrentGameState());
+  }
+
+  setCurrentGameMode(mode: string) {
+    this.currentGameMode = mode;
   }
 
   switchPlayer(player: Player, isNewRound: boolean) {
-    this.showPlayerSwitchSnackbar(player, isNewRound);
-  }
+    // Workflow-Optimierung: Sofortiger Wechsel im Zustand, Snackbar nur zur Info
+    if (isNewRound) {
+      this.roundCountService.incrementRoundCount();
+    }
+    this.animationService.tripleTwentyCounter = 0;
 
-  private showPlayerSwitchSnackbar(player: Player, isNewRound: boolean) {
+    // Daten für die Snackbar sichern, bevor sie zurückgesetzt werden
+    this._lastTurnSum = this.getLast3HistorySum();
+    this._lastTurnHits = [...this._last3History];
 
-    const snack = this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {
-      duration: 5000,
+    this._currentPlayer.next(player);
+    this._last3History = [];
+    this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
+    this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
+    this._averagePoints = player.average;
+    this._history = this._currentPlayer.value.history;
+    this.reset();
+
+    this.captureState();
+
+    this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {
+      duration: 2000,
       panelClass: ['app-shape-morph-snack'],
       horizontalPosition: "center",
       verticalPosition: "top"
-
-    })
-    snack.afterOpened().subscribe(() => {
-      console.info("Switching players")
-    })
-
-    snack.afterDismissed().subscribe(() => {
-      if (this.isToResetRound) {
-        this.resetRound();
-        this.isToResetRound = false;
-      } else {
-        if (isNewRound) {
-          this.roundCountService.incrementRoundCount();
-        }
-        this.animationService.tripleTwentyCounter = 0;
-        this._currentPlayer.next(player);
-        this._last3History = [];
-        this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
-        this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
-        this._averagePoints = player.average;
-        this._history = this._currentPlayer.value.history;
-        this.reset();
-      }
-    })
-
+    });
   }
-
 
   private resetRound() {
     this.resetAccumulatedPoints();
     this.resetThrows();
     this.roundCountService.decrementRoundCount();
     this._currentPlayer.value.last3History = [];
+    this.captureState();
   }
 
   private savePointsForStatistics() {
@@ -118,8 +136,14 @@ export class CurrentPlayerService {
 
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
+      const currentPlayer = this._currentPlayer.value;
+      this._currentPlayer.value.last3History = [...this._last3History];
+      this.captureState();
+      // Sicherstellen, dass die Referenz im Signal-ähnlichen BehaviorSubject erhalten bleibt
+      this._currentPlayer.next(currentPlayer);
+
       // Nur zum Anzeigen der aktuellen Punktzahl
-      if (this.currentGameMode === GameType.Elimination || this.currentGameMode === GameType.Elimination301) {
+      if (this.currentGameMode === GameType.Elimination301 || this.currentGameMode === GameType.Highscore) {
         this._remainingPointsToDisplay.update(value => value + points);
       } else {
         this._remainingPointsToDisplay.update(value => value - points);
@@ -128,13 +152,14 @@ export class CurrentPlayerService {
       this.accumulatePoints(points);
       this.decrementRemainingThrows();
     } else {
-      // TODO: show error message, wird manchmal geworfen, wenn man 3 mal auf den Button drückt, verhindert damit aber nicht das Spiel nur den Click zuviel
       throw new Error('Unable to reduce below 0');
     }
   }
 
   scoreCricket(_throw: Throw) {
     if (this.hasThrowsRemaining()) {
+      this._currentPlayer.value.last3History = [...this._last3History];
+      this.captureState();
       this.evaluateCricketPoints(_throw);
       this._remainingPointsToDisplay.update(value => value = this._currentPlayer.value.remainingPoints);
       this.decrementRemainingThrows();
@@ -172,13 +197,16 @@ export class CurrentPlayerService {
 
   isOvershot(points: number): boolean {
     const expectedRemainingPoints = this._currentPlayer.value.remainingPoints - this._accumulatedPoints - points;
+    if (this.currentGameMode === GameType.DoubleOut501) {
+      return expectedRemainingPoints < 0 || expectedRemainingPoints === 1;
+    }
     return expectedRemainingPoints < 0;
   }
 
   applyPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
-    if (this.currentGameMode === GameType.Elimination || this.currentGameMode === GameType.Elimination301) {
-      // Punkte hinzufügen (Elimination)
+    if (this.currentGameMode === GameType.Elimination301 || this.currentGameMode === GameType.Highscore) {
+      // Punkte hinzufügen (Elimination / Highscore)
       this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     } else {
       // Hier werden die Punkte tatsächlich vom Spieler abgezogen (501)
@@ -187,6 +215,8 @@ export class CurrentPlayerService {
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this.savePointsForStatistics();
     this.calcAverage();
+
+    this.captureState();
   }
 
   applyCricketPoints() {
@@ -195,6 +225,7 @@ export class CurrentPlayerService {
     this.savePointsForStatistics();
     this.calcAverage();
 
+    this.captureState();
   }
 
   calcAverage() {
@@ -273,41 +304,27 @@ export class CurrentPlayerService {
   }
 
   undoLastPlayerActions() {
-    // Reset all throws since last player switch
-    this._last3History = [];
-    this._accumulatedPoints = 0;
-
-    if (this.currentGameMode === 'Cricket') {
-      // Restore cricket marks using a cloned snapshot and emit a new player to trigger UI updates
-      const restoredMap = new Map(this._lastCricketHistory ?? new Map<number, number>());
-      const updatedPlayer: Player = {
-        ...this._currentPlayer.value,
-        cricketMap: restoredMap,
-        last3History: [],
-        throws: []
-      };
-      this._currentPlayer.next(updatedPlayer);
-
-      // Reset internal trackers
-      this._last3History = [];
-      this._accumulatedPoints = 0;
-
-      // Keep map sorted and ensure displayed points are consistent
-      this.sortMap();
-      updatedPlayer.remainingPoints = Math.max(0, updatedPlayer.remainingPoints);
-      this._remainingPointsToDisplay.set(updatedPlayer.remainingPoints);
-
-      // Also update the players array so components bound to playerService._players reflect the change
-      this.playerService.updatePlayer(this._currentPlayer.value);
-    } else {
-      this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
+    const prevState = this.gameStore.undo();
+    if (prevState) {
+      this.applyState(prevState);
     }
+  }
 
-    // Reset throws to maximum
-    this._remainingThrows = MAX_REMAINING_THROWS;
+  private applyState(state: Game) {
+    this.playerService._players = state.players;
+    const currentPlayer = this.playerService._players[state.currentPlayerIndex];
+    // WICHTIG: Den Referenz-Check im PlayerService-Array machen
+    this._currentPlayer.next(currentPlayer);
 
-    // Reset badges
-    this.badgeHandleService.resetBadges();
+    this.roundCountService.roundCount = state.roundCount;
+    this._remainingThrows = state.remainingThrows;
+    this._accumulatedPoints = state.accumulatedPoints;
+    this._remainingPointsToDisplay.set(currentPlayer.remainingPoints);
+    this._averagePoints = currentPlayer.average;
+    this._history = currentPlayer.history;
+    this._last3History = [...(currentPlayer.last3History || [])];
+    this._lastCricketHistory = new Map(currentPlayer.cricketMap);
+    this.badgeHandleService.restoreBadgesFromHistory(this._last3History);
   }
 
   getLast3HistorySum(): number {

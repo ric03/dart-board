@@ -1,125 +1,30 @@
 <div [hidden]="this.cricketService._hideAll" class="container-fluid">
 
-  @if (screenOrientation !== 'landscape-primary') {
-    <div
-      class="d-flex w-100">
-      <mat-button-toggle-group #toggleGroup
-                               class="toggle-group-scale align-items-center m-auto toggle-btn-group"
-                               value="1"
-                               (change)="changeButtonColor($event)"
-                               [formControl]="multiplierControl"
-                               [hideSingleSelectionIndicator]="true">
-        <mat-button-toggle class="toggle1-color" #singelToggel value="1">Single</mat-button-toggle>
-        <mat-button-toggle class="toggle2-color" value="2">Double</mat-button-toggle>
-        <mat-button-toggle class="toggle3-color" value="3">Triple</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  }
-  <div class="d-flex flex-row">
-    <div class="d-flex flex-column w-100">
-      <div class="d-flex flex-row flex-wrap justify-content-evenly">
-        <div class="d-flex flex-row justify-content-center mt-2"
-             *ngFor="let btnValue of availableButtonValuesUnitl17"
-        >
-          <div class="d-flex flex-column input-btn-scale">
-            <button [disabled]="isClosed(btnValue)" mat-raised-button
-                    class="ms-1 justify-content-center no-pointer fs-3"
-                    [color]="'accent'"
-            >{{ getBadgeCountValue(btnValue) }}
-            </button>
-            <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2 {{this.isScorable(btnValue)? '' : border}}" mat-fab
-                    [color]="buttonColor"
-                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="customRipple.rippleRadius"
-                    (shapeMorphClick)="scoreHit(btnValue)"
-                    appShapeMorph
-            >{{ btnValue }}
-            </button>
-          </div>
-        </div>
-        <div class="d-flex flex-row justify-content-center mt-2"
-        >
-          <div class="d-flex flex-column input-btn-scale">
-            <button [disabled]="isClosed(25)" mat-raised-button class="ms-1 justify-content-center no-pointer fs-3"
-                    [color]="'accent'"
-            >{{ getBadgeCountValue(25) }}
-            </button>
-            <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-                    color="accent"
-                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="customRipple.rippleRadius"
-                    (shapeMorphClick)="scoreBull()"
-                    appShapeMorph
-            >
-              <span class="mt-2 material-symbols-outlined">trip_origin</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex flex-row flex-wrap justify-content-evenly">
-        <div class="d-flex flex-row justify-content-center mt-2"
-             *ngFor="let btnValue of availableButtonValuesUnitl20"
-        >
-          <div class="d-flex flex-column input-btn-scale">
-            <button [disabled]="isClosed(btnValue)" mat-raised-button
-                    class="ms-1 justify-content-center no-pointer fs-3"
-                    [color]="'accent'"
-            >{{ getBadgeCountValue(btnValue) }}
-            </button>
-            <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2  {{this.isScorable(btnValue)? '' : border}}"
-                    mat-fab
-                    [color]="buttonColor"
-                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="customRipple.rippleRadius"
-                    (shapeMorphClick)="scoreHit(btnValue)"
-                    appShapeMorph
-            >{{ btnValue }}
-            </button>
-          </div>
-
-        </div>
-        <div class="d-flex flex-row justify-content-center mt-2"
-        >
-          <div class="d-flex flex-column input-btn-scale">
-            <button [disabled]="isClosed(25)" mat-raised-button
-                    class="ms-1 justify-content-center no-pointer fs-3"
-                    [color]="'accent'"
-            >{{ getBadgeCountValue(25) }}
-            </button>
-            <button [disabled]="isClosed(25)" class="ms-2 mt-2 {{this.isScorable(25)? '' : border}}" mat-fab
-                    color="warn"
-                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-                    [matRippleRadius]="customRipple.rippleRadius"
-                    (shapeMorphClick)="scoreBullsEye()"
-                    appShapeMorph
-            >
-              <span class="mt-2 material-symbols-outlined">target</span>
-            </button>
-          </div>
+  <div class="d-flex flex-row flex-wrap w-100 justify-content-center align-items-center">
+    <app-multiplier-toggle class="p-2"></app-multiplier-toggle>
+    <div class="d-flex flex-row flex-wrap justify-content-center">
+      <div *ngFor="let group of buttonGroups" class="d-flex flex-column mx-2">
+        <div *ngFor="let btnValue of group" class="d-flex flex-column input-btn-scale mb-3">
+          <button [disabled]="isClosed(btnValue)" mat-raised-button
+                  class="ms-1 justify-content-center no-pointer fs-3"
+                  [color]="'accent'"
+          >{{ getBadgeCountValue(btnValue) }}
+          </button>
+          <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2 {{this.isScorable(btnValue)? '' : border}}" mat-fab
+                  [color]="btnValue === 25 ? (multiplierService.multiplier() === 2 ? 'accent' : 'warn') : buttonColor"
+                  matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+                  [matRippleRadius]="customRipple.rippleRadius"
+                  (shapeMorphClick)="btnValue === 25 ? (multiplierService.multiplier() === 2 ? scoreBullsEye() : scoreBull()) : scoreHit(btnValue)"
+                  appShapeMorph
+          >
+            <ng-container *ngIf="btnValue !== 25">{{ btnValue }}</ng-container>
+            <span *ngIf="btnValue === 25" class="mt-2 material-symbols-outlined">
+              {{ multiplierService.multiplier() === 2 ? 'target' : 'trip_origin' }}
+            </span>
+          </button>
         </div>
       </div>
     </div>
-    @if (screenOrientation === 'landscape-primary') {
-      <div class="d-flex pt-2 mt-3 w-25 w-auto">
-        <mat-button-toggle-group
-          [vertical]="true" class="toggle-group-scale m-auto" value="1"
-          [formControl]="multiplierControl"
-          (change)="changeButtonColor($event)"
-          [hideSingleSelectionIndicator]="true">
-          <mat-button-toggle class="toggle1-color" #singelToggel2 value="1">Single</mat-button-toggle>
-          <mat-button-toggle class="toggle2-color" value="2">Double</mat-button-toggle>
-          <mat-button-toggle class="toggle3-color" value="3">Triple</mat-button-toggle>
-        </mat-button-toggle-group>
-      </div>
-    }
   </div>
 </div>
-<button mat-fab color="warn" class="miss-scale float-end py-2 px-2 m-4"
-        matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
-        [matRippleRadius]="customRipple.rippleRadius"
-        (shapeMorphClick)="scoreMiss()"
-        appShapeMorph
->
-  Nüscht! F**k!
-</button>
+<app-miss-button></app-miss-button>

@@ -1,10 +1,8 @@
 <div class="d-flex flex-column">
   @if (this.cricketService._gameType === '') {
-    @if (this.currentPlayerService._currentPlayer.value.history.length > 0) {
-      <h5>
-        {{ this.currentPlayerService._last3History }} =  {{ this.currentPlayerService.getLast3HistorySum() }}
-      </h5>
-    }
+    <h5>
+      {{ this.currentPlayerService._lastTurnHits }} = {{ this.currentPlayerService._lastTurnSum }}
+    </h5>
     <h3><strong>NEXT Player: {{ this.nextPlayer.name }}</strong></h3>
     <div class="d-flex flex-row justify-content-between">
       <p class="p-1">...closes in {{ this.timeLeft }}s</p>

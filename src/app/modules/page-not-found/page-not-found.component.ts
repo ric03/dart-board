@@ -10,7 +10,8 @@ import {Router} from "@angular/router";
         404 not found</code></h1>
     </div>
   `,
-  styles: []
+  styles: [],
+  standalone: false,
 })
 export class PageNotFoundComponent {
 

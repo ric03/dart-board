@@ -14,7 +14,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatBadgeModule} from "@angular/material/badge";
 import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive";
-
+import {MultiplierToggleComponent} from "../../shared/components/multiplier-toggle/multiplier-toggle.component";
+import {MissButtonComponent} from "../../shared/components/miss-button/miss-button.component";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,8 @@ import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive"
     ScoreBoardModule,
     CurrentPlayerProgressModule,
     ShapeMorphDirective,
+    MultiplierToggleComponent,
+    MissButtonComponent,
   ]
 })
 export class DartBoardModule {

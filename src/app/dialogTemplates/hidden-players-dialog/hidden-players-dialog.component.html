@@ -28,6 +28,9 @@
       <mat-card class="mb-1">
         <mat-card-subtitle>{{ player.name }}</mat-card-subtitle>
         <mat-card-title>{{ player.remainingPoints }}
+          <span *ngIf="currentPlayerService.currentGameMode === GameType.Elimination301" class="text-info fs-6">
+            (Δ {{ getDiff(player) }})
+          </span>
         </mat-card-title>
         <br>
         last∑ {{ player.lastScore }}<br>

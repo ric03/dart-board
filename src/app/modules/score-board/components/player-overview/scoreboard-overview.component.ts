@@ -8,7 +8,8 @@ import {CurrentPlayerService} from "../../../../services/current-player.service"
 @Component({
   selector: 'app-scoreboard-overview',
   templateUrl: './scoreboard-overview.component.html',
-  styleUrls: ['./scoreboard-overview.component.scss']
+  styleUrls: ['./scoreboard-overview.component.scss'],
+  standalone: false,
 })
 export class ScoreboardOverviewComponent implements OnInit {
   miniMode = ""

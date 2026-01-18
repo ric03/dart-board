@@ -10,7 +10,7 @@
       </button>
       <button mat-menu-item (click)="undoLastAction()">
         <mat-icon>undo</mat-icon>
-        reset last round
+        rückgängig
       </button>
       <button mat-menu-item (click)="setNextPlayerAsFirst()" [disabled]="!canChangeFirstPlayer">
         <mat-icon>swap_vert</mat-icon>
@@ -35,6 +35,7 @@
   </mat-menu>
   <div>
     @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {
+      <span class="game-mode-display text-accent fw-bold me-2">{{ getCurrentGameModeName() }}</span>
       <button mat-mini-fab class="ms-3 question-scale"
               matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
               [matRippleRadius]="customRipple.rippleRadius"

@@ -1,0 +1,16 @@
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1050; /* Über den meisten anderen Elementen */
+}
+
+.miss-scale {
+  /* Skalierung für große Bildschirme */
+  transform: scale(1.5);
+  transform-origin: bottom right;
+
+  @media screen and (max-width: 600px) {
+    transform: scale(1.0);
+  }
+}

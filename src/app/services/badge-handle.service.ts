@@ -25,9 +25,48 @@ export class BadgeHandleService {
     this.matBadgeHiddenBull = true;
     this.matBadgeHiddenBullsEye = true;
     this.matBadgeHiddenMiss = true;
+    this.bullBadgeCount = undefined;
+    this.bullsEyeBadgeCount = undefined;
+    this.missBadgeCount = undefined;
     this.twentyButtons.forEach(input => {
       input.badge = true;
       input.badgeValue = undefined;
+    });
+  }
+
+  restoreBadgesFromHistory(last3History: number[]) {
+    this.resetBadges();
+    if (!last3History || last3History.length === 0) {
+      return;
+    }
+
+    last3History.forEach((val, index) => {
+      const badgeVal = index + 1;
+      const numericVal = Number(val);
+      if (numericVal === 25 || numericVal === 50) {
+        if (numericVal === 50) {
+          this.matBadgeHiddenBullsEye = false;
+          this.bullsEyeBadgeCount = badgeVal;
+        } else {
+          this.matBadgeHiddenBull = false;
+          this.bullBadgeCount = badgeVal;
+        }
+      } else if (numericVal === 0) {
+        this.matBadgeHiddenMiss = false;
+        this.missBadgeCount = badgeVal;
+      } else {
+        let baseVal = numericVal;
+        if (numericVal > 25) {
+          if (numericVal % 3 === 0) baseVal = numericVal / 3;
+          else if (numericVal % 2 === 0) baseVal = numericVal / 2;
+        }
+        const btn = this.twentyButtons.find(b => b.zahl === baseVal);
+        if (btn) {
+          btn.badge = false;
+          btn.badgeValue = badgeVal;
+        }
+      }
+      this.tempBadgeValue = badgeVal + 1;
     });
   }
 

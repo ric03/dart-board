@@ -1,5 +1,7 @@
+import packageJson from '../../package.json';
+
 export const environment = {
   production: true,
   isRedirectWarningActive: true,
-  appVersion: require('../../package.json').version,
+  appVersion: packageJson.version,
 };

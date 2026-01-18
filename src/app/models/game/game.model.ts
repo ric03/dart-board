@@ -1,4 +1,5 @@
 import {GameType} from "../enum/GameType";
+import {Player} from "../player/player.model";
 
 enum Multiplier {
   EINS = 1,
@@ -6,21 +7,23 @@ enum Multiplier {
   DREI = 3,
 }
 
-interface Player {
-  points: number,
-  throws: number,
-  lastScore: Score,
-}
-
-interface Score{
+interface Score {
   value: number,
   multiplier: number,
 }
 
 export interface Game {
-  gameType: GameType,
-  players: Player[],
-  currentPlayer: Player,
+  gameType: GameType;
+  players: Player[];
+  currentPlayerIndex: number;
+  roundCount: number;
+  remainingThrows: number;
+  accumulatedPoints: number;
+}
+
+export interface GameSnapshot {
+  game: Game;
+  timestamp: number;
 }
 
 export interface DartPlayer {

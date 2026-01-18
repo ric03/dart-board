@@ -1,12 +1,203 @@
-.min-w-50 {
-  min-width: 50vw;
-  max-width: 70vw;
+.progress-container {
+  display: flex;
+  flex-direction: row;
+  height: 140px; /* Feste Höhe für kompakte Ansicht */
+  background-color: rgba(0, 0, 0, 0.2);
 
-  h2 {
-    margin-bottom: 3px !important;
+  .section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    overflow: hidden;
   }
-}
 
-.max-w-50 {
-  max-width: 50%;
+  .player-info {
+    flex: 1.2;
+
+    .info-card {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.05);
+
+      .player-name {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      .player-score {
+        font-size: 1.8rem;
+        font-weight: bold;
+        line-height: 1.2;
+      }
+
+      .hit-badge {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+      }
+    }
+  }
+
+  .dart-status {
+    flex: 0.8;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2px 0;
+
+    .status-content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dart-buttons-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        transform: scale(0.85);
+        margin: 0;
+      }
+    }
+
+    .round-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #80d8ff;
+      line-height: 1.1;
+
+      .round-label {
+        font-size: 0.7rem;
+        opacity: 0.7;
+      }
+
+      .round-value {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .players-overview {
+    flex: 1.5;
+
+    .mini-scoreboard {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 2px;
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+      }
+
+      .mini-player-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px;
+        background-color: rgba(255, 255, 255, 0.03);
+        border-radius: 4px;
+        font-size: 0.75rem;
+        min-height: 34px;
+        width: 100%;
+
+        &.active-player {
+          background-color: rgba(128, 216, 255, 0.2);
+          border: 1px solid rgba(128, 216, 255, 0.3);
+        }
+
+        .mini-player-name {
+          max-width: 100%;
+          color: #80d8ff;
+          font-weight: 500;
+        }
+
+        .diff-score {
+          color: #80d8ff;
+          font-weight: 500;
+        }
+
+        .mini-player-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .cricket-mini-display {
+          gap: 4px;
+          height: 32px;
+          align-items: center;
+
+          .cricket-circle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+          }
+
+          .cricket-circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #3f51b5; // mat-primary
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+
+            .cricket-value {
+              font-size: 10px;
+              color: white;
+              font-weight: bold;
+            }
+
+            &.closed {
+              background-color: #f44336; // mat-warn
+              box-shadow: 0 0 4px rgba(244, 67, 54, 0.5);
+              border-color: #ff9800; // border-warning similar
+            }
+          }
+
+          .hit-count {
+            font-size: 9px;
+            font-weight: bold;
+            color: #ffd740; // mat-accent
+
+            &.closed {
+              color: #f44336;
+            }
+          }
+        }
+
+        .mini-player-score {
+          min-width: 30px;
+          text-align: right;
+        }
+      }
+    }
+  }
 }

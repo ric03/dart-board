@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+
+  @media screen and (max-width: 600px) {
+    right: 5px;
+  }
+
+  // On very small screens (like iPhone mini), move it to prevent overlap
+  @media screen and (max-width: 375px) {
+    position: static;
+    transform: none;
+    margin-bottom: 10px;
+  }
+}
+
+.multiplier-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle-btn-group {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(33, 33, 33, 0.8);
+}
+
+.mat-button-toggle {
+  width: 80px; /* Einheitliche Breite */
+  height: 60px; /* Einheitliche Höhe */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-group-scale {
+  /* Skalierung bei Bedarf */
+  transform: scale(1.1);
+  @media screen and (max-width: 600px) {
+    transform: scale(0.9);
+  }
+}
+
+.mat-button-toggle-checked {
+  &.toggle1-color {
+    background-color: #80d8ff88 !important;
+  }
+
+  &.toggle2-color {
+    background-color: #9c27b088 !important;
+  }
+
+  &.toggle3-color {
+    background-color: #f4433688 !important;
+  }
+}

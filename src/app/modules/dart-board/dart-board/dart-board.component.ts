@@ -5,6 +5,7 @@ import {ToggleFullscreenService} from "../../../services/toggle-fullscreen.servi
 @Component({
   selector: 'app-dart-board',
   templateUrl: './dart-board.component.html',
+  standalone: false,
 })
 export class DartBoardComponent implements OnDestroy, OnInit {
 

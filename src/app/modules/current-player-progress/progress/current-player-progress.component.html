@@ -1,29 +1,27 @@
-<div class="m-1 px-1 py-1 border border-lightrounded">
-  <div class="d-flex flex-row">
-    <div class="m-2 justify-content-center min-w-50">
-      <mat-card class="matcardpointer justify-content-center maxHight"
-                (click)="currentPlayerService.showHistory()">
-        <mat-card-title class="flex-column">
-          <div> {{ currentPlayerService._currentPlayer.value.name }}
-          </div>
-          <h2> {{ this.currentPlayerService._remainingPointsToDisplay() }}
-          </h2>
-          <div> ⌀ {{ currentPlayerService._currentPlayer.value.average }}
-          </div>
-          ➶
-          <div *ngFor="let hit of currentPlayerService._last3History, let i = index"
-               class="d-inline-flex">
-            <mat-card class="pb-0 pt-0 mt-0 mb-0 me-1 pe-1 ps-1 ms-1">
-              {{ hit }}
-            </mat-card>
-          </div>
-        </mat-card-title>
-      </mat-card>
-    </div>
-    <div class="d-flex flex-column justify-content-between w-50">
-      <div class="d-flex flex-row flex-wrap justify-content-evenly pt-2 w-100">
+<div class="progress-container m-1 px-1 py-1 border border-light rounded">
+  <!-- Erstes Drittel: Punktzahl des aktuellen Spielers -->
+  <div class="section player-info">
+    <mat-card class="matcardpointer info-card h-100"
+              (click)="currentPlayerService.showHistory(currentPlayerService._currentPlayer.value)">
+      <div class="player-name text-truncate">
+        {{ currentPlayerService._currentPlayer.value.name || 'Spieler' }}
+      </div>
+      <div class="player-score">{{ this.currentPlayerService._remainingPointsToDisplay() }}</div>
+      <div class="player-avg small">⌀ {{ currentPlayerService._currentPlayer.value.average }}</div>
+      <div class="last-hits mt-1">
+        <span *ngFor="let hit of currentPlayerService._last3History" class="hit-badge badge bg-secondary me-1">
+          {{ hit }}
+        </span>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Zweites Drittel: Drei Pfeil-Buttons vertikal und Rundeninfo rechts daneben -->
+  <div class="section dart-status">
+    <div class="status-content">
+      <div class="dart-buttons-vertical">
         <button
-          [color]="(currentPlayerService._remainingThrows >= 3) ? getProgressColor() : 'gray'"
+          [color]="(currentPlayerService._remainingThrows >= 1) ? getProgressColor() : 'gray'"
           mat-mini-fab
           class="no-pointer"
         ><span>➶</span>
@@ -35,17 +33,57 @@
         ><span>➶</span>
         </button>
         <button
-          [color]="(currentPlayerService._remainingThrows >= 1) ? getProgressColor() : 'gray'"
+          [color]="(currentPlayerService._remainingThrows >= 3) ? getProgressColor() : 'gray'"
           mat-mini-fab
           class="no-pointer"
         ><span>➶</span>
         </button>
-        <p class="fs-6 ps-2 pt-2 text-nowrap">⟳ {{ roundCountService.roundCount }}
-          / {{ roundCountService.MAX_ROUND_COUNT }}</p>
       </div>
-      <div class="d-flex flex-column max-w-50">
-        <app-scoreboard-overview></app-scoreboard-overview>
+      <div class="round-info small text-nowrap">
+        <span class="round-label">Runde</span>
+        <span class="round-value">{{ roundCountService.roundCount }}/{{ roundCountService.MAX_ROUND_COUNT }}</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Drittes Drittel: Übersicht aller Spieler -->
+  <div class="section players-overview">
+    <div class="mini-scoreboard">
+      <ng-container *ngFor="let player of playerService._players">
+        <div *ngIf="player.id !== currentPlayerService._currentPlayer.value.id" class="mini-player-row">
+          <div class="mini-player-main-info text-truncate">
+            <span class="mini-player-name text-truncate">{{ player.name }}</span>
+            <span
+              *ngIf="(currentPlayerService.currentGameMode === GameType.Highscore || currentPlayerService.currentGameMode === GameType.Elimination301)"
+              class="diff-score small ms-1">
+            ({{ getDiffToCurrentPlayer(player) }})
+          </span>
+          </div>
+
+          <div class="mini-player-actions d-flex align-items-center">
+            <!-- Cricket Miniature -->
+            <div *ngIf="currentPlayerService.currentGameMode === GameType.Cricket"
+                 class="cricket-mini-display d-flex me-2">
+              <div *ngFor="let val of getCricketValues()"
+                   class="cricket-circle-wrapper">
+                <div class="cricket-circle"
+                     [class.closed]="getCricketHitCount(player, val) >= 3"
+                     [attr.title]="val === 25 ? 'Bull' : val">
+                  <span class="cricket-value">{{ val === 25 ? 'B' : val }}</span>
+                </div>
+                <div class="hit-count" [class.closed]="getCricketHitCount(player, val) >= 3">
+                  {{ getCricketHitCount(player, val) }}
+                </div>
+              </div>
+            </div>
+
+            <span class="mini-player-score fw-bold matcardpointer"
+                  (click)="currentPlayerService.showHistory(player)">
+            {{ player.remainingPoints }}
+          </span>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

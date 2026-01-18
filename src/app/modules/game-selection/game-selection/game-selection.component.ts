@@ -1,11 +1,12 @@
 import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormArray} from '@angular/forms';
+import {FormBuilder, FormControl, UntypedFormArray} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
 
 @Component({
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
+  standalone: false,
 })
 export class GameSelectionComponent implements OnInit, OnChanges {
 
@@ -16,25 +17,27 @@ export class GameSelectionComponent implements OnInit, OnChanges {
   private fb = inject(FormBuilder)
   private router = inject(Router);
 
-  formGroup: FormGroup<{
-    gameType: FormControl<any>,
-    playerNames: FormArray<FormControl<any>>
-  }> = this.fb.group({
-    gameType: GameType.Simple501,
+  formGroup = this.fb.group({
+    gameType: new FormControl<any>(GameType.Simple501),
     playerNames: this.fb.array([
       this.fb.control('first'),
       this.fb.control('second'),
     ]),
+    maxRounds: new FormControl<number>(15)
   });
+
+  roundOptions = Array.from({length: 15}, (_, i) => (i + 1) * 3); // 3, 6, 9...45
 
   private readonly defaultFormState = {
     gameType: GameType.Simple501,
-    playerNames: ['first', 'second']
+    playerNames: ['first', 'second'],
+    maxRounds: 15
   }
 
   ngOnInit(): void {
     if (localStorage.getItem('playerNames')) {
-      this.formGroup.controls.playerNames = this.fb.array(JSON.parse(localStorage.getItem('playerNames')!));
+      const savedNames = JSON.parse(localStorage.getItem('playerNames')!);
+      this.formGroup.setControl('playerNames', this.fb.array(savedNames.map((name: string) => this.fb.control(name))));
     }
   }
 
@@ -63,11 +66,13 @@ export class GameSelectionComponent implements OnInit, OnChanges {
   onSubmit() {
     const playerNames = this.formGroup.controls.playerNames.value;
     const gameType = this.formGroup.value.gameType;
+    const maxRounds = this.formGroup.value.maxRounds;
 
-    if (gameType == GameType.Simple501 || gameType == GameType.DoubleOut501 || gameType == GameType.Elimination || gameType == GameType.Elimination301) {
-      this.router.navigate(['dartboard'], {queryParams: {gameType, playerNames}});
+    const queryParams = {gameType, playerNames, maxRounds};
+    if (gameType == GameType.Cricket) {
+      this.router.navigate(['cricketboard'], {queryParams});
     } else {
-      this.router.navigate(['cricketboard'], {queryParams: {gameType, playerNames}});
+      this.router.navigate(['dartboard'], {queryParams});
     }
     localStorage.setItem('playerNames', JSON.stringify(playerNames));
   }

@@ -5,6 +5,7 @@ import {ToggleFullscreenService} from "../../../services/toggle-fullscreen.servi
 @Component({
   selector: 'app-cricket-component',
   templateUrl: './cricket-board.component.html',
+  standalone: false,
 })
 export class CricketBoardComponent implements OnDestroy, OnInit {
   cricketService = inject(CricketService);

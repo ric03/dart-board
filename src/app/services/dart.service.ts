@@ -39,6 +39,7 @@ export class DartService {
 
   setGameType(gameType: GameType) {
     this._gameType = gameType;
+    this.currentPlayerService.setCurrentGameMode(gameType);
   }
 
   initPlayers(playerNames: string[]) {
@@ -47,8 +48,8 @@ export class DartService {
     this.playerService.setupDartPlayers(playerNames);
 
     // Initialize starting points based on game type
-    if (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301) {
-      // Elimination starts at 0 points and counts upwards
+    if (this._gameType === GameType.Elimination301 || this._gameType === GameType.Highscore) {
+      // Elimination/Highscore starts at 0 points and counts upwards
       this.playerService._players.forEach(p => p.remainingPoints = 0);
     } else {
       // Ensure 501 start for classic modes
@@ -61,15 +62,19 @@ export class DartService {
 
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
-    this.currentPlayerService._currentPlayer.value.last3History.push(points);
 
-    if (this.roundCountService.getRemainingRounds() == 0) {
+    if (this.roundCountService.getRemainingRounds() == 0 && this.isNewRound()) {
       this.displayRoundCountNotification();
       return;
     }
 
-    if (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301) {
+    if (this._gameType === GameType.Elimination301) {
       this.scoreElimination(points);
+      return;
+    }
+
+    if (this._gameType === GameType.Highscore) {
+      this.scoreHighscore(points);
       return;
     }
 
@@ -99,12 +104,24 @@ export class DartService {
     }
   }
 
+  private scoreHighscore(points: number) {
+    this.currentPlayerService.scoreDart(points);
+    if (this.currentPlayerService.hasNoThrowsRemaining()) {
+      this.currentPlayerService.applyPoints();
+      if (this.roundCountService.getRemainingRounds() == 0 && this.isNewRound()) {
+        this.displayRoundCountNotification();
+      } else {
+        this.switchPlayer();
+      }
+    }
+  }
+
   private scoreElimination(points: number) {
     // Add points for current throw to the display/accumulator
     this.currentPlayerService.scoreDart(points);
 
     // Determine target based on elimination mode
-    const target = (this._gameType === GameType.Elimination301) ? 301 : 501;
+    const target = 301;
 
     // Potential total points after this throw (not yet applied to player)
     const current = this.currentPlayerService._currentPlayer.value;
@@ -188,7 +205,7 @@ export class DartService {
 
   private handleVictoryByReachingRoundLimit() {
     const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    const isEliminationMode = (this._gameType === GameType.Elimination || this._gameType === GameType.Elimination301);
+    const isEliminationMode = (this._gameType === GameType.Elimination301 || this._gameType === GameType.Highscore);
     const comparator = isEliminationMode ? Math.max : Math.min;
     const target = comparator(...arrOfPoints);
     const winner = this.playerService._players.filter((p1) => p1.remainingPoints == target);

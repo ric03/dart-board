@@ -1,9 +1,10 @@
-import {Component, HostListener, OnInit, inject} from '@angular/core';
+import {Component, HostListener, inject, OnInit} from '@angular/core';
 import {PwaInstallService} from './services/pwa-install.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: false,
 })
 export class AppComponent implements OnInit {
 

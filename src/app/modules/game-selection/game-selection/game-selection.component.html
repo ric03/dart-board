@@ -10,14 +10,19 @@
           <mat-option [value]="gameType.Simple501">501</mat-option>
           <mat-option [value]="gameType.DoubleOut501">501 (Double Out)</mat-option>
           <mat-option [value]="gameType.Cricket">Cricket</mat-option>
-          <mat-option [value]="gameType.Elimination">Elimination
-            (501)
-          </mat-option>
-          <mat-option [value]="gameType.Elimination301">Elimination
-            (301)
-          </mat-option>
+          <mat-option [value]="gameType.Elimination301">Elimination (301)</mat-option>
+          <mat-option [value]="gameType.Highscore">Highscore</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <div *ngIf="formGroup.get('gameType')?.value === gameType.Highscore">
+        <mat-form-field appearance="fill">
+          <mat-label>Max Rounds</mat-label>
+          <mat-select formControlName="maxRounds">
+            <mat-option *ngFor="let r of roundOptions" [value]="r">{{ r }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
     </div>
     <div class="d-flex flex-colum justify-content-between">

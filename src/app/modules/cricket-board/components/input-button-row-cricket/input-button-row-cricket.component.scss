@@ -7,18 +7,25 @@
 
 .input-btn-scale {
   button {
-    transform: scale(1.7);
-    margin: 45%;
+    transform: scale(1.4); // Reduced scale slightly to fit layout better
   }
 
-  @media screen and (orientation: portrait) {
+  @media screen and (max-width: 600px) {
     button {
-      padding-top: 3px;
       transform: scale(1.0);
-      margin: 0.5%;
     }
   }
 
+  @media screen and (min-width: 1200px) {
+    margin: 15px; // More space on large screens
+  }
+}
+
+.mx-2 {
+  @media screen and (min-width: 1200px) {
+    margin-left: 2rem !important;
+    margin-right: 2rem !important;
+  }
 }
 
 .miss-scale {

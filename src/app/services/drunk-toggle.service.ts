@@ -6,5 +6,5 @@ import {BehaviorSubject} from "rxjs";
 })
 export class DrunkToggleService {
 
-  isDrunkModeOn = new BehaviorSubject(true)
+  isDrunkModeOn = new BehaviorSubject(false)
 }

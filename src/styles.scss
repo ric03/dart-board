@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 // Explosion Animation importieren
-@import 'src/app/shared/animation/explosion-animation.scss';
+@use 'src/app/shared/animation/explosion-animation.scss';
 
 
 [appShapeMorph] {
@@ -113,3 +113,19 @@ mat-card {
   }
 }
 
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px); // Toolbar height approx 64px
+  overflow: hidden;
+
+  .input-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}

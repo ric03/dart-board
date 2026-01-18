@@ -50,6 +50,7 @@ export class CricketService {
 
   setGameType(gameType: string) {
     this._gameType = gameType;
+    this.currentPlayerService.setCurrentGameMode(gameType);
   }
 
   initPlayers(playerNames: string[]) {
@@ -63,7 +64,6 @@ export class CricketService {
 
   // anpassen
   scoreCricketWithMultiplier(_throw: Throw) {
-    this.currentPlayerService._last3History.push(_throw.value)
     if (this.roundCountService.getRemainingRounds() === 0) {
       this.displayRoundCountNotification();
     } else {
