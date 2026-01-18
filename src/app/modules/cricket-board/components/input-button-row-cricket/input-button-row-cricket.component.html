@@ -4,23 +4,43 @@
     <app-multiplier-toggle class="p-2"></app-multiplier-toggle>
     <div class="d-flex flex-row flex-wrap justify-content-center">
       <div *ngFor="let group of buttonGroups" class="d-flex flex-column mx-2">
-        <div *ngFor="let btnValue of group" class="d-flex flex-column input-btn-scale mb-3">
-          <button [disabled]="isClosed(btnValue)" mat-raised-button
-                  class="ms-1 justify-content-center no-pointer fs-3"
-                  [color]="'accent'"
-          >{{ getBadgeCountValue(btnValue) }}
-          </button>
-          <button [disabled]="isClosed(btnValue)" class="ms-2 mt-2 {{this.isScorable(btnValue)? '' : border}}" mat-fab
+        <div *ngFor="let btnValue of group" class="d-flex flex-column input-btn-scale mb-">
+          @if (btnValue === 25 || btnValue === 50) {
+            <button [disabled]="isClosed(25)" mat-raised-button
+                    class="ms-3 justify-content-center no-pointer fs-3 mt-4"
+                    [color]="'accent'"
+            >{{ getBadgeCountValue(25) }}
+            </button>
+          } @else {
+            <button [disabled]="isClosed(btnValue)" mat-raised-button
+                    class="ms-3 justify-content-center no-pointer fs-3 mt-4"
+                    [color]="'accent'"
+            >{{ getBadgeCountValue(btnValue) }}
+            </button>
+          }
+          <button [disabled]="isClosed(btnValue)" class="ms-4 mt-4 {{this.isScorable(btnValue)? '' : border}}"
+                  mat-fab
                   [color]="btnValue === 25 ? (multiplierService.multiplier() === 2 ? 'accent' : 'warn') : buttonColor"
                   matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                   [matRippleRadius]="customRipple.rippleRadius"
-                  (shapeMorphClick)="btnValue === 25 ? (multiplierService.multiplier() === 2 ? scoreBullsEye() : scoreBull()) : scoreHit(btnValue)"
+                  (shapeMorphClick)="justScore(btnValue)"
                   appShapeMorph
           >
-            <ng-container *ngIf="btnValue !== 25">{{ btnValue }}</ng-container>
-            <span *ngIf="btnValue === 25" class="mt-2 material-symbols-outlined">
-              {{ multiplierService.multiplier() === 2 ? 'target' : 'trip_origin' }}
+            @if (btnValue !== 25 && btnValue !== 50) {
+              {{ btnValue }}
+            }
+
+            @if (btnValue === 25) {
+              <span class="mt-2 material-symbols-outlined">
+                {{ 'trip_origin' }}
             </span>
+
+            }
+            @if (btnValue === 50) {
+              <span class="mt-2 material-symbols-outlined">
+                 {{ 'target' }}
+            </span>
+            }
           </button>
         </div>
       </div>

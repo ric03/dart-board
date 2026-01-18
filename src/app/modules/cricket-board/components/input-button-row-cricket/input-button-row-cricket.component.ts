@@ -17,7 +17,7 @@ import {MultiplierService} from "../../../../services/multiplier.service";
 export class InputButtonRowCricketComponent implements OnInit {
   protected readonly customRipple = customRipple;
 
-  readonly buttonGroups: number[][] = [[15, 16], [17, 18], [19, 20], [25]];
+  readonly buttonGroups: number[][] = [[15, 16], [17, 18], [19, 20], [25, 50]];
   public readonly border = "border border-5 border-warning"
 
   protected animationService = inject(ExplosionAnimationService)
@@ -99,5 +99,16 @@ export class InputButtonRowCricketComponent implements OnInit {
 
   private updateOrientation() {
     this.screenOrientation = (window.innerHeight > window.innerWidth ? 'portrait-primary' : 'landscape-primary') as OrientationType;
+  }
+
+  justScore(value: number) {
+    if (value === 25) {
+      this.scoreBull()
+    } else if (value === 50) {
+      this.scoreBullsEye()
+    } else {
+      this.scoreHit(value)
+    }
+
   }
 }
