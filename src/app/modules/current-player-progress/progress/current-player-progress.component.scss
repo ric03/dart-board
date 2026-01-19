@@ -117,7 +117,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 8px;
+        padding: 1rem 2rem;
         background-color: rgba(255, 255, 255, 0.03);
         border-radius: 4px;
         font-size: 0.75rem;
@@ -147,8 +147,8 @@
         }
 
         .cricket-mini-display {
-          gap: 4px;
-          height: 32px;
+          gap: 1rem;
+          height: 3rem;
           align-items: center;
 
           .cricket-circle-wrapper {
@@ -194,8 +194,8 @@
         }
 
         .mini-player-score {
-          min-width: 30px;
-          text-align: right;
+          min-width: 3rem;
+          text-align: center;
         }
       }
     }

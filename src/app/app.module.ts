@@ -20,10 +20,9 @@ import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {ServiceWorkerModule} from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import {environment} from '../environments/environment';
 import {MatIcon} from "@angular/material/icon";
 import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
-import {FloatingFullscreenButtonComponent} from './shared/components/floating-fullscreen-button/floating-fullscreen-button.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +57,6 @@ import {FloatingFullscreenButtonComponent} from './shared/components/floating-fu
     }),
     MatIcon,
     AppToolbarComponent,
-    FloatingFullscreenButtonComponent,
   ],
   providers: [
     {

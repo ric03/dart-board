@@ -11,10 +11,14 @@ import {CurrentPlayerService} from "../../services/current-player.service";
   template: `
     <h1 mat-dialog-title>How to win {{ currentplayerService.currentGameMode }}</h1>
     <mat-dialog-content #content>
-      @if (currentplayerService.currentGameMode === GameType.Elimination301 || currentplayerService.currentGameMode === GameType.Highscore) {
+      @if (currentplayerService.currentGameMode === GameType.Elimination301) {
         <p> Wer zu erst die Endpunktzahl erreicht gewinnt, sonst derjenige der am Ende der Rundenazahl die meisten
-          Punkte hat. Bei exakt der gleichen Punktzahl wird auf 0 zurückgesetzt (nur bei Elimination).</p>
-      } @else {
+          Punkte hat. Bei exakt der gleichen Punktzahl wird auf 0 zurückgesetzt.</p>
+      }
+      @if (currentplayerService.currentGameMode === GameType.Highscore) {
+        <p> Wer am Ende der Rundenazahl die meisten Punkte hat gewinnt.</p>
+      }
+      @if (currentplayerService.currentGameMode === GameType.Simple501 || currentplayerService.currentGameMode === GameType.DoubleOut501) {
         <p> Wer zu erst Null hat gewinnt, sonst derjenige der am Ende der Rundenazahl die wenigsten Punkte hat.</p>
       }
     </mat-dialog-content>

@@ -117,7 +117,6 @@ mat-card {
 .game-layout {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px); // Toolbar height approx 64px
   overflow: hidden;
 
   .input-container {

@@ -5,6 +5,16 @@
   width: calc(100% / 6);
 }
 
+.flex-direction {
+  @media screen and (max-width: 600px) {
+    flex-direction: row;
+  }
+
+  @media screen and (min-width: 1200px) {
+    flex-direction: column;
+  }
+}
+
 .input-btn-scale {
   button {
     transform: scale(1.4); // Reduced scale slightly to fit layout better
@@ -17,7 +27,7 @@
   }
 
   @media screen and (min-width: 1200px) {
-    margin: 15px; // More space on large screens
+    margin: 1.5rem; // More space on large screens
   }
 }
 
@@ -25,15 +35,6 @@
   @media screen and (min-width: 1200px) {
     margin-left: 2rem !important;
     margin-right: 2rem !important;
-  }
-}
-
-.miss-scale {
-  transform: scale(1.8);
-  font-size: 0.8em !important;
-
-  @media screen and (orientation: portrait) {
-    transform: scale(1.0);
   }
 }
 

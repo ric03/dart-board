@@ -19,7 +19,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatLabel} from "@angular/material/form-field";
 import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive";
 import {MultiplierToggleComponent} from "../../shared/components/multiplier-toggle/multiplier-toggle.component";
-import {MissButtonComponent} from "../../shared/components/miss-button/miss-button.component";
+import {BottomLine} from "../../shared/components/bottom-line/bottom-line";
 
 @NgModule({
   declarations: [
@@ -48,7 +48,7 @@ import {MissButtonComponent} from "../../shared/components/miss-button/miss-butt
     MatLabel,
     ShapeMorphDirective,
     MultiplierToggleComponent,
-    MissButtonComponent,
+    BottomLine,
   ]
 })
 export class CricketBoardModule {

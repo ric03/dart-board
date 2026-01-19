@@ -3,7 +3,7 @@
   <div class="d-flex flex-row flex-wrap w-100 justify-content-center align-items-center">
     <app-multiplier-toggle></app-multiplier-toggle>
 
-    <div class="d-flex flex-column mx-3">
+    <div class="d-flex flex-column mx-3 pt-2">
       <div class="d-flex justify-content-center pb-3 btn-scale">
         <button
           class="m-auto"
@@ -32,7 +32,8 @@
         <div *ngFor="let group of buttonGroups" class="d-flex flex-column mx-2">
           <div class="mt-3 d-flex justify-content-center btn-scale"
                *ngFor="let inputButton of group">
-            <button matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
+            <button class="mb-2"
+                    matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleCentered]="true"
                     [matRippleRadius]="customRipple.rippleRadius" mat-fab [color]="buttonColor"
                     [matBadge]="inputButton.badgeValue" [matBadgeHidden]="inputButton.badge"
@@ -47,4 +48,3 @@
     </div>
   </div>
 </div>
-<app-miss-button></app-miss-button>
