@@ -15,22 +15,6 @@
   }
 }
 
-.input-btn-scale {
-  button {
-    transform: scale(1.4); // Reduced scale slightly to fit layout better
-  }
-
-  @media screen and (max-width: 600px) {
-    button {
-      transform: scale(1.0);
-    }
-  }
-
-  @media screen and (min-width: 1200px) {
-    margin: 1.5rem; // More space on large screens
-  }
-}
-
 .mx-2 {
   @media screen and (min-width: 1200px) {
     margin-left: 2rem !important;

@@ -128,3 +128,25 @@ mat-card {
     width: 100%;
   }
 }
+
+.btn-scale {
+  button {
+    transform: scale(1.4);
+  }
+
+  @media screen and (max-width: 600px) {
+    button {
+      transform: scale(1.0);
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    button {
+      transform: scale(0.8);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    margin: 1.5rem; // More space on large screens
+  }
+}

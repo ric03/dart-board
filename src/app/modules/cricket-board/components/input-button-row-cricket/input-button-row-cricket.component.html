@@ -1,10 +1,9 @@
-<div [hidden]="this.cricketService._hideAll" class="container-fluid pe-5">
+<div [hidden]="this.cricketService._hideAll" class="container-fluid p-6">
 
   <div class="d-flex flex-row flex-wrap w-100 justify-content-center align-items-center pe-3">
-    <app-multiplier-toggle class="p-2"></app-multiplier-toggle>
     <div class="d-flex flex-row flex-wrap justify-content-center">
       <div *ngFor="let group of buttonGroups" class="d-flex flex-direction">
-        <div *ngFor="let btnValue of group" class="d-flex flex-column input-btn-scale">
+        <div *ngFor="let btnValue of group" class="d-flex flex-column btn-scale">
           @if (btnValue === 25 || btnValue === 50) {
             <button [disabled]="isClosed(25)" mat-raised-button
                     class="ms-3 justify-content-center no-pointer fs-3 mt-4"

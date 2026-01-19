@@ -1,7 +1,14 @@
 <div class="game-layout">
   <app-current-player-progress></app-current-player-progress>
-  <div class="input-container">
-    <app-input-button-row-cricket></app-input-button-row-cricket>
+  <div class="d-flex flex-row">
+    <div class="input-container">
+      <app-input-button-row-cricket></app-input-button-row-cricket>
+    </div>
+    <div class="d-flex flex-column pt-5">
+      <app-multiplier-toggle></app-multiplier-toggle>
+      <app-bottom-line></app-bottom-line>
+    </div>
   </div>
 </div>
-<app-bottom-line></app-bottom-line>
+
+
