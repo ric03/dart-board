@@ -17,7 +17,8 @@
             >{{ getBadgeCountValue(btnValue) }}
             </button>
           }
-          <button [disabled]="isClosed(btnValue)" class="ms-4 mt-4 {{this.isScorable(btnValue)? '' : border}}"
+          <button [disabled]="isClosed(btnValue)"
+                  class="ms-4 mt-4 raised-button-3d {{this.isScorable(btnValue)? '' : border}}"
                   mat-fab
                   [color]="btnValue === 25 ? (multiplierService.multiplier() === 2 ? 'accent' : 'warn') : buttonColor"
                   matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"

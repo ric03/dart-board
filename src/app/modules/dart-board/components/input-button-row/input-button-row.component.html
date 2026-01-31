@@ -4,7 +4,7 @@
     <div class="d-flex flex-column mx-3 pt-2 btn-scale">
       <div class="d-flex justify-content-center pb-3">
         <button
-          class="m-auto"
+          class="m-auto raised-button-3d-rect"
           mat-flat-button [color]="multiplierService.multiplier() === 2 ? 'accent' : 'primary'"
           matRipple [matRippleColor]="customRipple.rippleColor" [matRippleRadius]="customRipple.rippleRadius"
           [matBadge]="this.badgeHandleService.bullBadgeCount"
@@ -15,7 +15,8 @@
           Bull
         </button>
         <button
-          class="m-auto" mat-flat-button [color]="multiplierService.multiplier() === 2 ? 'accent' : 'accent'"
+          class="m-auto raised-button-3d-rect" mat-flat-button
+          [color]="multiplierService.multiplier() === 2 ? 'accent' : 'accent'"
           matRipple [matRippleColor]="customRipple.rippleColor" [matRippleRadius]="customRipple.rippleRadius"
           [matBadge]="this.badgeHandleService.bullsEyeBadgeCount"
           [matBadgeHidden]="this.badgeHandleService.matBadgeHiddenBullsEye"
@@ -30,7 +31,7 @@
         <div *ngFor="let group of buttonGroups" class="d-flex flex-column mx-2">
           <div class="mt-3 d-flex justify-content-center"
                *ngFor="let inputButton of group">
-            <button class="mb-2"
+            <button class="mb-2 raised-button-3d"
                     matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
                     [matRippleCentered]="true"
                     [matRippleRadius]="customRipple.rippleRadius" mat-fab [color]="buttonColor"
