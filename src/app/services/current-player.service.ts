@@ -136,6 +136,7 @@ export class CurrentPlayerService {
 
   scoreDart(points: number) {
     if (this.hasThrowsRemaining()) {
+      this.calcAverage();
       const currentPlayer = this._currentPlayer.value;
       this._currentPlayer.value.last3History = [...this._last3History];
       this.captureState();
@@ -158,6 +159,7 @@ export class CurrentPlayerService {
 
   scoreCricket(_throw: Throw) {
     if (this.hasThrowsRemaining()) {
+      this.calcAverage();
       this._currentPlayer.value.last3History = [...this._last3History];
       this.captureState();
       this.evaluateCricketPoints(_throw);
@@ -214,7 +216,6 @@ export class CurrentPlayerService {
     }
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this.savePointsForStatistics();
-    this.calcAverage();
 
     this.captureState();
   }
@@ -223,23 +224,33 @@ export class CurrentPlayerService {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
     this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     this.savePointsForStatistics();
-    this.calcAverage();
 
     this.captureState();
   }
 
+  /**
+   * Average(Dart): Gesamtpunktzahl eines Spielers durch die Anzahl der geworfenen Darts teilen und das Ergebnis mit 3 multiplizieren
+   * Average(Cricket): Gesamtpunktzahl aller Runden durch die Anzahl der Runden teilen
+   */
   calcAverage() {
-    let arr: number[] = [];
-    this._currentPlayer.value.history.forEach((entry: HistoryEntry) => {
-      entry.hits.forEach((hit: number) => {
-        arr.push(hit);
+    if (this.currentGameMode !== GameType.Cricket) {
+      let arr: number[] = [];
+      console.log(this._currentPlayer.value.history)
+      this._currentPlayer.value.history.forEach((entry: HistoryEntry) => {
+        entry.hits.forEach((hit: number) => {
+          arr.push(hit);
+        });
       });
-    });
-    let leng = arr.length;
-    if (leng > 0) {
-      let sum = arr.reduce((a, b) => +a + +b);
-      this._averagePoints = Math.round(sum / leng);
-      this._currentPlayer.value.average = this._averagePoints;
+      let geworfeneDarts = arr.length;
+      if (geworfeneDarts > 0) {
+        let gesamtPunktzahl = arr.reduce((a, b) => +a + +b);
+        this._averagePoints = Math.round((gesamtPunktzahl / geworfeneDarts) * 3);
+        this._currentPlayer.value.average = this._averagePoints;
+      }
+    } else {
+      if (this._currentPlayer.value.cricketMap.size > 0) {
+        this._currentPlayer.value.average = this._currentPlayer.value.remainingPoints / this._currentPlayer.value.cricketMap.size;
+      }
     }
   }
 
