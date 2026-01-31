@@ -117,8 +117,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem 2rem;
-        background-color: rgba(255, 255, 255, 0.03);
+        padding: 0.5rem 0.5rem;
         border-radius: 4px;
         font-size: 0.75rem;
         min-height: 34px;
@@ -130,7 +129,9 @@
         }
 
         .mini-player-name {
+          padding: 0.2rem;
           max-width: 100%;
+          min-width: 3rem;
           color: #80d8ff;
           font-weight: 500;
         }
@@ -147,7 +148,8 @@
         }
 
         .cricket-mini-display {
-          gap: 1rem;
+          width: 100%;
+          gap: 0.75rem;
           height: 3rem;
           align-items: center;
 

@@ -50,14 +50,14 @@
   <div class="section players-overview">
     <div class="mini-scoreboard">
       <ng-container *ngFor="let player of playerService._players">
-        <div *ngIf="player.id !== currentPlayerService._currentPlayer.value.id" class="mini-player-row">
-          <div class="mini-player-main-info text-truncate">
-            <span class="mini-player-name text-truncate">{{ player.name }}</span>
-            <span
+        <div class="mini-player-row">
+          <div class="mini-player-main-info">
+            <div class="mini-player-name">{{ player.name }}</div>
+            <div
               *ngIf="(currentPlayerService.currentGameMode === GameType.Highscore || currentPlayerService.currentGameMode === GameType.Elimination301)"
               class="diff-score small ms-1">
-            ({{ getDiffToCurrentPlayer(player) }})
-          </span>
+              ({{ getDiffToCurrentPlayer(player) }})
+            </div>
           </div>
 
           <div class="mini-player-actions d-flex align-items-center">

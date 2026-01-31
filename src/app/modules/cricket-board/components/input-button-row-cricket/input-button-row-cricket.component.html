@@ -6,13 +6,13 @@
         <div *ngFor="let btnValue of group" class="d-flex flex-column btn-scale">
           @if (btnValue === 25 || btnValue === 50) {
             <button [disabled]="isClosed(25)" mat-raised-button
-                    class="ms-3 justify-content-center no-pointer fs-3 mt-4"
+                    class="ms-3 justify-content-center no-pointer fs-3 mt-4 me-3"
                     [color]="'accent'"
             >{{ getBadgeCountValue(25) }}
             </button>
           } @else {
             <button [disabled]="isClosed(btnValue)" mat-raised-button
-                    class="ms-3 justify-content-center no-pointer fs-3 mt-4"
+                    class="ms-3 justify-content-center no-pointer fs-3 mt-4 me-3"
                     [color]="'accent'"
             >{{ getBadgeCountValue(btnValue) }}
             </button>
