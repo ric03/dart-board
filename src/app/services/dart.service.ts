@@ -212,13 +212,13 @@ export class DartService {
     this.currentPlayerService._currentPlayer.next(winner[0]); // TODO consider a draw
 
     const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
-    this.dialog.open(VictoryDialog, {data});
+    this.dialog.open(VictoryDialog, {data, disableClose: true});
     // TODO: Open PointsOverview as Option
   }
 
   private handleVictory() {
     this._hideAll = true;
-    this.dialog.open(VictoryDialog);
+    this.dialog.open(VictoryDialog, {disableClose: true});
     // TODO: Open PointsOverview as Option
   }
 

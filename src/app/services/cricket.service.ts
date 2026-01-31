@@ -79,7 +79,7 @@ export class CricketService {
 
   private handleVictory() {
     this._hideAll = true;
-    this.dialog.open(VictoryDialog);
+    this.dialog.open(VictoryDialog, {disableClose: true});
     // TODO: Open PointsOverview as Option
   }
 
@@ -99,7 +99,7 @@ export class CricketService {
     this.currentPlayerService._currentPlayer.next(this.getPlayerWithHighestScore());
 
     const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
-    this.dialog.open(VictoryDialog, {data});
+    this.dialog.open(VictoryDialog, {data, disableClose: true});
     // TODO: Open PointsOverview as Option
   }
 

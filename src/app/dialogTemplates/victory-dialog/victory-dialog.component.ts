@@ -1,9 +1,10 @@
-import {Component, Inject} from '@angular/core';
+import {Component, inject, Inject} from '@angular/core';
 import {CurrentPlayerService} from "../../services/current-player.service";
 import {RouterModule} from "@angular/router";
 import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {NgIf} from "@angular/common";
+import {ExplosionAnimationService} from "../../shared/animation/explosion-animation.service";
 
 export interface VictoryDialogData {
   victoryByReachingRoundLimit: boolean;
@@ -12,14 +13,13 @@ export interface VictoryDialogData {
 @Component({
   selector: 'app-victory-dialog',
   template: `
-    <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.value.name }}. You have won.</h1>
+    <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.value.name }}. You have
+      won. {{ currentPlayerService._currentPlayer.value.remainingPoints > 0 ? currentPlayerService._currentPlayer.value.remainingPoints : '' }}</h1>
     <mat-dialog-content>
       <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of rounds.</p>
-      <p>Do you want to play again?</p>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close="" routerLink="/">back to main menu</button>
-      <button mat-button mat-dialog-close="" (click)="restartCurrentGame()">restart</button>
+      <button mat-raised-button color="warn" mat-dialog-close="" routerLink="/">main menu</button>
     </mat-dialog-actions>
   `,
   standalone: true,
@@ -36,9 +36,6 @@ export class VictoryDialog {
   constructor(public currentPlayerService: CurrentPlayerService,
               @Inject(MAT_DIALOG_DATA) public data: VictoryDialogData,
   ) {
-  }
-
-  restartCurrentGame() {
-    window.location.reload();
+    inject(ExplosionAnimationService).showExplosion('WINNER: ' + currentPlayerService._currentPlayer.value.name);
   }
 }

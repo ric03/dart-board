@@ -1,13 +1,13 @@
 import {TestBed} from '@angular/core/testing';
-import {CurrentPlayerService} from './current-player.service';
-import {PlayerService} from './player.service';
-import {GameStoreService} from './game-store.service';
-import {RoundCountService} from './round-count.service';
-import {BadgeHandleService} from './badge-handle.service';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
-import {GameType} from '../models/enum/GameType';
-import {Player} from '../models/player/player.model';
+import {CurrentPlayerService} from "../app/services/current-player.service";
+import {PlayerService} from "../app/services/player.service";
+import {GameStoreService} from "../app/services/game-store.service";
+import {RoundCountService} from "../app/services/round-count.service";
+import {BadgeHandleService} from "../app/services/badge-handle.service";
+import {Player} from "../app/models/player/player.model";
+import {GameType} from "../app/models/enum/GameType";
 
 describe('Undo Functionality', () => {
   let currentPlayerService: CurrentPlayerService;
