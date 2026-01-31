@@ -1,9 +1,7 @@
 <div class="container-fluid mt-3 d-flex justify-content-center">
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()"
         (reset)="onReset($event)">
-
-    <h5>select a game</h5>
-    <div>
+    <div class="my-3">
       <mat-form-field appearance="fill">
         <mat-label class="text">Game Type</mat-label>
         <mat-select formControlName="gameType">
@@ -25,29 +23,36 @@
       </div>
 
     </div>
-    <div class="d-flex flex-colum justify-content-between">
-      <h5>add player(s)</h5>
-      <button mat-mini-fab color="accent" type="button" (click)="addPlayerName()">
+    <div class="d-flex flex-colum my-3">
+      <button mat-raised-button color="accent" type="button" (click)="addPlayerName()">
         <mat-icon>
           add
         </mat-icon>
+        Player
       </button>
     </div>
 
-    <div formArrayName="playerNames">
-      <div *ngFor="let playerName of playerNames.controls; let i=index">
+    <div formArrayName="playerNames" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let playerName of playerNames.controls; let i=index" cdkDrag>
         <mat-form-field appearance="fill">
           <mat-label>Player {{ i + 1 }}</mat-label>
-          <input #nameInput matInput id="playerName-{{ i }}" type="text"
-                 [formControlName]="i" value="{{playerName}}">
+          <div class="d-flex flex-row">
+            <input #nameInput matInput id="playerName-{{ i }}" type="text"
+                   [formControlName]="i" value="{{playerName}}">
+            <button mat-mini-fab class="ms-2 mb-1" type="button" color="warn" (click)="removePlayerName(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
           @if (nameInput.value === '') {
             <mat-hint class="text-bg-danger">
               fill with name please!
             </mat-hint>
           }
         </mat-form-field>
-        <button mat-mini-fab class="ms-2" type="button" color="warn" (click)="removePlayerName(i)">
-          <mat-icon>close</mat-icon>
+        <button mat-icon-button>
+          <mat-icon>
+            reorder
+          </mat-icon>
         </button>
       </div>
 

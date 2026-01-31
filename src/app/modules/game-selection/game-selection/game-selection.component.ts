@@ -2,10 +2,12 @@ import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core
 import {FormBuilder, FormControl, UntypedFormArray} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
+  styleUrls: ['./game-selection.component.scss'],
   standalone: false,
 })
 export class GameSelectionComponent implements OnInit, OnChanges {
@@ -38,6 +40,10 @@ export class GameSelectionComponent implements OnInit, OnChanges {
     if (localStorage.getItem('playerNames')) {
       const savedNames = JSON.parse(localStorage.getItem('playerNames')!);
       this.formGroup.setControl('playerNames', this.fb.array(savedNames.map((name: string) => this.fb.control(name))));
+    }
+    if (localStorage.getItem('gameType')) {
+      const gameType = JSON.parse(localStorage.getItem('gameType')!);
+      this.formGroup.controls.gameType.setValue(this.getGameType(gameType));
     }
   }
 
@@ -75,6 +81,7 @@ export class GameSelectionComponent implements OnInit, OnChanges {
       this.router.navigate(['dartboard'], {queryParams});
     }
     localStorage.setItem('playerNames', JSON.stringify(playerNames));
+    localStorage.setItem('gameType', JSON.stringify(gameType));
   }
 
   onReset(event: Event) {
@@ -89,5 +96,28 @@ export class GameSelectionComponent implements OnInit, OnChanges {
     const isMoreThenOnePlayer = playerNames.controls.length > 0
     const allPlayersHaveNames = !((playerNames.value as Array<any>).some((val: string | null) => val === '' || val === null))
     return isMoreThenOnePlayer && allPlayersHaveNames;
+  }
+
+  protected drop($event: CdkDragDrop<string[]>) {
+    let playerNamesToMove = this.playerNames.getRawValue();
+    moveItemInArray(playerNamesToMove, $event.previousIndex, $event.currentIndex);
+    this.playerNames.setValue(playerNamesToMove);
+  }
+
+  getGameType(type: string) {
+    switch (type) {
+      case '501':
+        return GameType.Simple501;
+      case 'Cricket':
+        return GameType.Cricket;
+      case '501-DoubleOut':
+        return GameType.DoubleOut501;
+      case 'Elimination-301':
+        return GameType.Elimination301;
+      case 'Highscore':
+        return GameType.Highscore;
+      default:
+        return GameType.Simple501;
+    }
   }
 }

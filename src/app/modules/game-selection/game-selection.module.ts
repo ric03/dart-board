@@ -7,6 +7,7 @@ import {MatOption, MatSelect, MatSelectModule} from "@angular/material/select";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
+import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,8 @@ import {MatIcon} from "@angular/material/icon";
     MatButton,
     MatInput,
     MatIcon,
+    CdkDropList,
+    CdkDrag
   ],
   exports: [
     GameSelectionComponent,
