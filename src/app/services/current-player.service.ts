@@ -249,7 +249,7 @@ export class CurrentPlayerService {
       }
     } else {
       if (this._currentPlayer.value.cricketMap.size > 0) {
-        this._currentPlayer.value.average = this._currentPlayer.value.remainingPoints / this._currentPlayer.value.cricketMap.size;
+        this._currentPlayer.value.average = Math.round(this._currentPlayer.value.remainingPoints / this._currentPlayer.value.cricketMap.size);
       }
     }
   }
