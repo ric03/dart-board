@@ -62,6 +62,7 @@ describe('DartService Integration', () => {
     // Setze Rundenlimit auf 1 und verbrauche es
     roundCountService.setMaxRounds(1);
     roundCountService.roundCount = 1;
+    currentPlayerService._remainingThrows = 0
 
     service.score({value: 10, multiplier: 1});
 

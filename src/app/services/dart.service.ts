@@ -79,6 +79,7 @@ export class DartService {
     }
 
     if (this.currentPlayerService.isOvershot(points)) {
+      this.currentPlayerService.captureState();
       this.displayOvershotNotification().afterDismissed().subscribe(() => {
         this.switchPlayer();
       })
@@ -143,6 +144,7 @@ export class DartService {
       return;
     }
     if (potentialTotal > target) {
+      this.currentPlayerService.captureState();
       this.displayOvershotNotification().afterDismissed().subscribe(() => {
         this.switchPlayer();
       })
@@ -162,6 +164,7 @@ export class DartService {
         this.currentPlayerService.applyPoints();
         this.handleVictory();
       } else {
+        this.currentPlayerService.captureState();
         this.displayDoubleOutFailNotification().afterDismissed().subscribe(() => {
           this.switchPlayer();
         })
