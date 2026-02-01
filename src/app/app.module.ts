@@ -11,7 +11,6 @@ import {CurrentPlayerProgressModule} from './modules/current-player-progress/cur
 import {DartBoardModule} from './modules/dart-board/dart-board.module';
 import {GameSelectionModule} from './modules/game-selection/game-selection.module';
 import {PageNotFoundModule} from "./modules/page-not-found/page-not-found.module";
-import {ScoreBoardModule} from './modules/score-board/score-board.module';
 import {noop} from "./shared/util";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
@@ -36,7 +35,6 @@ import {AppToolbarComponent} from "./app-toolbar/app-toolbar.component";
 
     DartBoardModule,
     CricketBoardModule,
-    ScoreBoardModule,
     GameSelectionModule,
     PageNotFoundModule,
     CurrentPlayerProgressModule,

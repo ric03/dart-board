@@ -87,7 +87,7 @@
       }
 
       .round-value {
-        font-size: 1rem;
+        font-size: 0.7rem;
       }
     }
   }
@@ -115,7 +115,6 @@
 
       .mini-player-row {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         padding: 0.5rem 0.5rem;
         border-radius: 4px;
@@ -124,6 +123,7 @@
         width: 100%;
 
         &.active-player {
+          min-width: fit-content;
           background-color: rgba(128, 216, 255, 0.2);
           border: 1px solid rgba(128, 216, 255, 0.3);
         }

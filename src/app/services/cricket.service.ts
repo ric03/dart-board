@@ -22,7 +22,6 @@ export class CricketService {
    *
    */
   playerNames: string[] = [];
-  roundCount: number = 0;
   public _gameType: GameType | string = '';
   public _hideAll: boolean = false;
 
@@ -57,7 +56,6 @@ export class CricketService {
     this.roundCountService.reset();
     this.playerNames = playerNames;
     this.playerService.setupCricketPlayers(playerNames);
-    this.roundCount = 1;
     this._hideAll = false;
     this.currentPlayerService.init(this.playerService.getFirstPlayer());
   }

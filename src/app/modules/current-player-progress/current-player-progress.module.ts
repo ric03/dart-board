@@ -6,8 +6,8 @@ import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
-import {ScoreBoardModule} from "../score-board/score-board.module";
-import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton, MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 
 @NgModule({
@@ -21,9 +21,11 @@ import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
     MatProgressBarModule,
     MatStepperModule,
     MatInputModule,
-    ScoreBoardModule,
     MatFabButton,
     MatMiniFabButton,
+    MatIconButton,
+    MatIcon,
+    MatButton,
 
   ],
   exports: [

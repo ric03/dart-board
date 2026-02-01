@@ -7,27 +7,33 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {CricketService} from "../../services/cricket.service";
 import {Player} from "../../models/player/player.model";
-import {CricketOverviewComponent} from "./cricket-overview/cricket-overview.component";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {
+  MiniPlayerOverview
+} from "../../modules/current-player-progress/progress/mini-player-overview/mini-player-overview";
+import {GameType} from "../../models/enum/GameType";
+import {CurrentPlayerProgressModule} from "../../modules/current-player-progress/current-player-progress.module";
 
 @Component({
   selector: 'app-switch-player-snack',
   templateUrl: './switch-player-snack.component.html',
-  imports: [MatCardModule, MatButtonModule, CommonModule, CricketOverviewComponent],
-  standalone: true
+  imports: [MatCardModule, MatButtonModule, CommonModule, MatProgressBarModule, MiniPlayerOverview, CurrentPlayerProgressModule],
+  standalone: true,
 })
 export class SwitchPlayerSnackComponent implements OnInit, OnDestroy {
-
-  playerservice = inject(PlayerService)
+  protected readonly GameType = GameType;
+  protected playerService: PlayerService = inject(PlayerService)
   snackBarRef = inject(MatSnackBar);
   currentPlayerService = inject(CurrentPlayerService);
   cricketService = inject(CricketService);
 
-  public timeLeft: number = 3;
-  public nextPlayer: Player = this.playerservice.getNextPlayer(this.currentPlayerService._currentPlayer.value);
+  public timeLeft: number = 4;
+  public nextPlayer!: Player;
   public cricketKeys: number[] = [];
 
 
   ngOnInit(): void {
+    this.nextPlayer = this.currentPlayerService._currentPlayer.value;
     this.startTimer();
     // Convert Map iterator to a stable array to avoid ExpressionChangedAfterItHasBeenCheckedError
     this.cricketKeys = Array.from(this.nextPlayer.cricketMap.keys());

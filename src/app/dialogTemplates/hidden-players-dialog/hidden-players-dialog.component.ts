@@ -3,9 +3,11 @@ import {PlayerService} from 'src/app/services/player.service';
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
-import {NgForOf, NgIf} from "@angular/common";
 import {GameType} from "../../models/enum/GameType";
 import {CurrentPlayerService} from "../../services/current-player.service";
+import {
+  MiniPlayerOverview
+} from "../../modules/current-player-progress/progress/mini-player-overview/mini-player-overview";
 
 @Component({
   selector: 'app-hidden-players-dialog',
@@ -14,8 +16,7 @@ import {CurrentPlayerService} from "../../services/current-player.service";
     MatCardModule,
     MatDialogModule,
     MatButtonModule,
-    NgForOf,
-    NgIf
+    MiniPlayerOverview
   ],
   standalone: true
 })

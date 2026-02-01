@@ -3,6 +3,8 @@ import {CurrentPlayerService} from "../../../services/current-player.service";
 import {RoundCountService} from "../../../services/round-count.service";
 import {PlayerService} from "../../../services/player.service";
 import {GameType} from "../../../models/enum/GameType";
+import {MatDialog} from "@angular/material/dialog";
+import {HiddenPlayersDialog} from "../../../dialogTemplates/hidden-players-dialog/hidden-players-dialog.component";
 
 @Component({
   selector: 'app-current-player-progress',
@@ -13,11 +15,9 @@ import {GameType} from "../../../models/enum/GameType";
 export class CurrentPlayerProgressComponent {
   public playerService = inject(PlayerService);
   protected readonly GameType = GameType;
-
-  constructor(public currentPlayerService: CurrentPlayerService,
-              public roundCountService: RoundCountService,
-  ) {
-  }
+  public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
+  public roundCountService: RoundCountService = inject(RoundCountService);
+  private dialog: MatDialog = inject(MatDialog);
 
   getProgressColor() {
     const remainingThrows = this.currentPlayerService._remainingThrows;
@@ -33,18 +33,6 @@ export class CurrentPlayerProgressComponent {
     }
   }
 
-  getDiffToNextPlayer(): number {
-    const players = this.playerService._players;
-    if (players.length < 2) return 0;
-    const current = this.currentPlayerService._currentPlayer.value;
-    const currentIndex = players.indexOf(current);
-    const nextIndex = (currentIndex + 1) % players.length;
-    const nextPlayer = players[nextIndex];
-
-    const currentPoints = this.currentPlayerService._remainingPointsToDisplay();
-    return Math.abs(currentPoints - nextPlayer.remainingPoints);
-  }
-
   getDiffToCurrentPlayer(player: any): number {
     const currentPoints = this.currentPlayerService._remainingPointsToDisplay();
     return Math.abs(currentPoints - player.remainingPoints);
@@ -56,5 +44,9 @@ export class CurrentPlayerProgressComponent {
 
   getCricketHitCount(player: any, value: number): number {
     return player.cricketMap.get(value) || 0;
+  }
+
+  openPlayersOverviewDialog() {
+    this.dialog.open(HiddenPlayersDialog)
   }
 }

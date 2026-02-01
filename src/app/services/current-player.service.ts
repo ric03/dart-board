@@ -23,7 +23,6 @@ export const MAX_REMAINING_THROWS = 3;
 export class CurrentPlayerService {
   private roundCountService = inject(RoundCountService);
   private gameStore = inject(GameStoreService);
-  private isToResetRound: boolean = false;
   currentGameMode = ""
 
   constructor(private playerService: PlayerService,
@@ -101,14 +100,6 @@ export class CurrentPlayerService {
       horizontalPosition: "center",
       verticalPosition: "top"
     });
-  }
-
-  private resetRound() {
-    this.resetAccumulatedPoints();
-    this.resetThrows();
-    this.roundCountService.decrementRoundCount();
-    this._currentPlayer.value.last3History = [];
-    this.captureState();
   }
 
   private savePointsForStatistics() {

@@ -1,0 +1,41 @@
+<div class="progress-container m-1 px-1 py-1 shadow rounded h-auto">
+  <div class="section players-overview">
+    <div class="mini-scoreboard">
+      <ng-container *ngFor="let player of playerService._players">
+        <div class="mini-player-row">
+          <div class="mini-player-main-info">
+            <div class="mini-player-name">{{ player.name }}</div>
+            <div
+              *ngIf="(currentPlayerService.currentGameMode === GameType.Highscore || currentPlayerService.currentGameMode === GameType.Elimination301)"
+              class="diff-score small ms-1">
+              ({{ getDiffToCurrentPlayer(player) }})
+            </div>
+          </div>
+
+          <div class="mini-player-actions d-flex align-items-center">
+            <!-- Cricket Miniature -->
+            <div *ngIf="currentPlayerService.currentGameMode === GameType.Cricket"
+                 class="cricket-mini-display d-flex me-2">
+              <div *ngFor="let val of getCricketValues()"
+                   class="cricket-circle-wrapper">
+                <div class="cricket-circle"
+                     [class.closed]="getCricketHitCount(player, val) >= 3"
+                     [attr.title]="val === 25 ? 'Bull' : val">
+                  <span class="cricket-value">{{ val === 25 ? 'B' : val }}</span>
+                </div>
+                <div class="hit-count" [class.closed]="getCricketHitCount(player, val) >= 3">
+                  {{ getCricketHitCount(player, val) }}
+                </div>
+              </div>
+            </div>
+
+            <span class="mini-player-score fw-bold matcardpointer"
+                  (click)="currentPlayerService.showHistory(player)">
+            {{ player.remainingPoints }}
+          </span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

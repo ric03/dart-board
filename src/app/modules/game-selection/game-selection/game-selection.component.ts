@@ -1,4 +1,4 @@
-import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, UntypedFormArray} from '@angular/forms';
 import {Router} from "@angular/router";
 import {GameType} from '../../../models/enum/GameType';
@@ -10,7 +10,7 @@ import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
   styleUrls: ['./game-selection.component.scss'],
   standalone: false,
 })
-export class GameSelectionComponent implements OnInit, OnChanges {
+export class GameSelectionComponent implements OnInit {
 
 
   // Create a reference, to make the enum accessible in the html-template
@@ -46,13 +46,6 @@ export class GameSelectionComponent implements OnInit, OnChanges {
       this.formGroup.controls.gameType.setValue(this.getGameType(gameType));
     }
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
-      this.validateGameStart(this.playerNames)
-    }
-  }
-
 
   get playerNames(): UntypedFormArray {
     return this.formGroup.get('playerNames') as UntypedFormArray;

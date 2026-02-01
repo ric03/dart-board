@@ -252,7 +252,6 @@ export class ShapeMorphDirective {
   }
 
   private perfromButtonShapeMorph() {
-    console.warn("morph")
     // Use holdDuration for transition timing
     this.renderer.setStyle(this.el.nativeElement, 'transition', `border-radius 500ms linear, background-color 700ms linear`);
     // perform animation over holdDuration, not instant

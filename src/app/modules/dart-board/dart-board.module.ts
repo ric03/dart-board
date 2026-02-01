@@ -5,7 +5,6 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatRippleModule} from "@angular/material/core";
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {GameSelectionModule} from '../game-selection/game-selection.module';
-import {ScoreBoardModule} from '../score-board/score-board.module';
 import {InputButtonRowComponent} from "./components/input-button-row/input-button-row.component";
 import {DartBoardComponent} from './dart-board/dart-board.component';
 import {CurrentPlayerProgressModule} from "../current-player-progress/current-player-progress.module";
@@ -35,7 +34,6 @@ import {BottomLine} from "../../shared/components/bottom-line/bottom-line";
     MatBadgeModule,
 
     GameSelectionModule,
-    ScoreBoardModule,
     CurrentPlayerProgressModule,
     ShapeMorphDirective,
     MultiplierToggleComponent,

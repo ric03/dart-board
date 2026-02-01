@@ -1,4 +1,4 @@
-<div class="progress-container m-1 px-1 py-1 border border-light rounded">
+<div class="progress-container m-1 px-1 py-1 shadow rounded">
   <!-- Erstes Drittel: Punktzahl des aktuellen Spielers -->
   <div class="section player-info">
     <mat-card class="matcardpointer info-card h-100"
@@ -42,6 +42,9 @@
       <div class="round-info small text-nowrap">
         <span class="round-label">Runde</span>
         <span class="round-value">{{ roundCountService.roundCount }}/{{ roundCountService.MAX_ROUND_COUNT }}</span>
+        <button class="p-2" mat-icon-button (click)="openPlayersOverviewDialog()">
+          <mat-icon>groups</mat-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -50,14 +53,17 @@
   <div class="section players-overview">
     <div class="mini-scoreboard">
       <ng-container *ngFor="let player of playerService._players">
-        <div class="mini-player-row">
+        <div class="mini-player-row" [class.active-player]="player.id === currentPlayerService._currentPlayer.value.id">
           <div class="mini-player-main-info">
             <div class="mini-player-name">{{ player.name }}</div>
-            <div
-              *ngIf="(currentPlayerService.currentGameMode === GameType.Highscore || currentPlayerService.currentGameMode === GameType.Elimination301)"
-              class="diff-score small ms-1">
-              ({{ getDiffToCurrentPlayer(player) }})
-            </div>
+            @if ((currentPlayerService._currentPlayer.value !== player &&
+              currentPlayerService._currentPlayer.value.remainingPoints < player.remainingPoints
+              && currentPlayerService.currentGameMode === GameType.Elimination301)) {
+              <div
+                class="diff-score small ms-1">
+                ({{ getDiffToCurrentPlayer(player) }})
+              </div>
+            }
           </div>
 
           <div class="mini-player-actions d-flex align-items-center">
