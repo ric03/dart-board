@@ -63,7 +63,7 @@ export class DartService {
   score(_throw: Throw) {
     const points = _throw.value * _throw.multiplier;
 
-    if (this.roundCountService.getRemainingRounds() == 0 && this.isNewRound()) {
+    if (this.roundCountService.getRemainingRounds() == 0 && this.currentPlayerService.hasNoThrowsRemaining() && this.isNewRound()) {
       this.displayRoundCountNotification();
       return;
     }

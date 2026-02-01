@@ -14,7 +14,7 @@ export interface VictoryDialogData {
   selector: 'app-victory-dialog',
   template: `
     <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.value.name }}. You have
-      won. {{ currentPlayerService._currentPlayer.value.remainingPoints > 0 ? currentPlayerService._currentPlayer.value.remainingPoints : '' }}</h1>
+      won. {{ currentPlayerService._currentPlayer.value.remainingPoints > 0 ? currentPlayerService._currentPlayer.value.remainingPoints + ' Points' : '' }}</h1>
     <mat-dialog-content>
       <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of rounds.</p>
     </mat-dialog-content>

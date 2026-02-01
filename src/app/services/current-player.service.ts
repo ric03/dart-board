@@ -122,6 +122,7 @@ export class CurrentPlayerService {
   private reset() {
     this.resetAccumulatedPoints();
     this.resetThrows();
+    this._last3History = [];
     this._currentPlayer.value.last3History = [];
     this.badgeHandleService.resetBadges()
   }

@@ -25,7 +25,7 @@ export class GameSelectionComponent implements OnInit, OnChanges {
       this.fb.control('first'),
       this.fb.control('second'),
     ]),
-    maxRounds: new FormControl<number>(15)
+    maxRounds: new FormControl<number>(3)
   });
 
   roundOptions = Array.from({length: 15}, (_, i) => (i + 1) * 3); // 3, 6, 9...45
@@ -33,7 +33,7 @@ export class GameSelectionComponent implements OnInit, OnChanges {
   private readonly defaultFormState = {
     gameType: GameType.Simple501,
     playerNames: ['first', 'second'],
-    maxRounds: 15
+    maxRounds: 3
   }
 
   ngOnInit(): void {
