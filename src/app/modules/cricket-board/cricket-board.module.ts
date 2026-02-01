@@ -18,7 +18,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatLabel} from "@angular/material/form-field";
 import {ShapeMorphDirective} from "../../shared/directive/shape-morph.directive";
 import {MultiplierToggleComponent} from "../../shared/components/multiplier-toggle/multiplier-toggle.component";
-import {BottomLine} from "../../shared/components/bottom-line/bottom-line";
+import {MissBtn} from "../../shared/components/bottom-line/miss-btn.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import {BottomLine} from "../../shared/components/bottom-line/bottom-line";
     MatLabel,
     ShapeMorphDirective,
     MultiplierToggleComponent,
-    BottomLine,
+    MissBtn,
   ]
 })
 export class CricketBoardModule {

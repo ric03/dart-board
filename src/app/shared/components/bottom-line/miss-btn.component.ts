@@ -8,16 +8,15 @@ import {ShapeMorphDirective} from "../../directive/shape-morph.directive";
 import {customRipple} from "../../util";
 
 @Component({
-  selector: 'app-bottom-line',
+  selector: 'app-miss-btn',
   imports: [
     MatButton,
     MatRipple,
     ShapeMorphDirective
   ],
-  templateUrl: './bottom-line.html',
-  styleUrl: './bottom-line.scss',
+  templateUrl: './miss-btn.component.html',
 })
-export class BottomLine {
+export class MissBtn {
   private currentPlayerService = inject(CurrentPlayerService);
   private dartService = inject(DartService);
   private cricketService = inject(CricketService);

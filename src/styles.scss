@@ -150,3 +150,11 @@ mat-card {
     margin: 1.5rem; // More space on large screens
   }
 }
+
+.multiplier-miss {
+  // iphone mini width: 375px;
+  @media screen and (max-width: 380px) {
+    transform: scale(1);
+    padding-right: 1.5rem;
+  }
+}
