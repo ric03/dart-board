@@ -81,10 +81,11 @@ export class InputButtonRowCricketComponent implements OnInit {
     if (this.playerService._players.length === 1) {
       return false;
     }
-    const currentPlayerValue = this.currentPlayerService._currentPlayer.value.cricketMap.get(value);
-    return currentPlayerValue === 3 && this.playerService._players.every((player) =>
-      player.cricketMap.get(value) === 3
-    )
+    if (value === 50 || value === 25) {
+      if (value === 25) return this.currentPlayerService.isCricketBullClosed()
+      if (value === 50) return this.currentPlayerService.isCricketBullClosed()
+    }
+    return this.currentPlayerService.isCricketNumberClosed(value)
   }
 
   isScorable(value: number) {

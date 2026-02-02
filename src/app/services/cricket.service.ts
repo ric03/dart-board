@@ -82,6 +82,7 @@ export class CricketService {
   }
 
   private switchPlayer() {
+    this.currentPlayerService.applyCricketPoints();
     this.currentPlayerService.switchPlayer(
       this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer.value), this.isNewRound());
     this.setCurrentPlayerAsFristofList();
@@ -128,12 +129,34 @@ export class CricketService {
   private cricketWinCheck() {
     // Gewinn-Regel : http://www.startspiele.de/hilfe/darts/game_rules_cricket.html
     if (this.playerHasAllClosed()) {
-      if (this.currentPlayerService._currentPlayer.value == this.getPlayerWithHighestScore()
-        || this.currentPlayerService._currentPlayer.value.remainingPoints >= this.getPlayerWithHighestScore().remainingPoints) {
+      const currentPlayerPoints = this.currentPlayerService._currentPlayer.value.remainingPoints + this.currentPlayerService._accumulatedPoints;
+      const highestPoints = this.getPlayerWithHighestScoreIncludingAccumulatedPoints();
+
+      if (currentPlayerPoints >= highestPoints) {
         return true;
       }
     }
     return false;
+  }
+
+  private getPlayerWithHighestScoreIncludingAccumulatedPoints(): number {
+    const players = this.playerService._players;
+    let maxPoints = -1;
+
+    for (let i = 0; i < players.length; i++) {
+      const points = this.getEffectivePoints(players[i]);
+      if (points > maxPoints) {
+        maxPoints = points;
+      }
+    }
+    return maxPoints;
+  }
+
+  private getEffectivePoints(player: Player): number {
+    if (player.id === this.currentPlayerService._currentPlayer.value.id) {
+      return player.remainingPoints + this.currentPlayerService._accumulatedPoints;
+    }
+    return player.remainingPoints;
   }
 
   private playerHasAllClosed() {

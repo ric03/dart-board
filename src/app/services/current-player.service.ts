@@ -45,6 +45,7 @@ export class CurrentPlayerService {
 
   init(player: Player) {
     this._currentPlayer.next(player);
+    this.badgeHandleService.setPlayerId(player.id);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
     this._averagePoints = player.average;
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
@@ -84,7 +85,12 @@ export class CurrentPlayerService {
     this._lastTurnSum = this.getLast3HistorySum();
     this._lastTurnHits = [...this._last3History];
 
+    if (this.currentGameMode !== GameType.Cricket) {
+      this.applyPoints();
+    }
+
     this._currentPlayer.next(player);
+    this.badgeHandleService.setPlayerId(player.id);
     this._last3History = [];
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
@@ -114,7 +120,6 @@ export class CurrentPlayerService {
     this.resetAccumulatedPoints();
     this.resetThrows();
     this._last3History = [];
-    this._currentPlayer.value.last3History = [];
     this.badgeHandleService.resetBadges()
   }
 
@@ -155,8 +160,11 @@ export class CurrentPlayerService {
       this._currentPlayer.value.last3History = [...this._last3History];
       this.captureState();
       this.evaluateCricketPoints(_throw);
-      this._remainingPointsToDisplay.update(value => value = this._currentPlayer.value.remainingPoints);
+      this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints + this._accumulatedPoints);
+      this._last3History.push(_throw.value * _throw.multiplier);
       this.decrementRemainingThrows();
+      // Wir setzen die ID erneut, um sicherzustellen, dass Badges richtig zugeordnet werden
+      this.badgeHandleService.setPlayerId(this._currentPlayer.value.id);
     } else {
       throw new Error('Unable to reduce throws below 0');
     }
@@ -172,7 +180,7 @@ export class CurrentPlayerService {
 
   private accumulateCricketPoints(_throw: Throw) {
     if (this.checkForClosedHit(_throw)) {
-      this._accumulatedPoints = _throw.value * _throw.multiplier;
+      this._accumulatedPoints += _throw.value * _throw.multiplier;
     }
   }
 
@@ -199,6 +207,7 @@ export class CurrentPlayerService {
 
   applyPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
+    this._currentPlayer.value.last3History = [...this._last3History];
     if (this.currentGameMode === GameType.Elimination301 || this.currentGameMode === GameType.Highscore) {
       // Punkte hinzufügen (Elimination / Highscore)
       this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
@@ -214,6 +223,7 @@ export class CurrentPlayerService {
 
   applyCricketPoints() {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
+    this._currentPlayer.value.last3History = [...this._last3History];
     this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
     this.savePointsForStatistics();
 
@@ -227,7 +237,6 @@ export class CurrentPlayerService {
   calcAverage() {
     if (this.currentGameMode !== GameType.Cricket) {
       let arr: number[] = [];
-      console.log(this._currentPlayer.value.history)
       this._currentPlayer.value.history.forEach((entry: HistoryEntry) => {
         entry.hits.forEach((hit: number) => {
           arr.push(hit);
@@ -252,35 +261,35 @@ export class CurrentPlayerService {
 
   evaluateCricketPoints(_throw: Throw) {
     let map = this._currentPlayer.value.cricketMap;
-    if (_throw.value > 0) { // kein Miss also Treffer
+    const value = _throw.value;
+    if (value > 0) { // kein Miss also Treffer
+      const multiplier = _throw.multiplier;
 
-      if (map.has(_throw.value)) {// wenn der Wert schon im Map ist, heißt schon einmal getroffen
+      if (map.has(value)) { // wenn der Wert schon im Map ist, heißt schon einmal getroffen
+        let multiplierFromMap = map.get(value)!;
+        let totalHitsBefore = multiplierFromMap;
+        let totalHitsAfter = totalHitsBefore + multiplier;
 
-        let multiplierFromMap = map.get(_throw.value);
-        let accumulatedMultiplier = multiplierFromMap! + _throw.multiplier;
-
-        if (accumulatedMultiplier == 3 || accumulatedMultiplier < 3) {
-          map.set(_throw.value, accumulatedMultiplier);
+        if (totalHitsAfter <= 3) {
+          map.set(value, totalHitsAfter);
+        } else {
+          map.set(value, 3);
+          // Punkte berechnen für Hits über 3 hinaus
+          let pointsMultiplier = totalHitsAfter - 3;
+          this.accumulateCricketPoints({value: value, multiplier: pointsMultiplier});
         }
-        if (accumulatedMultiplier > 3) {
-          map.set(_throw.value, 3);
-
-          //bullseye
-          if (_throw.value == 25 && _throw.multiplier == 2) {
-            _throw.multiplier = accumulatedMultiplier - 2;
-          }
-          _throw.multiplier = accumulatedMultiplier - 3;
-          this.accumulateCricketPoints(_throw);
-          this.applyCricketPoints();
+      } else { // wenn der wert noch nicht im Map ist, füge ihn hinzu
+        if (multiplier <= 3) {
+          map.set(value, multiplier);
+        } else {
+          map.set(value, 3);
+          let pointsMultiplier = multiplier - 3;
+          this.accumulateCricketPoints({value: value, multiplier: pointsMultiplier});
         }
-      } else {// wenn der wert noch nicht im Map ist, füge ihn hinzu
-        map.set(_throw.value, _throw.multiplier);
       }
     }
     this.sortMap();
-    this._currentPlayer.value.throws?.push(_throw)
-    this._currentPlayer.value.last3History.push(_throw.value * _throw.multiplier);
-
+    this._currentPlayer.value.throws?.push(_throw);
   }
 
   sortMap() {
@@ -292,8 +301,20 @@ export class CurrentPlayerService {
       return true;
     }
 
-    return this.playerService._players.some((player: Player) =>
-      player.cricketMap.get(_throw.value) !== 3)
+    // Ein Feld ist nur dann für Punkte offen, wenn mindestens EIN Gegner es noch NICHT geschlossen hat.
+    return this.playerService._players
+      .filter(player => player.id !== this._currentPlayer.value.id)
+      .some((player: Player) => (player.cricketMap.get(_throw.value) || 0) < 3);
+  }
+
+  isCricketBullClosed(): boolean {
+    if (this.currentGameMode !== GameType.Cricket) return false;
+    return this.playerService._players.every(player => (player.cricketMap.get(25) || 0) >= 3);
+  }
+
+  isCricketNumberClosed(zahl: number): boolean {
+    if (this.currentGameMode !== GameType.Cricket) return false;
+    return this.playerService._players.every(player => (player.cricketMap.get(zahl) || 0) >= 3);
   }
 
   showHistory(player?: Player) {
@@ -318,6 +339,7 @@ export class CurrentPlayerService {
     const currentPlayer = this.playerService._players[state.currentPlayerIndex];
     // WICHTIG: Den Referenz-Check im PlayerService-Array machen
     this._currentPlayer.next(currentPlayer);
+    this.badgeHandleService.setPlayerId(currentPlayer.id);
 
     this.roundCountService.roundCount = state.roundCount;
     this._remainingThrows = state.remainingThrows;

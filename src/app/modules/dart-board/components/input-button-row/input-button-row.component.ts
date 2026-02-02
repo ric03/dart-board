@@ -5,6 +5,7 @@ import {BadgeHandleService} from "../../../../services/badge-handle.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
 import {customRipple} from "../../../../shared/util";
 import {MultiplierService} from "../../../../services/multiplier.service";
+import {CurrentPlayerService} from "../../../../services/current-player.service";
 
 
 export interface InputButton {
@@ -26,14 +27,12 @@ export class InputButtonRowComponent implements OnInit {
   protected animationService = inject(ExplosionAnimationService)
   protected multiplierService = inject(MultiplierService);
   private cdr = inject(ChangeDetectorRef);
+  protected currentPlayerService = inject(CurrentPlayerService);
 
   public screenOrientation: OrientationType = window.screen.orientation.type;
   protected readonly customRipple = customRipple;
 
   public readonly buttonGroups: InputButton[][] = [];
-
-  constructor() {
-  }
 
   get buttonColor(): ThemePalette {
     const m = this.multiplierService.multiplier();
@@ -67,24 +66,26 @@ export class InputButtonRowComponent implements OnInit {
   }
 
   scoreBull() {
-    this.dartService.score({value: 25, multiplier: 1});
     this.badgeHandleService.matBadgeHiddenBull = false;
     this.badgeHandleService.bullBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
+    this.dartService.score({value: 25, multiplier: 1});
   }
 
   scoreBullsEye() {
-    this.dartService.score({value: 25, multiplier: 2});
-    this.animationService.showExplosion('Bullseye');
     this.badgeHandleService.matBadgeHiddenBullsEye = false;
     this.badgeHandleService.bullsEyeBadgeCount = this.getBadgeCountValue();
     this.setBadgeCount();
+    this.dartService.score({value: 25, multiplier: 2});
+    this.animationService.showExplosion('Bullseye');
   }
 
   scoreWithMultiplier(inputButton: InputButton) {
     const multiplier = this.multiplierService.getMultiplier();
     this.multiplierService.reset();
-    this.setBadgeCount(inputButton);
+    if (inputButton.badge) {
+      this.setBadgeCount(inputButton);
+    }
     this.dartService.score({value: inputButton.zahl, multiplier: multiplier});
     if (multiplier === 3) {
       if (inputButton.zahl === 20) {

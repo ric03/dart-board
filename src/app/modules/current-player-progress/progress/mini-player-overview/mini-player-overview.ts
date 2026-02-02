@@ -24,7 +24,7 @@ export class MiniPlayerOverview {
   }
 
   getCricketValues(): number[] {
-    return [20, 19, 18, 17, 16, 15, 25];
+    return [15, 16, 17, 18, 19, 20, 25];
   }
 
   getCricketHitCount(player: any, value: number): number {

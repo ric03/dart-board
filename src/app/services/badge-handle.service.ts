@@ -9,6 +9,13 @@ export class BadgeHandleService {
 
   private badgeCount = new BehaviorSubject<number>(1);
   private badgeVisibility = new BehaviorSubject<boolean>(true);
+  private currentPlayerId: string | number | undefined;
+
+  /**
+   * tempBadgeValue wird verwendet, um die Reihenfolge der Würfe innerhalb einer Aufnahme (Turn)
+   * auf den Badges anzuzeigen (1, 2 oder 3). Er wird bei jedem Wurf inkrementiert und
+   * beim Spielerwechsel oder Undo zurückgesetzt bzw. aus der Historie wiederhergestellt.
+   */
   tempBadgeValue: number = 1
   matBadgeHiddenBull: boolean = true;
   matBadgeHiddenBullsEye: boolean = true;
@@ -17,6 +24,14 @@ export class BadgeHandleService {
   matBadgeHiddenMiss: boolean = true;
   missBadgeCount: string | number | undefined | null;
   twentyButtons: InputButton[] = [];
+
+  setPlayerId(id: string | number) {
+    this.currentPlayerId = id;
+  }
+
+  isCurrentPlayer(id: string | number): boolean {
+    return this.currentPlayerId === id;
+  }
 
   resetBadges() {
     this.badgeCount.next(1);
@@ -34,6 +49,14 @@ export class BadgeHandleService {
     });
   }
 
+  scoreMiss() {
+    if (this.matBadgeHiddenMiss) {
+      this.matBadgeHiddenMiss = false;
+      this.missBadgeCount = this.tempBadgeValue;
+      this.tempBadgeValue++;
+    }
+  }
+
   restoreBadgesFromHistory(last3History: number[]) {
     this.resetBadges();
     if (!last3History || last3History.length === 0) {
@@ -47,7 +70,7 @@ export class BadgeHandleService {
         if (numericVal === 50) {
           this.matBadgeHiddenBullsEye = false;
           this.bullsEyeBadgeCount = badgeVal;
-        } else {
+        } else if (numericVal === 25) {
           this.matBadgeHiddenBull = false;
           this.bullBadgeCount = badgeVal;
         }

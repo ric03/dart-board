@@ -97,23 +97,18 @@ export class DartService {
     if (this.currentPlayerService.hasReachedZeroPoints()) {
       this.currentPlayerService.applyPoints();
       this.handleVictory();
-    } else {
-      if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyPoints();
-        this.switchPlayer();
-      }
+    } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
+      this.switchPlayer();
     }
   }
 
   private scoreHighscore(points: number) {
     this.currentPlayerService.scoreDart(points);
-    if (this.currentPlayerService.hasNoThrowsRemaining()) {
+    if (this.roundCountService.getRemainingRounds() == 0 && this.isNewRound() && this.currentPlayerService.hasNoThrowsRemaining()) {
       this.currentPlayerService.applyPoints();
-      if (this.roundCountService.getRemainingRounds() == 0 && this.isNewRound()) {
-        this.displayRoundCountNotification();
-      } else {
-        this.switchPlayer();
-      }
+      this.handleVictoryByReachingRoundLimit();
+    } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
+      this.switchPlayer();
     }
   }
 
@@ -153,7 +148,6 @@ export class DartService {
 
     // End of turn handling
     if (this.currentPlayerService.hasNoThrowsRemaining()) {
-      this.currentPlayerService.applyPoints();
       this.switchPlayer();
     }
   }
@@ -169,11 +163,8 @@ export class DartService {
           this.switchPlayer();
         })
       }
-    } else {
-      if (this.currentPlayerService.hasNoThrowsRemaining()) {
-        this.currentPlayerService.applyPoints();
-        this.switchPlayer();
-      }
+    } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
+      this.switchPlayer();
     }
   }
 

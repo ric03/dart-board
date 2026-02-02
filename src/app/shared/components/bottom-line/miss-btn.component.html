@@ -1,7 +1,10 @@
 <div class="d-flex justify-content-center align-items-center mt-5 px-2 py-2">
-  <button mat-raised-button color="warn" class="btn-scale raised-button-3d"
+  <button mat-raised-button color="warn" class="btn-scale raised-button-3d-rect"
           matRipple [matRippleColor]="customRipple.rippleColor" [matRippleUnbounded]="true"
           [matRippleRadius]="customRipple.rippleRadius"
+          [matBadge]="badgeHandleService.missBadgeCount"
+          [matBadgeHidden]="badgeHandleService.matBadgeHiddenMiss"
+          matBadgeColor="accent"
           (shapeMorphClick)="scoreMiss()"
           appShapeMorph
   >
