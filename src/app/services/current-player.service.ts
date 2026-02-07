@@ -40,6 +40,7 @@ export class CurrentPlayerService {
   public _lastTurnHits: number[] = [];
   public _lastCricketHistory: Map<number, number> = new Map();
   protected animationService = inject(ExplosionAnimationService)
+  public _history: HistoryEntry[] = [];
 
   init(player: Player) {
     this._currentPlayer.next(player);
@@ -91,6 +92,7 @@ export class CurrentPlayerService {
     this._last3History = [];
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
+    this._history = this._currentPlayer.value.history;
     this.reset();
 
     this.captureState();
@@ -104,10 +106,11 @@ export class CurrentPlayerService {
   }
 
   private savePointsForStatistics() {
-    this._currentPlayer.value.history.push({
-      sum: this._accumulatedPoints,
-      hits: [...this._last3History]
-    });
+    let playerHistory: HistoryEntry = {sum: 0, hits: []};
+    playerHistory.sum = this._accumulatedPoints;
+    playerHistory.hits.push(...this._last3History);
+
+    this._currentPlayer.value.history.push(playerHistory);
   }
 
   private reset() {
@@ -219,7 +222,9 @@ export class CurrentPlayerService {
     this._currentPlayer.value.lastScore = this._accumulatedPoints;
     this._currentPlayer.value.last3History = [...this._last3History];
     this._currentPlayer.value.remainingPoints += this._accumulatedPoints;
-    this.savePointsForStatistics();
+    if (this._remainingThrows === 0) {
+      this.savePointsForStatistics();
+    }
 
     this.captureState();
   }
@@ -337,6 +342,7 @@ export class CurrentPlayerService {
     this._remainingThrows = state.remainingThrows;
     this._accumulatedPoints = state.accumulatedPoints;
     this._remainingPointsToDisplay.set(currentPlayer.remainingPoints);
+    this._history = currentPlayer.history;
     this._last3History = [...(currentPlayer.last3History || [])];
     this._lastCricketHistory = new Map(currentPlayer.cricketMap);
     this.badgeHandleService.restoreBadgesFromHistory(this._last3History);

@@ -49,11 +49,9 @@ export interface HistoryDialogData {
 export class HistoryDialog {
 
   public historyData: HistoryDialogData = inject(MAT_DIALOG_DATA)
+  protected readonly wellFormedArray = wellFormedArray;
 
   sumLast3(arr: number[]): number {
     return arr.reduce((a, b) => a + b, 0);
   }
-
-
-  protected readonly wellFormedArray = wellFormedArray;
 }
