@@ -14,3 +14,8 @@ export function noop(): Function {
 
 
 export const customRipple: RippelConstants = {rippleRadius: 10, rippleColor: 'orange'}
+
+
+export function wellFormedArray(arr: number[] | string[]) {
+  return arr.reduce((a, b) => a + ' ' + b, '');
+}

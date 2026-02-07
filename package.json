@@ -7,7 +7,7 @@
     "build": "ng build",
     "build:ci": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
     "deploy:gh": "ng build --configuration production --base-href=/dart-board/ --deploy-url=/dart-board/ && npx angular-cli-ghpages --dir dist/dart-board/browser --no-silent"
   },
   "private": true,

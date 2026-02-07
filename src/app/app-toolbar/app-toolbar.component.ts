@@ -15,7 +15,7 @@ import {DartService} from "../services/dart.service";
 import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-dialog.component";
 import {CurrentPlayerService} from "../services/current-player.service";
 import {ToggleFullscreenService} from "../services/toggle-fullscreen.service";
-import {customRipple} from "../shared/util";
+import {customRipple} from "../shared/utils/util";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {GameType} from "../models/enum/GameType";
 import {DrunkToggleService} from "../services/drunk-toggle.service";

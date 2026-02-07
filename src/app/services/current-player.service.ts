@@ -101,7 +101,7 @@ export class CurrentPlayerService {
     this.captureState();
 
     this.snackbar.openFromComponent(SwitchPlayerSnackComponent, {
-      duration: 2000,
+      duration: 2300,
       panelClass: ['app-shape-morph-snack'],
       horizontalPosition: "center",
       verticalPosition: "top"
@@ -354,5 +354,15 @@ export class CurrentPlayerService {
 
   getLast3HistorySum(): number {
     return this._last3History.reduce((sum, current) => sum + current, 0);
+  }
+
+  getPlayersWithHighestPoints(): string[] {
+    const players = this.playerService._players;
+    if (players.length === 0) {
+      return [];
+    }
+
+    const maxPoints = Math.max(...players.map(p => p.remainingPoints));
+    return players.filter(p => p.remainingPoints === maxPoints).map(players => players.name);
   }
 }

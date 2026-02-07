@@ -13,6 +13,7 @@ import {
 } from "../../modules/current-player-progress/progress/mini-player-overview/mini-player-overview";
 import {GameType} from "../../models/enum/GameType";
 import {CurrentPlayerProgressModule} from "../../modules/current-player-progress/current-player-progress.module";
+import {wellFormedArray} from "../../shared/utils/util";
 
 @Component({
   selector: 'app-switch-player-snack',
@@ -21,13 +22,14 @@ import {CurrentPlayerProgressModule} from "../../modules/current-player-progress
   standalone: true,
 })
 export class SwitchPlayerSnackComponent implements OnInit, OnDestroy {
+  protected readonly wellFormedArray = wellFormedArray;
   protected readonly GameType = GameType;
   protected playerService: PlayerService = inject(PlayerService)
   snackBarRef = inject(MatSnackBar);
   currentPlayerService = inject(CurrentPlayerService);
   cricketService = inject(CricketService);
 
-  public timeLeft: number = 4;
+  public timeLeft: number = 2;
   public nextPlayer!: Player;
   public cricketKeys: number[] = [];
 
@@ -47,7 +49,7 @@ export class SwitchPlayerSnackComponent implements OnInit, OnDestroy {
 
   startTimer() {
     setInterval(() => {
-      if (this.timeLeft > 1) {
+      if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
         return
@@ -63,4 +65,6 @@ export class SwitchPlayerSnackComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+
 }

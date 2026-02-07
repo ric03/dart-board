@@ -3,7 +3,7 @@ import {ThemePalette} from "@angular/material/core";
 import {DartService} from "../../../../services/dart.service";
 import {BadgeHandleService} from "../../../../services/badge-handle.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
-import {customRipple} from "../../../../shared/util";
+import {customRipple} from "../../../../shared/utils/util";
 import {MultiplierService} from "../../../../services/multiplier.service";
 import {CurrentPlayerService} from "../../../../services/current-player.service";
 

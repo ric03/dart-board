@@ -1,10 +1,15 @@
-import {Component, inject, Inject} from '@angular/core';
+import {Component, inject, Inject, OnInit} from '@angular/core';
 import {CurrentPlayerService} from "../../services/current-player.service";
 import {RouterModule} from "@angular/router";
 import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import {NgIf} from "@angular/common";
 import {ExplosionAnimationService} from "../../shared/animation/explosion-animation.service";
+import {
+  MiniPlayerOverview
+} from "../../modules/current-player-progress/progress/mini-player-overview/mini-player-overview";
+import {GameType} from "../../models/enum/GameType";
+import {wellFormedArray} from "../../shared/utils/util";
+import {DartService} from "../../services/dart.service";
 
 export interface VictoryDialogData {
   victoryByReachingRoundLimit: boolean;
@@ -13,10 +18,14 @@ export interface VictoryDialogData {
 @Component({
   selector: 'app-victory-dialog',
   template: `
-    <h1 mat-dialog-title>Congratulations, {{ currentPlayerService._currentPlayer.value.name }}. You have
-      won. {{ currentPlayerService._currentPlayer.value.remainingPoints > 0 ? currentPlayerService._currentPlayer.value.remainingPoints + ' Points' : '' }}</h1>
+    <h1 mat-dialog-title>Congratulations {{ winner }} !</h1>
     <mat-dialog-content>
-      <p *ngIf="data?.victoryByReachingRoundLimit">You have reached the limit of rounds.</p>
+      @if (data?.victoryByReachingRoundLimit) {
+        <p>You have reached the limit of rounds.</p>
+      }
+      <div class="d-flex flex-column">
+        <app-mini-player-overview></app-mini-player-overview>
+      </div>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-raised-button color="warn" mat-dialog-close="" routerLink="/">main menu</button>
@@ -27,15 +36,23 @@ export interface VictoryDialogData {
     RouterModule,
     MatButtonModule,
     MatDialogModule,
-    NgIf,
+    MiniPlayerOverview,
   ],
   styles: []
 })
-export class VictoryDialog {
+export class VictoryDialog implements OnInit {
+  public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
+  @Inject(MAT_DIALOG_DATA) public data: VictoryDialogData = inject(MAT_DIALOG_DATA);
+  private explosionAnimationService = inject(ExplosionAnimationService)
+  private readonly dartService = inject(DartService);
+  protected winner: string | string[] | number = ''
 
-  constructor(public currentPlayerService: CurrentPlayerService,
-              @Inject(MAT_DIALOG_DATA) public data: VictoryDialogData,
-  ) {
-    inject(ExplosionAnimationService).showExplosion('WINNER: ' + currentPlayerService._currentPlayer.value.name);
+  ngOnInit(): void {
+    if (this.dartService._gameType === GameType.Highscore) {
+      this.winner = wellFormedArray(this.currentPlayerService.getPlayersWithHighestPoints());
+    } else {
+      this.winner = this.currentPlayerService._currentPlayer.value.name
+    }
+    this.explosionAnimationService.showExplosion('WINNER: ' + this.winner);
   }
 }

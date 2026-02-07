@@ -4,7 +4,7 @@ import {CricketService} from 'src/app/services/cricket.service';
 import {CurrentPlayerService} from 'src/app/services/current-player.service';
 import {PlayerService} from "../../../../services/player.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
-import {customRipple} from "../../../../shared/util";
+import {customRipple} from "../../../../shared/utils/util";
 import {MultiplierService} from "../../../../services/multiplier.service";
 
 

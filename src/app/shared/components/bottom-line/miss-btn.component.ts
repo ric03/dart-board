@@ -6,7 +6,7 @@ import {CricketService} from "../../../services/cricket.service";
 import {BadgeHandleService} from "../../../services/badge-handle.service";
 import {MatRipple} from "@angular/material/core";
 import {ShapeMorphDirective} from "../../directive/shape-morph.directive";
-import {customRipple} from "../../util";
+import {customRipple} from "../../utils/util";
 import {MatBadgeModule} from "@angular/material/badge";
 
 @Component({
