@@ -18,7 +18,11 @@
       </button>
     }
     <button mat-menu-item (click)="fullscreenService.toggleTabFullScreenModeMenue()">
-      <mat-icon>fullscreen</mat-icon>
+      @if (fullscreenService.isFullScreen | async) {
+        <mat-icon>close_fullscreen</mat-icon>
+      } @else {
+        <mat-icon>fullscreen</mat-icon>
+      }
       Fullscreen
     </button>
     <p mat-menu-item>
@@ -31,7 +35,6 @@
                         (change)="setSoundMode(soundtoggle.checked)">sounds
       </mat-slide-toggle>
     </p>
-    <!-- <button mat-menu-item routerLink="/">Statistics</button> -->
   </mat-menu>
   <div>
     @if (this.dartService._gameType !== '' || this.cricketService._gameType !== '') {

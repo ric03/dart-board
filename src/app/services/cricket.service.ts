@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
 import {PlayerService} from "./player.service";
@@ -66,6 +66,7 @@ export class CricketService {
       this.displayRoundCountNotification();
     } else {
       this.currentPlayerService.scoreCricket(_throw);
+      this.currentPlayerService.applyCricketPoints();
       if (this.cricketWinCheck()) {
         this.handleVictory();
       } else if (this.currentPlayerService.hasNoThrowsRemaining()) {
@@ -82,7 +83,6 @@ export class CricketService {
   }
 
   private switchPlayer() {
-    this.currentPlayerService.applyCricketPoints();
     this.currentPlayerService.switchPlayer(
       this.playerService.getNextPlayer(this.currentPlayerService._currentPlayer.value), this.isNewRound());
     this.setCurrentPlayerAsFristofList();
@@ -95,19 +95,15 @@ export class CricketService {
   }
 
   private handleVictoryByReachingRoundLimit() {
-    this.currentPlayerService._currentPlayer.next(this.getPlayerWithHighestScore());
+    const winners = this.currentPlayerService.getPlayersWithHighestPoints();
+    const winner = this.playerService._players.find(p => p.name === winners[0]);
+    if (winner) {
+      this.currentPlayerService._currentPlayer.next(winner);
+    }
 
-    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
-    this.dialog.open(VictoryDialog, {data, disableClose: true});
+    this.dialog.open(VictoryDialog, {data: {victoryByReachingRoundLimit: true}, disableClose: true});
     // TODO: Open PointsOverview as Option
   }
-
-  getPlayerWithHighestScore() {
-    let arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    const winner = this.playerService._players.filter((p1) => p1.remainingPoints == Math.max(...arrOfPoints));
-    return winner[0]; // TODO consider a draw
-  }
-
 
   isNewRound() {
     return this.currentPlayerService._currentPlayer.value.name == this.playerNames[this.playerNames.length - 1];

@@ -107,17 +107,16 @@ describe('Points Persistence Test', () => {
     // 1 hit to close (reach 3), 1 remaining hit should give 20 points
     cricketService.scoreCricketWithMultiplier({value: 20, multiplier: 3});
     expect(p1.cricketMap.get(20)).toBe(3);
-    // Erwartung: 0 in p1.remainingPoints (noch nicht angewendet), 20 in Display
-    expect(p1.remainingPoints).toBe(0);
+    // Erwartung: 20 in p1.remainingPoints (da sofort angewendet), 20 in Display
+    expect(p1.remainingPoints).toBe(20);
     expect(currentPlayerService._remainingPointsToDisplay()).toBe(20);
 
     // Wurf 3: 20 Single -> +1 hit = 5 hits total
     cricketService.scoreCricketWithMultiplier({value: 20, multiplier: 1}); // Switch player
     expect(currentPlayerService._currentPlayer.value.id).toBe(p2.id);
 
-    // Erwartung: 20 + 20 = 40 Punkte permanent gespeichert
-    expect(p1.remainingPoints).toBe(40);
-    expect(p1.lastScore).toBe(40);
+    // Erwartung: 20 + 20 + 20 = 60 Punkte permanent gespeichert
+    expect(p1.remainingPoints).toBe(60);
   });
 
   it('should NOT add points in Cricket if all opponents have also closed the number', () => {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {VictoryDialog, VictoryDialogData} from "../dialogTemplates/victory-dialog/victory-dialog.component";
+import {VictoryDialog} from "../dialogTemplates/victory-dialog/victory-dialog.component";
 import {GameType} from '../models/enum/GameType';
 import {Player, Throw} from '../models/player/player.model';
 import {CurrentPlayerService} from "./current-player.service";
@@ -198,15 +198,13 @@ export class DartService {
   }
 
   private handleVictoryByReachingRoundLimit() {
-    const arrOfPoints = this.playerService._players.flatMap(x => x.remainingPoints);
-    const isEliminationMode = (this._gameType === GameType.Elimination301 || this._gameType === GameType.Highscore);
-    const comparator = isEliminationMode ? Math.max : Math.min;
-    const target = comparator(...arrOfPoints);
-    const winner = this.playerService._players.filter((p1) => p1.remainingPoints == target);
-    this.currentPlayerService._currentPlayer.next(winner[0]); // TODO consider a draw
+    const winners = this.currentPlayerService.getPlayersWithHighestPoints();
+    const winner = this.playerService._players.find(p => p.name === winners[0]);
+    if (winner) {
+      this.currentPlayerService._currentPlayer.next(winner);
+    }
 
-    const data: VictoryDialogData = {victoryByReachingRoundLimit: true}
-    this.dialog.open(VictoryDialog, {data, disableClose: true});
+    this.dialog.open(VictoryDialog, {data: {victoryByReachingRoundLimit: true}, disableClose: true});
     // TODO: Open PointsOverview as Option
   }
 

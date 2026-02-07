@@ -2,12 +2,12 @@ import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterLink} from "@angular/router";
 import {filter, map} from "rxjs";
-import {MatToolbar} from "@angular/material/toolbar";
-import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {MatIcon} from "@angular/material/icon";
-import {NgStyle} from "@angular/common";
-import {MatIconButton, MatMiniFabButton} from "@angular/material/button";
-import {MatRipple} from "@angular/material/core";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+import {CommonModule, NgStyle} from "@angular/common";
+import {MatButtonModule} from "@angular/material/button";
+import {MatRippleModule} from "@angular/material/core";
 import {CricketWinInstructionsDialog} from "../dialogTemplates/info-dialog/cricket-info-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CricketService} from "../services/cricket.service";
@@ -16,10 +16,10 @@ import {DartInfoDialogComponent} from "../dialogTemplates/info-dialog/dart-info-
 import {CurrentPlayerService} from "../services/current-player.service";
 import {ToggleFullscreenService} from "../services/toggle-fullscreen.service";
 import {customRipple} from "../shared/utils/util";
-import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {GameType} from "../models/enum/GameType";
 import {DrunkToggleService} from "../services/drunk-toggle.service";
-import {MatTooltip} from "@angular/material/tooltip";
+import {MatTooltipModule} from "@angular/material/tooltip";
 import {SoundToggleService} from "../services/sound-toggle.service";
 import {PwaInstallService} from "../services/pwa-install.service";
 
@@ -27,18 +27,16 @@ import {PwaInstallService} from "../services/pwa-install.service";
   selector: 'app-app-toolbar',
   standalone: true,
   imports: [
-    MatToolbar,
-    MatMenu,
-    MatIcon,
+    MatToolbarModule,
+    MatIconModule,
     NgStyle,
-    MatIconButton,
-    MatMenuItem,
+    MatMenuModule,
+    MatButtonModule,
     RouterLink,
-    MatMenuTrigger,
-    MatRipple,
-    MatMiniFabButton,
-    MatSlideToggle,
-    MatTooltip
+    MatRippleModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
+    CommonModule
   ],
   templateUrl: './app-toolbar.component.html',
   styleUrl: './app-toolbar.component.scss'
@@ -56,10 +54,8 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   protected readonly fullscreenService = inject(ToggleFullscreenService);
   protected readonly currentPlayerService = inject(CurrentPlayerService);
   protected readonly customRipple = customRipple;
+  private dialog = inject(MatDialog)
 
-
-  constructor(private dialog: MatDialog) {
-  }
 
   ngOnInit(): void {
     // Hide install button by default; show it only when the deferred prompt is available
@@ -91,16 +87,6 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-
-  /**
-   * Löst den lokalen PWA-Installationsdialog aus, sofern verfügbar.
-   * Der Dialog steht nur bereit, nachdem das "beforeinstallprompt"-Event abgefangen wurde.
-   */
-  async localInstall() {
-    await this.pwa.triggerInstall();
-  }
-
 
   openGameInstructions() {
     if (this.cricketService._gameType !== '') {

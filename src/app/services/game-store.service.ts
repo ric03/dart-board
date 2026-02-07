@@ -9,11 +9,7 @@ import {GameType} from '../models/enum/GameType';
 export class GameStoreService {
   private history: GameSnapshot[] = [];
 
-  // Der aktuelle Zustand als Signal für reaktive UI-Updates
-  public gameState = signal<Game | null>(null);
-
-  constructor() {
-  }
+  gameState = signal<Game | null>(null);
 
   initGame(gameType: GameType, players: Player[]) {
     const initialGame: Game = {
@@ -59,7 +55,7 @@ export class GameStoreService {
       this.history.pop(); // Den aktuellen Zustand entfernen
       const lastSnapshot = this.history[this.history.length - 1];
       // Wiederum tiefe Kopie sicherstellen
-      const snapshotStr = JSON.stringify(lastSnapshot.game, (key, value) => {
+      const restoredGame = JSON.parse(JSON.stringify(lastSnapshot.game, (key, value) => {
         if (value instanceof Map) {
           return {
             _type: 'Map',
@@ -67,8 +63,7 @@ export class GameStoreService {
           };
         }
         return value;
-      });
-      const restoredGame = JSON.parse(snapshotStr, (key, value) => {
+      }), (key, value) => {
         if (typeof value === 'object' && value !== null && value._type === 'Map') {
           return new Map(value.value);
         }
@@ -78,9 +73,5 @@ export class GameStoreService {
       return restoredGame;
     }
     return null;
-  }
-
-  getHistory() {
-    return this.history;
   }
 }

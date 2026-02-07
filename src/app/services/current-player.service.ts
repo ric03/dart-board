@@ -34,20 +34,17 @@ export class CurrentPlayerService {
   public _remainingThrows = MAX_REMAINING_THROWS;
   public _accumulatedPoints = 0;
   public _remainingPointsToDisplay = signal(0);
-  public _averagePoints = 0;
   public _currentPlayer: BehaviorSubject<Player> = new BehaviorSubject(DEFAULT_PLAYER);
   public _last3History: number[] = [];
   public _lastTurnSum = 0;
   public _lastTurnHits: number[] = [];
   public _lastCricketHistory: Map<number, number> = new Map();
-  public _history: HistoryEntry[] = [];
   protected animationService = inject(ExplosionAnimationService)
 
   init(player: Player) {
     this._currentPlayer.next(player);
     this.badgeHandleService.setPlayerId(player.id);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
-    this._averagePoints = player.average;
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
     this.reset();
 
@@ -94,8 +91,6 @@ export class CurrentPlayerService {
     this._last3History = [];
     this._lastCricketHistory = new Map(this._currentPlayer.value.cricketMap);
     this._remainingPointsToDisplay.set(this._currentPlayer.value.remainingPoints);
-    this._averagePoints = player.average;
-    this._history = this._currentPlayer.value.history;
     this.reset();
 
     this.captureState();
@@ -109,11 +104,10 @@ export class CurrentPlayerService {
   }
 
   private savePointsForStatistics() {
-    let playerHistory: HistoryEntry = {sum: 0, hits: []};
-    playerHistory.sum = this._accumulatedPoints;
-    playerHistory.hits.push(...this._last3History);
-
-    this._currentPlayer.value.history.push(playerHistory);
+    this._currentPlayer.value.history.push({
+      sum: this._accumulatedPoints,
+      hits: [...this._last3History]
+    });
   }
 
   private reset() {
@@ -245,8 +239,7 @@ export class CurrentPlayerService {
       let geworfeneDarts = arr.length;
       if (geworfeneDarts > 0) {
         let gesamtPunktzahl = arr.reduce((a, b) => +a + +b);
-        this._averagePoints = Math.round((gesamtPunktzahl / geworfeneDarts) * 3);
-        this._currentPlayer.value.average = this._averagePoints;
+        this._currentPlayer.value.average = Math.round((gesamtPunktzahl / geworfeneDarts) * 3);
       }
     } else {
       if (this._currentPlayer.value.cricketMap.size > 0) {
@@ -266,8 +259,7 @@ export class CurrentPlayerService {
       const multiplier = _throw.multiplier;
 
       if (map.has(value)) { // wenn der Wert schon im Map ist, heißt schon einmal getroffen
-        let multiplierFromMap = map.get(value)!;
-        let totalHitsBefore = multiplierFromMap;
+        let totalHitsBefore = map.get(value)!;
         let totalHitsAfter = totalHitsBefore + multiplier;
 
         if (totalHitsAfter <= 3) {
@@ -345,8 +337,6 @@ export class CurrentPlayerService {
     this._remainingThrows = state.remainingThrows;
     this._accumulatedPoints = state.accumulatedPoints;
     this._remainingPointsToDisplay.set(currentPlayer.remainingPoints);
-    this._averagePoints = currentPlayer.average;
-    this._history = currentPlayer.history;
     this._last3History = [...(currentPlayer.last3History || [])];
     this._lastCricketHistory = new Map(currentPlayer.cricketMap);
     this.badgeHandleService.restoreBadgesFromHistory(this._last3History);
