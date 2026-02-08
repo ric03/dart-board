@@ -54,7 +54,7 @@ export class InputButtonRowCricketComponent implements OnInit {
   scoreBullsEye() {
     this.cricketService.scoreCricketWithMultiplier({value: 25, multiplier: 2})
     this.animationService.showExplosion('Bullseye');
-    this.soundService.playExplosionSound();
+    this.soundService.playGoodResult();
   }
 
   scoreHit(value: number) {
@@ -66,14 +66,14 @@ export class InputButtonRowCricketComponent implements OnInit {
         this.animationService.tripleTwentyCounter++
         if (this.animationService.tripleTwentyCounter === 3) {
           this.animationService.showExplosion('180');
-          this.soundService.playExplosionSound();
+          this.soundService.playOhYeah();
         } else {
           this.animationService.showExplosion('T' + value.toString());
-          this.soundService.playExplosionSound();
+          this.soundService.playTripleBell();
         }
       } else {
         this.animationService.showExplosion('T' + value.toString());
-        this.soundService.playExplosionSound();
+        this.soundService.playTripleBell();
       }
     }
     this.cricketService.scoreCricketWithMultiplier({value, multiplier});
