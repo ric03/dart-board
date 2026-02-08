@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -27,6 +27,7 @@ jobs:
         run: npm run build -- --configuration production --base-href=/dart-board/ --deploy-url=/dart-board/
 
       - name: Deploy to GitHub Pages
+        if: github.repository == 'JustCode-7/dart-board'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
