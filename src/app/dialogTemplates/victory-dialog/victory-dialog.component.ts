@@ -20,7 +20,7 @@ export interface VictoryDialogData {
   template: `
     <h1 mat-dialog-title>Congratulations {{ winner }} !</h1>
     <mat-dialog-content>
-      @if (data.victoryByReachingRoundLimit) {
+      @if (data?.victoryByReachingRoundLimit) {
         <p>You have reached the limit of rounds.</p>
       }
       <div class="d-flex flex-column">
@@ -42,7 +42,7 @@ export interface VictoryDialogData {
 })
 export class VictoryDialog implements OnInit {
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
-  @Inject(MAT_DIALOG_DATA) public data: VictoryDialogData = inject(MAT_DIALOG_DATA);
+  @Inject(MAT_DIALOG_DATA) public data?: VictoryDialogData = inject(MAT_DIALOG_DATA);
   private explosionAnimationService = inject(ExplosionAnimationService)
   private readonly dartService = inject(DartService);
   protected winner: string | string[] | number = ''

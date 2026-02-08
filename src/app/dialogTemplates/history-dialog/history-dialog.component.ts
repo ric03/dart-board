@@ -15,7 +15,7 @@ export interface HistoryDialogData {
   template: `
     <div class="minWith15vw">
       <h1 mat-dialog-title>history of: {{ historyData.player.name }}</h1>
-      <mat-dialog-content class="">
+      <mat-dialog-content>
         <mat-card class="mb-1">
           <mat-card-title>{{ historyData.player.remainingPoints }}
           </mat-card-title>
@@ -25,7 +25,7 @@ export interface HistoryDialogData {
           ⌀ {{ historyData.player.average }}<br>
           Match-History:
           @for (playerhistory of historyData.player.history; track $index) {
-            <mat-card class="flex-row">
+            <mat-card class="flex-row w-100">
               <div class="w-25">∑ {{ playerhistory.sum }}</div>
               <div class="w-75">|➶ {{ wellFormedArray(playerhistory.hits) }}</div>
             </mat-card>
@@ -44,7 +44,7 @@ export interface HistoryDialogData {
     CommonModule,
     MatCardModule,
   ],
-  styles: [' .minWith15vw { min-width: 15vw; }']
+  styles: [' .minWith15vw { min-width: 30vw; }']
 })
 export class HistoryDialog {
 

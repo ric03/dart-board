@@ -1,7 +1,7 @@
 .progress-container {
   display: flex;
   flex-direction: row;
-  height: 140px; /* Feste Höhe für kompakte Ansicht */
+  height: 25vh;
   background-color: rgba(0, 0, 0, 0.2);
 
   .section {
@@ -10,12 +10,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 4px;
+    padding: 0.5rem;
     overflow: hidden;
   }
 
   .player-info {
-    flex: 1.2;
+    flex: 1.0;
 
     .info-card {
       width: 100%;
@@ -27,7 +27,7 @@
       background-color: rgba(255, 255, 255, 0.05);
 
       .player-name {
-        font-size: 0.9rem;
+        font-size: 1rem;
         opacity: 0.8;
       }
 
@@ -37,11 +37,23 @@
         line-height: 1.2;
       }
 
-      .hit-badge {
-        font-size: 0.7rem;
-        padding: 2px 4px;
-      }
     }
+  }
+
+  .hit-badge-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: #0d860d;
+
+    .hit-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
+      min-width: 1.7rem;
+    }
+
   }
 
   .dart-status {

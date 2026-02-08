@@ -1,21 +1,28 @@
 <div class="progress-container m-1 px-1 py-1 shadow rounded">
   <!-- Erstes Drittel: Punktzahl des aktuellen Spielers -->
   <div class="section player-info">
-    <mat-card class="matcardpointer info-card h-100"
+    <mat-card class="matcardpointer h-100 w-100 d-flex flex-row"
               (click)="currentPlayerService.showHistory(currentPlayerService._currentPlayer.value)">
-      <div class="player-name text-truncate">
-        {{ currentPlayerService._currentPlayer.value.name || 'Spieler' }}
+      <div class="info-card">
+        <div class="player-name text-truncate">
+          {{ currentPlayerService._currentPlayer.value.name || 'Spieler' }}
+        </div>
+        <div class="player-score">{{ this.currentPlayerService._remainingPointsToDisplay() }}</div>
+        <div class="player-avg small">⌀ {{ currentPlayerService._currentPlayer.value.average }}</div>
       </div>
-      <div class="player-score">{{ this.currentPlayerService._remainingPointsToDisplay() }}</div>
-      <div class="player-avg small">⌀ {{ currentPlayerService._currentPlayer.value.average }}</div>
-      <div class="last-hits mt-1">
-        <span *ngFor="let hit of currentPlayerService._last3History" class="hit-badge badge bg-secondary me-1">
-          {{ hit }}
+      <div class="d-flex flex-column-reverse hit-badge-wrapper">
+          <span class="hit-badge badge bg-secondary me-1">
+          {{ currentPlayerService._last3History[0] ?? '-' }}
         </span>
+        <span class="hit-badge badge bg-secondary me-1">
+            {{ currentPlayerService._last3History[1] ?? '-' }}
+          </span>
+        <span class="hit-badge badge bg-secondary me-1">
+            {{ currentPlayerService._last3History[2] ?? '-' }}
+          </span>
       </div>
     </mat-card>
   </div>
-
   <!-- Zweites Drittel: Drei Pfeil-Buttons vertikal und Rundeninfo rechts daneben -->
   <div class="section dart-status">
     <div class="status-content">
