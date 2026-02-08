@@ -20,8 +20,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {GameType} from "../models/enum/GameType";
 import {DrunkToggleService} from "../services/drunk-toggle.service";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {SoundToggleService} from "../services/sound-toggle.service";
 import {PwaInstallService} from "../services/pwa-install.service";
+import {SoundService} from "../services/sound.service";
 
 @Component({
   selector: 'app-app-toolbar',
@@ -48,7 +48,7 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   pwa = inject(PwaInstallService);
   appVersion: string = environment.appVersion
   drunkModeService = inject(DrunkToggleService);
-  soundToggleService = inject(SoundToggleService);
+  soundService = inject(SoundService);
   cricketService = inject(CricketService);
   dartService = inject(DartService);
   protected readonly fullscreenService = inject(ToggleFullscreenService);
@@ -158,6 +158,11 @@ export class AppToolbarComponent implements OnInit, OnDestroy {
   }
 
   setSoundMode(checked: boolean) {
-    this.soundToggleService.isSoundOn.next(checked);
+    this.soundService.isSoundEnabled.set(checked);
+  }
+
+  toggleSound() {
+    const isEnabled = this.soundService.isSoundEnabled()
+    this.soundService.isSoundEnabled.set(!isEnabled);
   }
 }

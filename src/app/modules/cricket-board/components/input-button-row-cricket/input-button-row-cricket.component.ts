@@ -6,6 +6,7 @@ import {PlayerService} from "../../../../services/player.service";
 import {ExplosionAnimationService} from "../../../../shared/animation/explosion-animation.service";
 import {customRipple} from "../../../../shared/utils/util";
 import {MultiplierService} from "../../../../services/multiplier.service";
+import {SoundService} from "../../../../services/sound.service";
 
 
 @Component({
@@ -20,13 +21,14 @@ export class InputButtonRowCricketComponent implements OnInit {
   readonly buttonGroups: number[][] = [[15, 16], [17, 18], [19, 20], [25, 50]];
   public readonly border = "border border-5 border-warning"
 
-  protected animationService = inject(ExplosionAnimationService)
+  protected animationService = inject(ExplosionAnimationService);
   protected multiplierService = inject(MultiplierService);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
   public cricketService: CricketService = inject(CricketService);
   public currentPlayerService: CurrentPlayerService = inject(CurrentPlayerService);
   protected playerService: PlayerService = inject(PlayerService);
   public screenOrientation: OrientationType = window.screen.orientation.type;
+  private readonly soundService = inject(SoundService);
 
   get buttonColor(): ThemePalette {
     const m = this.multiplierService.multiplier();
@@ -52,6 +54,7 @@ export class InputButtonRowCricketComponent implements OnInit {
   scoreBullsEye() {
     this.cricketService.scoreCricketWithMultiplier({value: 25, multiplier: 2})
     this.animationService.showExplosion('Bullseye');
+    this.soundService.playExplosionSound();
   }
 
   scoreHit(value: number) {
@@ -63,11 +66,14 @@ export class InputButtonRowCricketComponent implements OnInit {
         this.animationService.tripleTwentyCounter++
         if (this.animationService.tripleTwentyCounter === 3) {
           this.animationService.showExplosion('180');
+          this.soundService.playExplosionSound();
         } else {
           this.animationService.showExplosion('T' + value.toString());
+          this.soundService.playExplosionSound();
         }
       } else {
         this.animationService.showExplosion('T' + value.toString());
+        this.soundService.playExplosionSound();
       }
     }
     this.cricketService.scoreCricketWithMultiplier({value, multiplier});
