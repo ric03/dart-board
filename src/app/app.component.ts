@@ -1,5 +1,6 @@
 import {Component, HostListener, inject, OnInit} from '@angular/core';
 import {PwaInstallService} from './services/pwa-install.service';
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -11,17 +12,14 @@ export class AppComponent implements OnInit {
   title = 'dart-board';
   private readonly pwa = inject(PwaInstallService);
 
-  // Warn user about data loss on reload when not in fullscreen
+  // Warn user about data loss on reload when not in dev-mode
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnloadHandler(event: BeforeUnloadEvent) {
-    // Standard: set returnValue to show confirmation dialog
-    if (navigator.userActivation.hasBeenActive) {
-      // Recommended
+    if (environment.production) {
+      // Show the user the native reload prompt
+      // if enabled, this will prevent the automatic reload in dev-mode.
       event.preventDefault();
-      // Included for legacy support, e.g. Chrome/Edge < 119
-      event.returnValue = true;
     }
-    return
   }
 
   ngOnInit(): void {
