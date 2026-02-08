@@ -1,5 +1,7 @@
 # DartBoard
 
+https://justcode-7.github.io/dart-board/
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.0.
 
 ## Development server
@@ -37,6 +39,7 @@ This project is configured as a Progressive Web App (PWA) and can be deployed to
   - Make sure GitHub Pages is enabled in your repository settings, pointing to the `gh-pages` branch.
 
 Notes:
+
 - The Service Worker is only enabled in production builds.
 - The web manifest and icons are included and copied to the output root.
 - A `404.html` fallback is provided for SPA routing on GitHub Pages.
